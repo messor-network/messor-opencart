@@ -1,0 +1,252 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="ms-wrapper">
+		<div class="ms-container">
+			<div class="ms-page">
+				<span class="ms-page__title">Security Settings</span>
+				<div class="ms-page-row">
+					<div class="ms-page-col">
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-login.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt">{{ss_protect_admin_dir}}</span>
+									{% if admin_panel %}
+										<span class="ms-tag-cross"></span>
+									{% else %}
+										<span class="ms-tag-check"></span>
+									{% endif %}
+								</div>
+								<div class="ms-page-box__content ms-page-box__content-txt">
+									<p>{{ss_protect_admin_dir_disc}}</p>
+									<a href="https://messor.network/SecuritySettings/OpenCart/#ProtectingAdmin" target=_blank  class="ms-btn ms-btn-primary">{{ss_instruction}}</a>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-avatar.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt">{{ss_change_login}}</span>
+									<a class="ms-tooltip ms-tooltip-question" data-tippy-content="{{ss_i_change_login}}"></a>
+									{% if admin_login %}
+										<span class="ms-tag-cross"></span>
+									{% else %}
+										<span class="ms-tag-check"></span>
+									{% endif %}
+								</div>
+								<div class="ms-page-box__content">
+									<table>
+										<thead>
+											<tr>
+												<th>{{ss_change_login_group}}</th>
+												<th class="light-bg">{{ss_change_login_login}}</th>
+												<th>{{ss_change_login_name}}</th>
+												<th class="text-center">{{ss_change_login_edit}}</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in user %}
+												<tr>
+												{% if item.novalid %}
+													<td>{{item.group}}</td>
+													<td class="light-bg"><span class="ms-tag-trust ms-tag-trust-10">{{item.login}}</span></td>
+													<td>{{item.firstname ~ ' ' ~ item.lastname }}</td>
+												{% else %}
+													<td>{{item.group}}</td>
+													<td class="light-bg">{{item.login}}</td>
+													<td>{{item.firstname ~ ' ' ~ item.lastname }}</td>
+												{% endif %}
+													<td class="text-center">
+														<a href="{{item.edit}}" class="ms-link-primary">{{ss_change_login_edit}}</a>
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-file.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt">{{ss_check_perm}}</span>
+									<a class="ms-tooltip ms-tooltip-question" data-tippy-content="{{ss_i_check_perm}}"></a>
+									{% if result %}
+										<a class="ms-tag-cross"></a>
+									{% else %}
+										<a class="ms-tag-check"></a>
+									{% endif %}
+								</div>
+								<div class="ms-page-box__content">
+									<table>
+										<thead>
+											<tr>
+												<th>{{ss_path}}</th>
+												<th class="light-bg text-center">{{ss_check_permissions}}</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for key, value in perms %}
+												<tr>
+													<td>{{ key }}</td>
+													<td class="light-bg text-center">{{ value }}</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<div class="ms-page-box__controls ms-page-box__controls-start">
+									<a href="https://messor.network/SecuritySettings/OpenCart/#permissions" target=_blank class="ms-btn ms-btn-primary">{{ss_instruction}}</a>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title ms-page-box__title--update">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-opencart.svg" alt="">
+									</span>
+									{% if last_version %}
+										<span class="ms-page-box__title-txt">{{ss_update_version}}
+											<span class="ms-page-box__title-sub">{{ss_update_aval_version}}
+												{{' ' ~ new_version }}</span>
+										</span>
+										<a href="https://www.opencart.com/index.php?route=cms/download" class="ms-btn ms-btn-primary">{{ss_update}}</a>
+										<span class="ms-tag-cross"></span>
+									{% else %}
+										<span class="ms-page-box__title-txt">{{ss_update_version}}
+											<span class="ms-page-box__title-sub">{{ss_update_last_version}}</span>
+										</span>
+										<span class="ms-tag-check"></span>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-folder.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt">{{ss_update_del_dir}}</span>
+									{% if install_dir %}
+										<span class="ms-tag-cross"></span>
+									{% else %}
+										<span class="ms-tag-check"></span>
+									{% endif %}
+								</div>
+								<div class="ms-page-box__content ms-page-box__content-txt">
+									<p>{{ss_update_del_dir_disc}}</p>
+									<a href="https://messor.network/SecuritySettings/OpenCart/#install_folder" target=_blank class="ms-btn ms-btn-primary">{{ss_instruction}}</a>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-settings-wheel.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt">{{ss_settings}}</span>
+								</a>
+								{% if prefix or show_error %}
+									<span class="ms-tag-cross"></span>
+								{% else %}
+									<span class="ms-tag-check"></span>
+								{% endif %}
+							</div>
+							<div class="ms-page-box__content">
+								<table>
+									<tbody>
+										<tr>
+											<td>{{ss_db_pref}}</td>
+											<td>
+												{% if prefix %}
+													<span class="ms-tag-cross"></span>
+												{% else %}
+													<span class="ms-tag-check"></span>
+												{% endif %}
+											</td>
+										</tr>
+										<tr>
+											<td>{{ss_disable_error}}</td>
+											<td>
+												{% if show_error %}
+													<span class="ms-tag-cross"></span>
+												{% else %}
+													<span class="ms-tag-check"></span>
+												{% endif %}
+											</td>
+										</tr>
+                    <tr>
+											<td>{{ss_storage}}</td>
+											<td>
+												{% if storage %}
+													<span class="ms-tag-cross"></span>
+												{% else %}
+													<span class="ms-tag-check"></span>
+												{% endif %}
+											</td>
+										</tr>
+                    <tr>
+											<td>{{ss_mysql_root}}</td>
+											<td>
+												{% if mysql_root %}
+													<span class="ms-tag-cross"></span>
+												{% else %}
+													<span class="ms-tag-check"></span>
+												{% endif %}
+											</td>
+										</tr>
+                    <tr>
+											<td>{{ss_version_messor}}</td>
+											<td>
+												{% if new_version_messor %}
+													<span class="ms-tag-cross"></span>
+												{% else %}
+													<span class="ms-tag-check"></span>
+												{% endif %}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ms-page-col">
+					<div class="ms-page-box">
+						<div class="ms-page-box__item">
+							<div class="ms-page-box__title">
+								<span class="ms-page-box__title-txt">{{ss_status}}</span>
+							</div>
+							<div class="ms-page-box__content">
+								<div class="ms-page-circle-graph ms-page-circle-graph--disabled">
+									<svg viewbox="0 0 36 36" class="circular-chart">
+										<path class="circle-bg" d="M18 2.0845
+																																												          a 15.9155 15.9155 0 0 1 0 31.831
+																																												          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+										<path class="circle" stroke-dasharray="{{percent}}, 100" d="M18 2.0845
+																																												          a 15.9155 15.9155 0 0 1 0 31.831
+																																												          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+										<text x="18" y="21" class="percentage-hint">
+											<tspan>{{ count }}</tspan>/6</text>
+									</svg>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}

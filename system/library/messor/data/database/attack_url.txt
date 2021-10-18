@@ -1,0 +1,11 @@
+admin
+sql
+old
+backup
+dev
+install
+login
+password
+info
+phpinfo
+12345

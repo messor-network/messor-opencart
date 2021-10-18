@@ -1,0 +1,1711 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+	<div class="ms-wrapper">
+		<div class="ms-container">
+			<div class="ms-page">
+			{% if new_version %}
+				<div class="alert alert-info">{{ new_version }}</div>
+			{% endif %}
+				<div class="ms-page-row">
+					<div class="ms-page-col ms-page-col-fluid ms-page-col-third">
+						<div class="ms-page-box ms-page-box-third">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__content ms-page-box__content-height">
+									<div class="ms-page-card">
+										<div class="ms-page-card__img" data-src="#modalPeerInfo" data-fancybox>
+											<img src="view/image/messor/icons/icon-loading.svg" alt="">
+										</div>
+										<div class="ms-page-card__txt">
+											<ul class="ms-page-card__list">
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">ID:</span>
+													<div class="ms-page-card__list-content">
+													{# PEER INFO #}
+													<div class="ms-modals-wrapper">
+	<div class="ms-modal" id="modalPeerInfo">
+		<div class="ms-modal__title">
+			<ul class="ms-modal__tabs">
+				<li class="ms-modal__title-item active">Peer info</li>
+				<li class="ms-modal__title-item">Sync</li>
+			</ul>
+			<a href="https://messor.network/SignIn/" target="_blank" class="ms-link-primary">
+				<svg>
+					<use xlink:href="#icon-profile"></use>
+				</svg>
+				{{btn_pers_account}}
+			</a>
+		</div>
+		<div class="ms-modal__content">
+			<div class="ms-modal__content-box active">
+				<table class="ms-modal__table">
+					<tbody>
+						<tr>
+							<td>{{peer_info_status}}:</td>
+							<td class="ms-tag-trust-{{ peer_info.trust }}">{{ peer_info.status }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_trust}}:</td>
+							<td class="ms-tag-trust-{{ peer_info.trust }}">{{ peer_info.trust }}</td>
+						</tr>
+						<tr>
+							<td>Url:</td>
+							<td>
+								{{ peer_info.url}}
+								<a class="ms-icon-link copy-link">
+									<svg>
+										<use xlink:href="#icon-link"></use>
+									</svg>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_name}}:</td>
+							<td>{{ peer_info.name }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_company}}:</td>
+							<td>{{ peer_info.company }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_phone}}:</td>
+							<td>{{ peer_info.phone }}</td>
+						</tr>
+						<tr>
+							<td>Email:</td>
+							<td>{{ peer_info.email }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_lang}}:
+							</td>
+							<td>{{ peer_info.lang }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_date_reg}}:</td>
+							<td>{{ peer_info.register_date|date('d.m.y') }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_last_online}}:</td>
+							<td>{{ peer_info.last_online|date('d.m.y') }}</td>
+						</tr>
+						<tr>
+							<td>{{peer_info_last_data}}:</td>
+							<td>{{ peer_info.last_data|date('d.m.y') }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="ms-modal__controls">
+					<button data-fancybox-close class="ms-btn ms-btn-primary">{{btn_close}}</button>
+				</div>
+			</div>
+			<div class="ms-modal__content-box">
+                <table class="ms-modal__table">
+                    <tbody>
+                    <tr>
+                        <td>{{peer_info_client_ver}}:	</td>
+                        <td>{{ config.version }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{peer_info_net_id}}:	</td>
+                        <td>
+                            {{ config.Network_id }}
+                            <a class="ms-icon-link copy-link">
+                                <svg><use xlink:href="#icon-link"></use></svg>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{peer_info_encr_alg}}:</td>
+                        <td>{{ config.Encryption_alg }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{peer_info_encr_key}}:</td>
+                        <td>{{ config.Encryption_key }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{peer_info_user_agent}}:	</td>
+                        <td>{{ config.Useragent }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="ms-modal__controls">
+                    <a class="sync ms-btn-icon ms-btn-icon-lg ms-btn-icon-reload"><svg><use xlink:href="#icon-reload"></use></svg></a>
+                    <button data-fancybox-close class="ms-btn ms-btn-primary">{{btn_close}}</button>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+													{# PEER INFO END #}
+														<a data-src="#modalPeerInfo" data-fancybox>{{ peer_info.network_id }}</a>
+														<button class="ms-tooltip ms-tooltip-interactive" data-tippy-content="{{ peer_info.network_id }}"></button>
+													</div>
+												</li>
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_peer_status}}:</span>
+													<div class="ms-page-card__list-content">
+														<span class="ms-tag-trust ms-tag-trust-{{ peer_info.trust }}">{{ peer_info.status }}</span>
+													</div>
+												</li>
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_peer_trust}}:</span>
+													<div class="ms-page-card__list-content">
+														<span class="ms-tag-trust ms-tag-trust-shadow ms-tag-trust-{{ peer_info.trust }}">{{ peer_info.trust }}</span>
+														<span class="ms-tag-trust ms-tag-trust-line ms-tag-trust-{{ peer_info.trust }}"></span>
+														{# TRUST UP #}
+														<div class="ms-modals-wrapper">
+	<div class="ms-modal" id="modalTrustUp">
+		<div class="ms-modal__title">
+			<span class="ms-modal__title-item">Trust Up</span>
+			<span id="trust-number" class="ms-tag-trust ms-tag-trust-shadow ms-tag-trust-{{ peer_info.trust }}">{{ peer_info.trust }}</span>
+		</div>
+		<div class="ms-modal__content">
+			<table class="ms-modal__table ms-modal__table-trust">
+				<tbody>
+					<tr id="verify-dns" class="ms-modal__table-trust-fluid">
+						<td>{{mod_trust_domain}}:</td>
+						<td>{{ peer_info.domain }}</td>
+						<td disabled>
+						{% if peer_info.confirm_email == 1 %}
+							<span class="ms-tag ms-tag-success">{{mod_trust_confirmed}}</span>
+						{% else %}
+							<a id="verify-dns__button" class="ms-btn ms-btn-outline-primary">{{mod_trust_dns}}</a>
+						{% endif %}
+						</td>
+					</tr>
+					<tr id="verify-email" class=" ms-modal__table-trust-fluid">
+						<td>Email:</td>
+						<td>{{ peer_info.email }}</td>
+						<td disabled>
+						{% if peer_info.confirm_email == 1 %}
+							<span class="ms-tag ms-tag-success">{{mod_trust_confirmed}}</span>
+						{% else %}
+							<a id="verify-email__button" class="ms-btn ms-btn-outline-primary">{{mod_trust_email}}</a>
+						{% endif %}
+						</td>
+					</tr>
+					<tr id="verify-sms" class="ms-modal__table-trust-fluid">
+						<td>SMS:</td>
+						<td>{{ peer_info.phone }}</td>
+						<td>
+						{% if peer_info.confirm_sms == 1 %}
+							<span class="ms-tag ms-tag-success">{{mod_trust_confirmed}}</span>
+						{% else %}
+							<a id="verify-sms__button" class="ms-btn ms-btn-outline-primary">{{mod_trust_sms}}</a>
+						{% endif %}
+						</td>
+					</tr>
+					<tr class="ms-modal__table-trust-fluid">
+						<td>{{mod_trust_phone_call}}:
+						</td>
+						<td>{{ peer_info.phone }}</td>
+						<td>
+						{% if peer_info.confirm_phone == 1 %}
+							<span class="ms-tag ms-tag-success">{{mod_trust_confirmed}}</span>
+						{% else %}
+							<a id="verify-call__button" class="ms-btn ms-btn-outline-primary">{{mod_trust_call}}</a>
+						{% endif %}
+						</td>
+					</tr>
+					<tr id="verify-mail1" class="ms-modal__table-trust-fluid">
+						<td>About:</td>
+						<td></td>
+						<td>
+						{% if peer_info.confirm_mail == 1 %}
+							<span class="ms-tag ms-tag-success">{{mod_trust_confirmed}}</span>
+						{% elseif peer_info.confirm_mail == 2 %}
+							<span class="ms-tag ms-tag-success">wait</span>
+						{% else %}
+							<a id="verify-mail__button" class="ms-btn ms-btn-outline-primary">{{mod_trust_about}}</a>
+						{% endif %}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+														{# TRUST UP END #}
+														<a id="trust" class="ms-up-link" data-src="#modalTrustUp" data-fancybox>Up</a>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box ms-page-box-third">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__content ms-page-box__content-height">
+									<div class="ms-page-card">
+										<div class="ms-page-card__img" data-src="#modalServerList" data-fancybox>
+											<img src="view/image/messor/icons/icon-hash.svg" alt="">
+										</div>
+										<div class="ms-page-card__txt">
+											<ul class="ms-page-card__list">
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_server_hash}}:</span>
+													<div class="ms-page-card__list-content">
+													{# SERVER LIST #}
+													<div class="ms-modals-wrapper">
+	<div class="ms-modal" id="modalServerList">
+		<div class="ms-modal__title">
+			<span class="ms-modal__title-item">Server list</span>
+		</div>
+		<div class="ms-modal__content">
+		<div id="ajax-alert"></div>
+			<table class="ms-modal__table ms-modal__table-columned">
+				<thead>
+					<tr>
+
+						<th class="text-center" >{{server_list_country}}</th>
+						<th>{{server_list_server}}</th>
+						<th class="text-center">{{server_list_city}}</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for server in servers %}
+					<tr>
+						<td style="min-width:120px" data-td-title="Country" class="text-center ms-modal__table-columned-half">
+							{{ server[2] }}
+						</td>
+						<td data-td-title="Server">
+							<a class="Server" href="{{ server[0] }}" class="ms-link-light">{{ server[3] }}</a>
+						</td>
+						<td data-td-title="City" class="text-center ms-modal__table-columned-half">{{ server[1] }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			<div class="ms-modal__controls">
+				<button data-fancybox-close class="ms-btn ms-btn-primary">{{btn_close}}</button>
+			</div>
+			<br>
+			
+		</div>
+	</div>
+</div>
+
+													{# SERVER LIST #}
+														<a data-src="#modalServerList" data-fancybox>{{ servers_hash }}</a>
+														<button class="ms-tooltip ms-tooltip-interactive" data-tippy-content="{{ servers_hash }}"></button>
+													</div>
+												</li>
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_server_servers}}:</span>
+													<div class="ms-page-card__list-content">{{ servers|length }}</div>
+												</li>
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_server_last_sync}}:</span>
+													<div class="ms-page-card__list-content">{{ last_sync }}</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box ms-page-box-third">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__content ms-page-box__content-height">
+									<div class="ms-page-card">
+										<div class="ms-page-card__img" data-src="#modalDatabase" data-fancybox>
+											<img src="view/image/messor/icons/icon-server.svg" alt="">
+										</div>
+										<div class="ms-page-card__txt">
+											<ul class="ms-page-card__list">
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_database_version}}:</span>
+													<div class="ms-page-card__list-content">
+													{# DATABASE #}
+													<div class="ms-modals-wrapper">
+	<div class="ms-modal" id="modalDatabase">
+		<div class="ms-modal__title">
+
+			<span class="ms-modal__title-item">Database</span>
+		</div>
+		<div class="ms-modal__content">
+			<table class="ms-modal__table">
+				<tbody>
+					<tr>
+						<td>Version</td>
+						<td>{{ version_bd[0] ~ "_" ~ version_bd[1]}}</td>
+					</tr>
+					<tr>
+						<td>UA rules (Attack)</td>
+						<td class="ms-modal__table-border-less">
+							<input type="text" class="ms-form-control" value={{ rules.rules.useragent.attack }} disabled="disabled">
+						</td>
+					</tr>
+					<tr>
+						<td>UA rules (Search engines)</td>
+						<td class="ms-modal__table-border-less">
+							<textarea class="ms-form-control resizable-textarea" disabled="disabled">{{ rules.rules.useragent.search_engines }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>UA rules (Tools)
+						</td>
+						<td class="ms-modal__table-border-less">
+							<textarea class="ms-form-control resizable-textarea" disabled="disabled">{{ rules.rules.useragent.tools }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>UA rules (All Bots)
+						</td>
+						<td class="ms-modal__table-border-less">
+							<textarea class="ms-form-control resizable-textarea" disabled="disabled">{{ rules.rules.useragent.bots }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>Path rules</td>
+						<td class="ms-modal__table-border-less">
+							<textarea class="ms-form-control resizable-textarea" disabled="disabled">{% for path in rules.rules.path %}{{ path }}{% endfor %}
+							</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>Request rules
+						</td>
+						<td class="ms-modal__table-border-less">
+							<textarea class="ms-form-control resizable-textarea" disabled="disabled">{{ rules.rules.request[0] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>IP list:
+						</td>
+						<td class="ms-modal__table-border-less">
+							<input type="text" class="ms-form-control" value={{ path.iplist }} disabled="disabled">
+						</td>
+					</tr>
+					<tr>
+						<td>IP:
+						</td>
+						<td>{{ database_ip|length }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="ms-modal__controls">
+				<a class="sync ms-btn-icon ms-btn-icon-lg ms-btn-icon-reload">
+					<svg>
+						<use xlink:href="#icon-reload"></use>
+					</svg>
+				</a>
+				<button data-fancybox-close class="ms-btn ms-btn-primary">{{btn_close}}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+													{# DATABASE END #}
+														<a data-src="#modalDatabase" data-fancybox>{{ version_bd.hash }}</a>
+														<button class="ms-tooltip ms-tooltip-interactive" data-tippy-content="{{ version_bd.hash }}"></button>
+													</div>
+												</li>
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">IP:</span>
+													<div class="ms-page-card__list-content">{{ database_ip|length }}</div>
+												</li>
+												<li class="ms-page-card__list-item">
+													<span class="ms-page-card__list-title">{{block_database_update}}:</span>
+													<div class="ms-page-card__list-content">{{ version_bd.version }}</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ms-page-col">
+						<form id="ajax_save_settings" method="post" enctype="multipart/form-data">
+							<div class="ms-page-box ms-page-box--transparent-settings">
+								<div class="ms-page-box__item">
+									<div class="ms-page-box__title">
+										<span class="ms-page-box__title-icon">
+											<img src="view/image/messor/icons/icon-settings.svg" alt="">
+										</span>
+										<span class="ms-page-box__title-txt ms-page-box__title-txt-md">{{ block_main_setting }}</span>
+									</div>
+									{# LOCK SETTING #}
+						<div class="ms-modals-wrapper">
+	<div class="ms-modal" id="modalLockSettings">
+		<div class="ms-modal__title">
+			<span class="ms-modal__title-item">{{ block_lock_setting }}</span>
+		</div>
+		<div class="ms-modal__content">
+			<table class="ms-modal__table">
+				<tbody>
+					<tr>
+						<td>
+							<label class="ms-checkbox ms-checkbox-rounded">
+								{% if settings['lock'] == 'error' %}
+									<input type="radio" id="error" name="lock" value="error" checked>
+								{% else %}
+									<input type="radio" id="error" name="lock" value="error">
+								{% endif %}
+								<span class="ms-checkbox__icon"></span>
+								<span class="ms-checkbox__txt">{{ block_lock_setting_error_code }}:</span>
+							</label>
+						</td>
+						<td>{{ block_lock_setting_error_code_text }}</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="ms-checkbox ms-checkbox-rounded">
+								{% if settings['lock'] == 'redirect' %}
+									<input type="radio" id="redirect" name="lock" value='redirect' checked>
+								{% else %}
+									<input type="radio" id="redirect" name="lock" value='redirect'>
+								{% endif %}
+								<span class="ms-checkbox__icon"></span>
+								<span class="ms-checkbox__txt">{{ block_lock_setting_redirect }}:</span>
+							</label>
+						</td>
+						<td class="ms-modal__table-border-less">
+							<input type="text" class="ms-form-control" name='redirect_url' value={{ settings['redirect_url'] }}>
+						</td>
+					</tr>
+					<tr class="ms-modal__table-border-bottom-less">
+						<td colspan="2">
+							<label class="ms-checkbox ms-checkbox-rounded">
+								{% if settings['lock'] == 'block_page' %}
+									<input type="radio" id="block_page" name="lock" value='block_page' checked>
+								{% else %}
+									<input type="radio" id="block_page" name="lock" value='block_page'>
+								{% endif %}
+								<span class="ms-checkbox__icon"></span>
+								<span class="ms-checkbox__txt">{{ block_lock_setting_block_page }}:</span>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="ms-form">
+								<div class="ms-form__col ms-form__col-fluid">
+									{% if settings['message'] %}
+										<textarea name="message" class="ms-form-control resizable-textarea">{{ settings['message'] }}</textarea>
+									{% else %}
+										<textarea name="message" class="ms-form-control resizable-textarea"></textarea>
+									{% endif %}
+								</div>
+								<div class="ms-form__col">
+									<span class="ms-form-control__label">Email</span>
+									{% if settings['block_page_email']  %}
+										<input type="email" class="ms-form-control" name='block_page_email' value="{{ settings['block_page_email'] }}">
+									{% else %}
+										<input type="email" class="ms-form-control" name='block_page_email' value="">
+									{% endif %}
+								</div>
+								<div class="ms-form__col">
+									<span class="ms-form-control__label">Phone</span>
+									{% if settings['block_page_phone']  %}
+										<input type="tel" class="ms-form-control" name='block_page_phone' value={{ settings['block_page_phone'] }}>
+									{% else %}
+										<input type="tel" class="ms-form-control" name='block_page_phone' value="">
+									{% endif %}
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr class="ms-modal__table-border-bottom-less">
+						<td colspan="2">
+							<label class="ms-checkbox ms-checkbox-rounded">
+								{% if settings['lock'] == 'js_unlock' %}
+									<input type="radio" id="js_unlock" name="lock" value='js_unlock' checked>
+								{% else %}
+									<input type="radio" id="js_unlock" name="lock" value='js_unlock'>
+								{% endif %}
+								<span class="ms-checkbox__icon"></span>
+								<span class="ms-checkbox__txt">{{ block_lock_setting_js_unlock }}</span>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">{{ block_lock_setting_js_unlock_text }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="ms-modal__controls">
+				<a class="ms-btn ms-btn-primary saveLockSetting" data-fancybox-close="">{{btn_save}}</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+									{# LOCK SETTING END #}
+									<div class="ms-page-box__content">
+										<div class="ms-settings-switcher">
+											<div class="ms-settings-switcher__item">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" checked name="block_ip">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_ip'] %}
+															<input type="checkbox" value="1" class="default_setting" checked name="block_ip" id="ip_firewall">
+														{% else %}
+															<input type="checkbox" value="1" class="default_setting" name="block_ip" id="ip_firewall">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_ip_firewall }}</span>
+													<a  class="ms-tooltip ms-tooltip-question" data-tippy-content="{{i_button_ip_firewall}}"></a>
+												</div>
+												<span class="ms-settings-switcher__subtitle">{{ block_main_setting_ip_firewal_text }}
+													<a data-src="#modalLockSettings" data-fancybox>{{block_main_setting_lock_settings}}</a>
+												</span>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" checked name="block_detect_list">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_detect_list'] %}
+															<input type="checkbox" value="1" checked class="default_setting block_ip-js" name="block_detect_list">
+														{% else %}
+															<input type="checkbox" value="1" class="default_setting block_ip-js" name="block_detect_list">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt ms-settings-switcher__title-txt-has-input">{{block_main_setting_ip_firewall_add_ip}}<input type="text" class="ms-settings-switcher__title-input detect_count" name="block_detect_count" value="{{ settings['block_detect_count'] }}">{{ block_main_setting_ip_firewall_add_ip_attemps }}</span>
+												</div>
+											</div>
+										</div>
+										<div class="ms-settings-switcher">
+											<div class="ms-settings-switcher__item">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_agent">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_agent'] %}
+															<input type="checkbox" value="1" checked class="default_setting" name="block_agent" id="ua_firewall">
+														{% else %}
+															<input type="checkbox" value="1" class="default_setting" name="block_agent" id="ua_firewall">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_useragent_firewall }}</span>
+													<a class="ms-tooltip ms-tooltip-question" data-tippy-content="{{ i_button_user_agent_firewall }}"></a>
+												</div>
+												<span class="ms-settings-switcher__subtitle">{{ block_main_setting_useragent_firewall_text }}</span>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_agent_attack">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_agent_attack'] %}
+															<input type="checkbox" value="1" checked class=" default_setting block_agent" name="block_agent_attack">
+														{% else %}
+															<input type="checkbox" value="1" class=" default_setting block_agent" name="block_agent_attack">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_useragent_firewall_block_attacks }}</span>
+												</div>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_agent_search_engines">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_agent_search_engines'] %}
+															<input type="checkbox" value="1" checked class="no_default_setting block_agent" name="block_agent_search_engines">
+														{% else %}
+															<input type="checkbox" value="1" class="no_default_setting block_agent" name="block_agent_search_engines">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{block_main_setting_useragent_firewall_block_engines}}
+														<span class="ms-settings-switcher__title-light">(google/msn/yandex/...)</span>
+													</span>
+												</div>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_agent_tools">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_agent_tools'] %}
+															<input type="checkbox" value="1" checked class="default_setting block_agent" name="block_agent_tools">
+														{% else %}
+															<input type="checkbox" value="1" class="default_setting block_agent" name="block_agent_tools">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_useragent_firewall_block_tools }}
+														<span class="ms-settings-switcher__title-light">(wget/curl/pyton/...)</span>
+													</span>
+												</div>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_agent_bots">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_agent_bots'] %}
+															<input type="checkbox" value="1" checked class="no_default_setting block_agent" name="block_agent_bots">
+														{% else %}
+															<input type="checkbox" value="1" class="no_default_setting block_agent" name="block_agent_bots">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_useragent_firewall_block_all }}</span>
+												</div>
+											</div>
+										</div>
+										<div class="ms-settings-switcher">
+											<div class="ms-settings-switcher__item">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_request">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_request'] %}
+															<input type="checkbox" value="1" checked id="getpost_firewall" class="default_setting" name="block_request">
+														{% else %}
+															<input type="checkbox" value="1" id="getpost_firewall" class="default_setting" name="block_request">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_traff_analyzer }}</span>
+													<a class="ms-tooltip ms-tooltip-question" data-tippy-content="{{i_button_traffic_analyzer}}"></a>
+												</div>
+												<span class="ms-settings-switcher__subtitle">{{ block_main_setting_traff_analyzer_text }}</span>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_request_get">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_request_get'] %}
+															<input type="checkbox" value="1" class="block_request default_setting" checked name="block_request_get">
+														{% else %}
+															<input type="checkbox" value="1" class="block_request default_setting" name="block_request_get">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_traff_analyzer_get }}</span>
+												</div>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_request_post">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_request_post'] %}
+															<input type="checkbox" value="1" class="block_request default_setting" checked name="block_request_post">
+														{% else %}
+															<input type="checkbox" value="1" class="block_request default_setting" name="block_request_post">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_traff_analyzer_post }}</span>
+												</div>
+											</div>
+											<div class="ms-settings-switcher__item ms-settings-switcher__item-lvl-2">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_request_cookie">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_request_cookie'] %}
+															<input type="checkbox" value="1" class="block_request default_setting" checked name="block_request_cookie">
+														{% else %}
+															<input type="checkbox" value="1" class="block_request default_setting" name="block_request_cookie">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_traff_analyzer_cookie }}</span>
+												</div>
+											</div>
+										</div>
+										<div class="ms-settings-switcher">
+											<div class="ms-settings-switcher__item">
+												<div class="ms-settings-switcher__title">
+													<input type="hidden" value="0" name="block_ddos">
+													<label class="ms-settings-switcher__checkbox">
+														{% if settings['block_ddos'] %}
+															<input type="checkbox" value="1"  class="no_default_setting block_ddos" checked name="block_ddos">
+														{% else %}
+															<input type="checkbox" value="1"  class="no_default_setting block_ddos" name="block_ddos">
+														{% endif %}
+														<span class="ms-settings-switcher__checkbox-btn"></span>
+													</label>
+													<span class="ms-settings-switcher__title-txt">{{ block_main_setting_ddos }}</span>
+													<a class="ms-tooltip ms-tooltip-question" data-tippy-content="{{ i_button_ddos }}"></a>
+												</div>
+												<span class="ms-settings-switcher__subtitle">{{ block_main_setting_ddos_text }}</span>
+											</div>
+										</div>
+									</div>
+									<div class="ms-page-box__controls ms-page-box__controls-between">
+										<a id="reset" class="ms-btn ms-btn-outline-primary">{{ button_reset_all_settings }}</a>
+										<a class="saveLockSetting ms-btn ms-btn-primary">{{ button_save }}</a>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="ms-page-col">
+						<div class="ms-page-box ms-page-box--transparent">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-stats.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt ms-page-box__title-txt-md">{{ block_statistic }}</span>
+								</div>
+								<div class="ms-page-box__content">
+									<div class="swiper-container ms-page-cards-slider">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide">
+												<div class="ms-page-cards-slider__item">
+													<span class="ms-page-cards-slider__number">{{ list_archive|length + list_sync|length }}</span>
+													<span class="ms-page-cards-slider__title">{{ block_statistic_attack_blocked }}</span>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="ms-page-cards-slider__item">
+													<span class="ms-page-cards-slider__number">{{ list_sync|length }}</span>
+													<span class="ms-page-cards-slider__title">{{ block_statistic_sync_list }}</span>
+												</div>
+											</div>
+											<div class="swiper-slide">
+												<div class="ms-page-cards-slider__item">
+													<span class="ms-page-cards-slider__number">{{ last_sync }}</span>
+													<span class="ms-page-cards-slider__title">{{ block_statistic_last_update }}</span>
+												</div>
+											</div>
+										</div>
+										<div class="swiper-pagination ms-page-cards-slider__pag"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-settings-wheel.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt ms-page-box__title-txt-md">{{ block_settings }}</span>
+								</div>
+								<div class="ms-page-box__content">
+								{# SYNC LOG #}
+								<div class="ms-modals-wrapper">
+	<div class="ms-modal" id="modalSyncLogs">
+		<div class="ms-modal__title">
+			<ul class="ms-modal__tabs">
+				<li class="ms-modal__title-item active">Logs</li>
+			</ul>
+		</div>
+		<div class="ms-modal__content">
+			<div class="ms-modal__content-box">
+				<div class="ms-modal__controls">
+					<a  class="ms-btn-icon ms-btn-icon-lg ms-btn-icon-reload">
+						<svg>
+							<use xlink:href="#icon-reload"></use>
+						</svg>
+					</a>
+					<button data-fancybox-close class="ms-btn ms-btn-primary">{{btn_close}}</button>
+				</div>
+			</div>
+			<div class="ms-modal__content-box active">
+				<div class="ms-modal__txt">
+					<div class="ms-modal__txt-content" id="ajax-text-view">
+					</div>
+				</div>
+				<div class="ms-modal__controls">
+					<button data-fancybox-close class="ms-btn ms-btn-primary">{{btn_close}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+								{# SYNC LOG  END#}
+									<table class="ms-table-single-border ms-table-md ms-table-responsive">
+										<tbody>
+											<tr>
+												<td>
+													<span class="ms-table__title">{{ block_settings_detect_list }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_detect_list_text }}.</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs">{{ ip_detect_list|length }}</td>
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/detect_list.txt " download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a href="{{ ip_black }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit">
+														<svg>
+															<use xlink:href="#icon-edit"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.DETECT_LIST }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<span class="ms-table__title">{{ block_settings_allow_list }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_allow_list_text }}</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs">{{ ip_white_list|length }}</td>
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/white.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a href="{{ ip_white }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit">
+														<svg>
+															<use xlink:href="#icon-edit"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.WHITE_LIST }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<span class="ms-table__title">{{ block_settings_sync_list }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_sync_list_text }}</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs">{{ list_sync|length }}</td>
+												<td class="text-right">
+
+													<a href="{{ download_file }}&file=/data/sync.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a href="{{ sync_table }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit ajax-see">
+														<svg>
+															<use xlink:href="#icon-view"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.SYNC_LIST }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<span class="ms-table__title">{{ block_settings_sync_archive }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_sync_archive_text }}</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs">{{ list_archive|length -1}}</td>
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/archive.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a href="{{ archive_table }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit ajax-see">
+														<svg>
+															<use xlink:href="#icon-view"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.ARCHIVE }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<span class="ms-table__title">{{ block_settings_server_list }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_server_list_text }}</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs">{{ servers|length }}</td>
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/servers.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a  data-src="#modalServerList" data-fancybox="" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit ajax-see">
+														<svg>
+															<use xlink:href="#icon-view"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr class="ms-table-tr-hidden">
+												<td>
+													<span class="ms-table__title">{{ block_settings_peer_list }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_peer_list_text }}</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs">{{ peer_list|length }}</td>
+											</tr>
+											<tr class="ms-table-tr-hidden">
+												<td>
+													<span class="ms-table__title">{{ block_settings_connection_log }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_connection_log_text }}</span>
+												</td>
+												{% if peer_log[0] == "" %}
+													<td class="text-center ms-table-responsive-abs">0</td>
+												{% else %}
+													<td class="text-center ms-table-responsive-abs">{{ peer_log|length }}</td>
+												{% endif %}
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/log/peer.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a data-src="#modalSyncLogs" data-fancybox data-value="{{ path_list.PEER_LOG }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit ajax-see">
+														<svg>
+															<use xlink:href="#icon-view"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.PEER_LOG }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr class="ms-table-tr-hidden">
+												<td>
+													<span class="ms-table__title">{{ block_settings_error_log }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_error_log_text }}</span>
+												</td>
+												{% if error_log[0] == "" %}
+													<td class="text-center ms-table-responsive-abs">0</td>
+												{% else %}
+													<td class="text-center ms-table-responsive-abs">{{ error_log|length }}</td>
+												{% endif %}
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/log/error.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a data-src="#modalSyncLogs" data-fancybox data-value="{{ path_list.ERROR }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit ajax-see">
+														<svg>
+															<use xlink:href="#icon-view"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.ERROR }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+											<tr class="ms-table-tr-hidden">
+												<td>
+													<span class="ms-table__title">{{ block_settings_sync_log }}</span>
+													<span class="ms-table__subtitle">{{ block_settings_sync_log_text }}</span>
+												</td>
+												<td class="text-center ms-table-responsive-abs"></td>
+												<td class="text-right">
+													<a href="{{ download_file }}&file=/data/log/sync.txt" download class="ms-btn-icon ms-btn-icon-md ms-btn-icon-download">
+														<svg>
+															<use xlink:href="#icon-download"></use>
+														</svg>
+													</a>
+													<a data-src="#modalSyncLogs" data-fancybox data-value="{{ path_list.SYNC_LOG }}" class="ms-btn-icon ms-btn-icon-md ms-btn-icon-edit ajax-see">
+														<svg>
+															<use xlink:href="#icon-view"></use>
+														</svg>
+													</a>
+													<a class="ms-btn-icon ajax-clean-file ms-btn-icon-md ms-btn-icon-remove" data-value="{{ path_list.SYNC_LOG }}">
+														<svg>
+															<use xlink:href="#icon-remove"></use>
+														</svg>
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="ms-page-box__controls ms-page-box__controls-centered">
+									<a class="ms-btn ms-btn-primary ms-btn-down ms-btn-show-tr">{{ button_additional_settings }}</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% if list_sync|length %}
+					<div class="ms-page-col ms-page-col-fluid">
+						<div class="ms-page-box">
+							<div class="ms-page-box__item">
+								<div class="ms-page-box__title">
+									<span class="ms-page-box__title-icon">
+										<img src="view/image/messor/icons/icon-files.svg" alt="">
+									</span>
+									<span class="ms-page-box__title-txt ms-page-box__title-txt-md">{{ block_last_detect }}
+										<span class="ms-page-box__title-txt-responsive">{{ block_last_detect_sync_list }} ({{ list_sync|length }})</span>
+									</span>
+								</div>
+								<div class="ms-page-box__content">
+									<table>
+										<thead>
+											<tr>
+												<th class="text-center">{{ block_last_detect_type }}</th>
+												<th class="text-center">IP</th>
+												<th class="text-center">{{block_last_detect_time }}</th>
+												<th>{{ block_last_detect_path }} Useragent</th>
+												<th class="text-center">{{ block_last_detect_remove }}</th>
+												<th class="text-center">{{block_last_detect_more}}</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in list_sync|slice(0,5) %}
+												<tr>
+													<td class="text-center">
+														<span class="ms-tag ms-tag-danger">{{ item[0][4] }}</span>
+													</td>
+													<td class="text-center">
+														<a class="ms-link-light">{{ item[0][0]|escape }}</a>
+													</td>
+													<td class="text-center">{{ item[0][1]|date("m.d.y H:i") }}</td>
+													<td>
+														<small class="ms-m-0">{{ item[0][2]|escape }}</small>
+														{{ item[0][3]|escape }}</td>
+													<td class="text-center">
+														<a class="ms-btn-icon ajax-remove-sync ms-btn-icon-remove" data-value="{{ item['id'] }}">
+															<svg>
+																<use xlink:href="#icon-remove"></use>
+															</svg>
+														</a>
+													</td>
+													<td class="text-center">
+														<a class="ms-btn-icon ms-btn-icon-delete"></a>
+													</td>
+												</tr>
+												<tr class="ms-hidden">
+													<td colspan="6">
+														<ul>
+															<li>
+																<b>{{block_last_detect_type}}:</b>
+																{{ item[0][4] }}</li>
+															<li>
+																<b>IP:</b>
+																{{ item[0][0]|escape }}</li>
+															<li>
+																<b>{{block_last_detect_time}}:</b>
+																{{ item[0][1]|date("m.d.y H:i") }}</li>
+															<li>
+																<b>{{ block_last_detect_path }}</b>
+																{{ item[0][2]|escape }}</li>
+															<li>
+																<b>Useragent:</b>
+																{{ item[0][3]|escape }}</li>
+															{% if item[0][6] is defined %}
+                                {% if item[0][4] == "get" or  item[0][4] == "post" or item[0][4] == "cookie"%}
+																  <li>
+																	  <b>{{item[0][4]|escape}}</b>
+																	  {{ item[0][5]|escape }}</li>
+                                {% endif %}
+															{% endif %}
+														</ul>
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% for script in scripts %}
+	<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+	</div>
+<!--svg sprite-->
+<svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<symbol id="icon-remove" viewbox="0 0 10 15">
+			<path d="M9.9827 3.96387L9.65891 2.98242C9.59531 2.78613 9.41028 2.65137 9.20502 2.65137H0.792182C0.58692 2.65137 0.404787 2.7832 0.338294 2.98242L0.0173915 3.96387C-0.0548838 4.18652 0.107013 4.41504 0.338294 4.41504H9.6618C9.89308 4.41504 10.055 4.18652 9.9827 3.96387Z"/>
+			<path d="M1.5208 14.4082C1.55838 14.7451 1.83881 15 2.17417 15H7.77405C8.10941 15 8.38984 14.7451 8.42742 14.4082L9.42771 5.29395H0.520508L1.5208 14.4082Z"/>
+			<path d="M4.12804 1.25977C4.12804 1.04883 4.29572 0.878906 4.50388 0.878906H5.7817C5.98985 0.878906 6.15753 1.04883 6.15753 1.25977V1.77246H7.02484V1.25977C7.02484 0.56543 6.46687 0 5.7817 0H4.50388C3.81871 0 3.26074 0.56543 3.26074 1.25977V1.77246H4.12804V1.25977Z"/>
+		</symbol>
+		<symbol id="icon-support" viewbox="0 0 14 16">
+			<path d="M3.2667 6.5625C2.49514 6.5625 1.8667 7.19375 1.8667 7.96875V11.7812C1.8667 12.5563 2.49514 13.1875 3.2667 13.1875C4.03826 13.1875 4.6667 12.5563 4.6667 11.7812V7.96875C4.6667 7.19375 4.03826 6.5625 3.2667 6.5625Z"/>
+			<path d="M0.933334 7.96875C0.933334 7.83437 0.952001 7.70312 0.973778 7.575C0.410667 7.75625 0 8.28125 0 8.90625V10.8437C0 11.4687 0.410667 11.9937 0.973778 12.175C0.952001 12.0469 0.933334 11.9156 0.933334 11.7812V7.96875Z"/>
+			<path d="M10.7334 6.5625C9.96188 6.5625 9.33343 7.19375 9.33343 7.96875V11.7812C9.33343 12.5563 9.96188 13.1875 10.7334 13.1875C10.8734 13.1875 11.0072 13.1594 11.1348 13.1219C10.9605 13.7 10.4317 14.125 9.8001 14.125H8.31299C8.1201 13.5813 7.60676 13.1875 7.0001 13.1875C6.22854 13.1875 5.6001 13.8187 5.6001 14.5938C5.6001 15.3687 6.22854 16 7.0001 16C7.60676 16 8.1201 15.6062 8.31299 15.0625H9.8001C11.0881 15.0625 12.1334 14.0125 12.1334 12.7188V11.7812V7.96875C12.1334 7.19375 11.505 6.5625 10.7334 6.5625Z"/>
+			<path d="M13.0259 7.575C13.0477 7.70312 13.0663 7.83437 13.0663 7.96875V11.7812C13.0663 11.9156 13.0477 12.0469 13.0259 12.175C13.589 11.9937 13.9997 11.4687 13.9997 10.8437V8.90625C13.9997 8.28125 13.589 7.75625 13.0259 7.575Z"/>
+			<path d="M7 0C3.13911 0 0 3.15313 0 7.03125V7.04375C0.276889 6.83125 0.600444 6.67812 0.955111 6.60938C1.17289 3.44688 3.79867 0.9375 7 0.9375C10.2013 0.9375 12.8271 3.44687 13.0449 6.60625C13.3996 6.675 13.72 6.83125 14 7.04063V7.03125C14 3.15313 10.8609 0 7 0Z"/>
+		</symbol>
+		<symbol id="icon-download" viewbox="0 0 19 18">
+			<path d="M18.5818 12.3311C18.3709 12.1136 18.1123 12.0027 17.81 12.0027H12.539L10.9955 13.5954C10.5579 14.0347 10.0407 14.2522 9.45199 14.2522C8.86323 14.2522 8.34607 14.0347 7.90848 13.5954L6.37691 12.0027H1.09C0.787666 12.0027 0.529089 12.1136 0.318249 12.3311C0.107409 12.5487 0 12.8155 0 13.1275V16.8794C0 17.1913 0.107409 17.4582 0.318249 17.6757C0.529089 17.8933 0.787666 18.0041 1.09 18.0041H17.81C18.1123 18.0041 18.3709 17.8933 18.5818 17.6757C18.7926 17.4582 18.9 17.1913 18.9 16.8794V13.1275C18.9 12.8155 18.7926 12.5487 18.5818 12.3311ZM14.3212 16.2801C14.178 16.4278 14.0069 16.5017 13.808 16.5017C13.6091 16.5017 13.442 16.4278 13.2988 16.2801C13.1556 16.1323 13.084 15.9558 13.084 15.7546C13.084 15.5535 13.1556 15.377 13.2988 15.2292C13.442 15.0814 13.6131 15.0075 13.808 15.0075C14.0029 15.0075 14.174 15.0814 14.3212 15.2292C14.4644 15.377 14.536 15.5535 14.536 15.7546C14.536 15.9558 14.4644 16.1323 14.3212 16.2801ZM17.2292 16.2801C17.086 16.4278 16.9149 16.5017 16.72 16.5017C16.5251 16.5017 16.354 16.4278 16.2108 16.2801C16.0676 16.1323 15.996 15.9558 15.996 15.7546C15.996 15.5535 16.0676 15.377 16.2108 15.2292C16.354 15.0814 16.5251 15.0075 16.72 15.0075C16.9149 15.0075 17.086 15.0814 17.2292 15.2292C17.3724 15.377 17.444 15.5535 17.444 15.7546C17.444 15.9558 17.3724 16.1323 17.2292 16.2801Z"/>
+			<path d="M8.93879 12.5282C9.07405 12.6759 9.24511 12.7498 9.44799 12.7498C9.65088 12.7498 9.82193 12.6759 9.95719 12.5282L15.0452 7.27799C15.2799 7.05222 15.3316 6.77719 15.2043 6.45701C15.077 6.15325 14.8542 6.00137 14.536 6.00137H11.628V0.751197C11.628 0.550057 11.5564 0.373546 11.4132 0.22577C11.27 0.0738882 11.0989 0 10.904 0H7.99598C7.80105 0 7.63 0.0738883 7.48678 0.221665C7.34357 0.369441 7.27197 0.545952 7.27197 0.747092V5.99726H4.36397C4.04572 5.99726 3.82294 6.14914 3.69565 6.45291C3.56835 6.77309 3.62006 7.04812 3.85477 7.27389L8.93879 12.5282Z"/>
+		</symbol>
+		<symbol id="icon-edit" viewbox="0 0 18 18">
+			<path d="M17.485 10.9425C17.2252 10.9425 17.0126 11.1562 17.0126 11.4174V15.6253C17.0126 16.409 16.3795 17.0454 15.5953 17.0501H2.35748C1.57795 17.0501 0.944882 16.4137 0.940157 15.6253V3.26755C0.940157 2.48391 1.57323 1.8475 2.35748 1.84275H6.54803C6.80787 1.84275 7.02047 1.62903 7.02047 1.36782C7.02047 1.1066 6.80787 0.892883 6.54803 0.892883H2.35748C1.05827 0.897633 0 1.95674 0 3.26755V15.6253C0 16.9362 1.05827 17.9953 2.35748 17.9953H15.5953C16.8992 17.9953 17.9528 16.9314 17.9528 15.6253V11.4127C17.9575 11.1515 17.7449 10.9425 17.485 10.9425Z"/>
+			<path d="M7.37482 8.44432L14.2677 1.51978L16.4882 3.75197L9.60001 10.6765L7.37482 8.44432Z"/>
+			<path d="M6.25513 11.8069L8.71182 11.123L6.93544 9.33722L6.25513 11.8069Z"/>
+			<path d="M17.1024 0.346735C16.6394 -0.113951 15.893 -0.113951 15.4347 0.346735L14.9339 0.850165L17.1544 3.08236L17.6552 2.57892C18.1134 2.11349 18.1134 1.36309 17.6552 0.902408L17.1024 0.346735Z"/>
+		</symbol>
+		<symbol id="icon-view" viewbox="0 0 15 9">
+			<path d="M7.25069 9C4.48005 9 1.96748 7.4929 0.113466 5.04498C-0.0378219 4.84442 -0.0378219 4.56424 0.113466 4.36369C1.96748 1.91281 4.48005 0.405712 7.25069 0.405712C10.0213 0.405712 12.5339 1.91281 14.3879 4.36074C14.5392 4.56129 14.5392 4.84147 14.3879 5.04203C12.5339 7.4929 10.0213 9 7.25069 9ZM7.44944 1.67686C5.61026 1.56184 4.09144 3.06894 4.20714 4.90046C4.30206 6.41051 5.53313 7.63447 7.05194 7.72885C8.89112 7.84387 10.4099 6.33677 10.2942 4.50525C10.1964 2.99816 8.96528 1.77419 7.44944 1.67686ZM7.35748 3.07484C6.36669 3.0129 5.54796 3.82396 5.61322 4.80903C5.66365 5.62304 6.32813 6.28074 7.14686 6.33382C8.13765 6.39576 8.95638 5.5847 8.89112 4.59963C8.83773 3.78267 8.17325 3.12498 7.35748 3.07484Z"/>
+		</symbol>
+		<symbol id="icon-reload" viewbox="0 0 21 22">
+			<path d="M18.0713 0C17.6385 0 17.284 0.349864 17.284 0.787194V3.65516C13.2415 -0.262398 6.78652 -0.156518 2.86839 3.88994C1.02674 5.79577 -0.00458879 8.3461 1.53496e-05 10.9977C1.53496e-05 11.4304 0.34993 11.7849 0.787323 11.7849C1.22472 11.7849 1.57463 11.435 1.57463 10.9977C1.57463 6.2239 5.44671 2.35698 10.2212 2.35698C12.6476 2.35698 14.9589 3.37435 16.5933 5.1651L13.1126 6.32517C12.6982 6.46328 12.4772 6.90981 12.6154 7.31952C12.7535 7.72923 13.2001 7.9548 13.6099 7.8167L18.3245 6.24691C18.6468 6.14103 18.8632 5.8372 18.8632 5.50115V0.787194C18.8586 0.349864 18.5087 0 18.0713 0Z"/>
+			<path d="M19.6461 10.2151C19.2134 10.2151 18.8588 10.565 18.8588 11.0023C18.8588 15.7761 14.9868 19.643 10.2123 19.643C7.78587 19.643 5.47459 18.6256 3.84012 16.8349L7.32086 15.6748C7.73523 15.5367 7.95623 15.0902 7.8181 14.6805C7.67998 14.2661 7.23338 14.0452 6.82361 14.1833L2.10897 15.7531C1.78668 15.8589 1.57028 16.1628 1.57028 16.4988V21.2128C1.57028 21.6455 1.9202 22 2.35759 22C2.79498 22 3.1449 21.6501 3.1449 21.2128V18.3448C7.19194 22.2624 13.6469 22.1565 17.5605 18.11C19.4067 16.2042 20.4381 13.6539 20.4288 10.9977C20.4288 10.565 20.0789 10.2151 19.6461 10.2151Z"/>
+		</symbol>
+		<symbol id="icon-link" viewbox="0 0 15 17">
+			<path d="M9.62319 2.97314H1.39855C0.626812 2.97314 0 3.57544 0 4.31699V15.6561C0 16.3977 0.626812 17 1.39855 17H9.62319C10.3949 17 11.0217 16.3977 11.0217 15.6561V4.31699C11.0181 3.57544 10.3913 2.97314 9.62319 2.97314ZM10.0399 15.6526C10.0399 15.8755 9.85145 16.0565 9.61957 16.0565H1.39493C1.16304 16.0565 0.974638 15.8755 0.974638 15.6526V4.31699C0.974638 4.09418 1.16304 3.91314 1.39493 3.91314H9.61957C9.85145 3.91314 10.0399 4.09418 10.0399 4.31699V15.6526Z"/>
+			<path d="M12.7682 0H4.54351C3.77177 0 3.14496 0.602294 3.14496 1.34385C3.14496 1.60496 3.36235 1.81384 3.63409 1.81384C3.90583 1.81384 4.12322 1.60496 4.12322 1.34385C4.12322 1.12103 4.31163 0.939996 4.54351 0.939996H12.7682C13 0.939996 13.1884 1.12103 13.1884 1.34385V12.683C13.1884 12.9058 13 13.0868 12.7682 13.0868C12.4964 13.0868 12.279 13.2957 12.279 13.5568C12.279 13.8179 12.4964 14.0268 12.7682 14.0268C13.5399 14.0268 14.1667 13.4245 14.1667 12.683V1.34385C14.1667 0.602294 13.5399 0 12.7682 0Z"/>
+		</symbol>
+		<symbol id="icon-profile" viewbox="0 0 12 12">
+			<path d="M10.2422 7.75781C9.58828 7.10391 8.81016 6.62109 7.96172 6.32812C8.87109 5.70234 9.46875 4.65469 9.46875 3.46875C9.46875 1.55625 7.9125 0 6 0C4.0875 0 2.53125 1.55625 2.53125 3.46875C2.53125 4.65234 3.12891 5.70234 4.03828 6.32812C3.18984 6.62109 2.41172 7.10391 1.75781 7.75781C0.623437 8.88984 0 10.3969 0 12H0.9375C0.9375 9.20859 3.20859 6.9375 6 6.9375C8.79141 6.9375 11.0625 9.20859 11.0625 12H12C12 10.3969 11.3766 8.88984 10.2422 7.75781ZM6 6C4.60313 6 3.46875 4.86562 3.46875 3.46875C3.46875 2.07188 4.60313 0.9375 6 0.9375C7.39687 0.9375 8.53125 2.07188 8.53125 3.46875C8.53125 4.86562 7.39687 6 6 6Z"/>
+		</symbol>
+		<symbol id="icon-close" viewbox="0 0 8 8">
+			<path d="M8 1.128L6.872 0L4 2.872L1.128 0L0 1.128L2.872 4L0 6.872L1.128 8L4 5.128L6.872 8L8 6.872L5.128 4L8 1.128Z"/>
+		</symbol>
+		<symbol id="icon-arrow" viewbox="0 0 9 5">
+			<path d="M0 0.952381L4.04762 5L8.09524 0.952382L7.14286 4.90664e-07L4.04762 3.09524L0.952381 0L0 0.952381Z"/>
+		</symbol>
+	</defs>
+</svg>
+<script type="text/javascript"><!--
+
+$('#ip_firewall').on('change', function () {
+	if (!$(this).is(':checked')) {
+		$('.block_ip-js').prop('checked', false).prop('disabled', true);
+	} else {
+		$('.block_ip-js').prop('disabled', false);
+	}
+});
+
+$('#ua_firewall').on('change', function () {
+	if (!$(this).is(':checked')) {
+		$('.block_agent').prop('checked', false).prop('disabled', true);
+	} else {
+		$('.block_agent').prop('disabled', false);
+	}
+});
+
+$('#getpost_firewall').on('change', function () {
+	if (!$(this).is(':checked')) {
+		$('.block_request').prop('checked', false).prop('disabled', true);
+	} else {
+		$('.block_request').prop('disabled', false);
+	}
+});
+
+$('#reset').on('click', function () {
+	$('.no_default_setting').prop('disabled', false);
+	$('.default_setting').prop('disabled', false);
+	$('.default_setting').prop('checked', true);
+	$('.no_default_setting').prop('checked', false);
+	$('.detect_count').val(3);
+});
+
+  $("body").on('click', "#installAlert", function() {
+  $("#AlertDel").remove();
+  });
+
+  $("body").on('click', "#verify-dns-confirm__alert-close", function() {
+  $("#verify-confirm-dns__alert").remove();
+  });
+
+  $("body").on('click', "#verify-email-confirm__alert-close", function() {
+  $("#verify-confirm-email__alert").remove();
+  });
+
+  $("body").on('click', "#verify-email__alert-close", function() {
+  $("#verify-email__alert").remove();
+  });
+
+  $("body").on('click', "#verify-sms-confirm__alert-close", function() {
+  $("#verify-sms-confirm__alert").remove();
+  });
+
+  $("body").on('click', "#verify-sms__alert-close", function() {
+  $("#verify-sms__alert").remove();
+  });
+
+  $("body").on('click', "#verify-mail__alert-close", function() {
+  $("#verify-mail__alert").remove();
+  });
+	
+	$('.ajax-remove-sync').on('click', function() {
+	  const result = confirm('Delete?');
+	  if (result) {
+		  object = this;
+	    value = $(this).data('value');
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/MessorAJAX&user_token={{ user_token }} ',
+	      type: 'POST',
+	      data: '&id_sync=' + value,
+	      dataType: 'json',
+	      success: function (data) {
+	        if (data.status == "OK") {
+		        $(object).parent().parent().remove();
+	        }
+	      }
+	    });
+	  }
+	});
+	
+	$('.ajax-clean-file').on('click', function() {
+	  const result = confirm('Clean?');
+	  if (result) {
+		  object = this;
+	    value = $(this).data('value');
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/MessorAJAX&user_token={{ user_token }} ',
+	      type: 'POST',
+	      data: '&file_clean=' + value,
+	      dataType: 'json',
+	      success: function (data) {
+	        if (data.status == "OK") {
+	          $(object).parent().prev().text('0');
+	        }
+	      }
+	    });
+	  }
+	});
+	
+	$('.ajax-see').on('click', function() {
+	    value = $(this).data('value');
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/MessorAJAX&user_token={{ user_token }} ',
+	      type: 'POST',
+	      data: '&file_see=' + value,
+	      dataType: 'json',
+	      success: function (data) {
+	        $('#modalSyncLogs').find('#ajax-text-view').html(`<pre>${data.text}</pre>`);
+			$('#ajax-text-view > pre').css({"background-color": "white", "border": "none"});
+	      }
+	    });
+	});
+	
+	$('#verify-dns__button').on('click', function() {
+      var object = this;
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+	      type: 'POST',
+        data: '&type=dns',
+	      dataType: 'json',
+	      success: function (data) {
+          $(object).attr('disabled', true);
+	        $('#verify-dns').after(`
+			<tr>
+				<td id="verify-dns__alert" colspan="3">
+					<div class="ms-alert ms-alert-success">
+						<p style="white-space: normal">${data.text}</p>
+					</div>
+					<a id="verify-confirm-dns__button" class="ms-btn ms-btn-outline-primary">Check</a>
+				</td>
+			</tr>`)
+	      }
+	    });
+	})
+
+  $('body').on('click', "#verify-confirm-dns__button", function() {
+	    $.ajax({
+		url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+		type: 'POST',
+        data: '&type=dns_confirm',
+		dataType: 'json',
+		success: function (data) {
+			if(data.status == "CONFIRM") {
+				var object = $("#trust-number");
+				var oldTrust = $(object).text();
+				var newTrust = Number(oldTrust)+10;
+				$(object).removeClass("ms-tag-trust-"+oldTrust).addClass("ms-tag-trust-"+newTrust);
+				$(object).text(newTrust);
+			}
+        	switch(data.status) {
+			case 'CONFIRM':
+            case 'OK':
+              $('#verify-confirm-dns__button').before(`
+                <div id="verify-confirm-dns__alert" class="ms-alert ms-alert-success">
+                  <p>${data.text}</p>
+                  <button id="verify-dns-confirm__alert-close" class="ms-alert-close">
+                    <svg>
+                      <use xlink:href="#icon-close"></use>
+                    </svg>
+                  </button>
+                </div>
+            `)
+            break;
+            case 'ERROR':
+			$('#verify-confirm-dns__button').before(`
+			<div id="verify-confirm-dns__alert" class="ms-alert ms-alert-danger">
+				<p>${data.text}</p>
+				<button id="verify-dns-confirm__alert-close" class="ms-alert-close">
+				<svg>
+					<use xlink:href="#icon-close"></use>
+				</svg>
+				</button>
+			</div>
+            `)
+            break;
+          }
+        }
+	  });
+	})
+
+	$('#verify-email__button').on('click', function() {
+      var object = this;
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+	      type: 'POST',
+          data: '&type=email',
+	      dataType: 'json',
+	      success: function (data) {
+			  console.log(data);
+          $(object).attr('disabled', true);
+	        $('#verify-email').after(`
+			<tr>
+				<td colspan="3">
+					<div id="verify-email__alert" class="ms-alert ms-alert-success">
+						<p>${data.text}</p>
+						<button id="verify-email__alert-close" class="ms-alert-close">
+							<svg>
+								<use xlink:href="#icon-close"></use>
+							</svg>
+						</button>
+					</div>
+					<input id="verify-email__code" name="verify-email__code" type="text" class="ms-form-control" placeholder="code">
+					<a id="verify-confirm-email__button" class="ms-btn ms-btn-outline-primary">Send</a>
+				</td>
+			</tr>`)
+	      }
+	    });
+	})
+
+	$('body').on('click', "#verify-confirm-email__button", function() {
+		var code = $("input[name='verify-email__code']").val();
+	    $.ajax({
+		url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+		type: 'POST',
+        data: '&type=email_confirm&code='+code,
+		dataType: 'json',
+		success: function (data) {
+			console.log(data);
+			if(data.status == "CONFIRM") {
+				var object = $("#trust-number");
+				var oldTrust = $(object).text();
+				var newTrust = Number(oldTrust)+10;
+				$(object).removeClass("ms-tag-trust-"+oldTrust).addClass("ms-tag-trust-"+newTrust);
+				$(object).text(newTrust);
+			}
+        	switch(data.status) {
+			case 'CONFIRM':
+              $('#verify-email__code').before(`
+                <div id="verify-confirm-email__alert" class="ms-alert ms-alert-success">
+                  <p>${data.text}</p>
+                  <button id="verify-email-confirm__alert-close" class="ms-alert-close">
+                    <svg>
+                      <use xlink:href="#icon-close"></use>
+                    </svg>
+                  </button>
+                </div>
+            `)
+            break;
+            case 'ERROR':
+			$('#verify-email__code').before(`
+			<div id="verify-confirm-email__alert" class="ms-alert ms-alert-danger">
+				<p>${data.text}</p>
+				<button id="verify-email-confirm__alert-close" class="ms-alert-close">
+				<svg>
+					<use xlink:href="#icon-close"></use>
+				</svg>
+				</button>
+			</div>
+            `)
+            break;
+          }
+        }
+	  });
+	})
+
+	$('#verify-sms__button').on('click', function() {
+      var object = this;
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+	      type: 'POST',
+          data: '&type=sms',
+	      dataType: 'json',
+	      success: function (data) {
+			  console.log(data);
+          $(object).attr('disabled', true);
+	        $('#verify-sms').after(`
+			<tr>
+				<td colspan="3">
+					<div id="verify-sms__alert" class="ms-alert ms-alert-success">
+						<p>${data.text}</p>
+						<button id="verify-sms__alert-close" class="ms-alert-close">
+							<svg>
+								<use xlink:href="#icon-close"></use>
+							</svg>
+						</button>
+					</div>
+					<input id="verify-sms__code" name="verify-sms__code" type="text" class="ms-form-control" placeholder="code">
+					<a id="verify-sms-confirm__button" class="ms-btn ms-btn-outline-primary">Send</a>
+				</td>
+			</tr>`)
+	      }
+	    });
+	})
+
+	$('body').on('click', "#verify-sms-confirm__button", function() {
+		var code = $("input[name='verify-sms__code']").val();
+	    $.ajax({
+		url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+		type: 'POST',
+        data: '&type=sms_confirm&code='+code,
+		dataType: 'json',
+		success: function (data) {
+			if(data.status == "CONFIRM") {
+				var object = $("#trust-number");
+				var oldTrust = $(object).text();
+				var newTrust = Number(oldTrust)+10;
+				$(object).removeClass("ms-tag-trust-"+oldTrust).addClass("ms-tag-trust-"+newTrust);
+				$(object).text(newTrust);
+			}
+        	switch(data.status) {
+			case 'CONFIRM':
+              $('#verify-sms__code').before(`
+                <div id="verify-confirm-sms__alert" class="ms-alert ms-alert-success">
+                  <p>${data.text}</p>
+                  <button id="verify-sms-confirm__alert-close" class="ms-alert-close">
+                    <svg>
+                      <use xlink:href="#icon-close"></use>
+                    </svg>
+                  </button>
+                </div>
+            `)
+            break;
+            case 'ERROR':
+			$('#verify-sms__code').before(`
+			<div id="verify-sms-confirm__alert" class="ms-alert ms-alert-danger">
+				<p>${data.text}</p>
+				<button id="verify-sms-confirm__alert-close" class="ms-alert-close">
+				<svg>
+					<use xlink:href="#icon-close"></use>
+				</svg>
+				</button>
+			</div>
+            `)
+            break;
+          }
+        }
+	  });
+	})
+
+	$('#verify-call__button').on('click', function() {
+	    $.ajax({
+		url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+		type: 'POST',
+        data: '&type=phone',
+		dataType: 'json',
+		success: function (data) {
+			if(data.status == "CONFIRM") {
+				var object = $("#trust-number");
+				var oldTrust = $(object).text();
+				var newTrust = Number(oldTrust)+10;
+				$(object).removeClass("ms-tag-trust-"+oldTrust).addClass("ms-tag-trust-"+newTrust);
+				$(object).text(newTrust);
+			}
+        	switch(data.status) {
+			case 'CONFIRM':
+              $('#verify-call__button').after(`
+			  	<span class="ms-tag ms-tag-success">${ data.status }</span>
+            `)
+			$('#verify-call__button').remove();
+            break;
+            case 'WAIT':
+			      $('#verify-call__button').after(`
+			  	<span class="ms-tag ms-tag-success">${ data.status }</span>
+            `)
+			$('#verify-call__button').remove();
+            break;
+          }
+        }
+	  });
+	})
+
+	$('#verify-mail__button').on('click', function() {
+	    $.ajax({
+		url: 'index.php?route=extension/module/messor/verify&user_token={{ user_token }} ',
+		type: 'POST',
+        data: '&type=mail',
+		dataType: 'json',
+		success: function (data) {
+			console.log(data);
+        	switch(data.status) {
+            case 'WAIT':
+			    $('#verify-mail__button').after(`
+			  	<span class="ms-tag ms-tag-success">${ data.status }</span>
+            `)
+			$('#verify-mail').after(`
+			<tr>
+				<td colspan="3">
+					<div id="verify-mail__alert" class="ms-alert ms-alert-success">
+						<p>${data.text}</p>
+						<button id="verify-mail__alert-close" class="ms-alert-close">
+							<svg>
+								<use xlink:href="#icon-close"></use>
+							</svg>
+						</button>
+					</div>
+				</td>
+			</tr>`)			
+			$('#verify-mail__button').remove();
+			break;
+			case 'ERROR':
+			$('#verify-mail').after(`
+				<tr>
+				<td colspan="3">
+					<div id="verify-mail__alert" class="ms-alert ms-alert-danger">
+						<p>${data.text}</p>
+						<button id="verify-mail__alert-close" class="ms-alert-close">
+							<svg>
+								<use xlink:href="#icon-close"></use>
+							</svg>
+						</button>
+					</div>
+				</td>
+			</tr>`)			
+            break;
+          }
+        }
+	  });
+	})
+
+
+var trust = document.getElementById("modalTrustUp");
+const config = {
+    attributes: true,
+}; 
+	const funTrust = function(mutationsList, observer) {
+	var status = $(mutationsList[0].target).css('display');
+	if (status == 'none') {
+		$.ajax({
+			url: 'index.php?route=extension/module/messor/Messor&user_token={{ user_token }} ',
+			type: 'POST',
+			data: '&reload=peerInfo',
+			dataType: 'html',
+			success: function (data) {
+				$('#content').replaceWith(data);
+			}
+		});
+	}
+}
+const observerTrust = new MutationObserver(funTrust);
+observerTrust.observe(trust, config);
+
+
+var database = document.getElementById("modalDatabase");
+var peerInfo = document.getElementById("modalPeerInfo");
+const funDatabase = function(mutationsList, observer) {
+var status = $(mutationsList[0].target).css('display');
+	if (status == 'none') {
+		$.ajax({
+			url: 'index.php?route=extension/module/messor/Messor&user_token={{ user_token }} ',
+			type: 'POST',
+			data: '&reload=Sync',
+			dataType: 'html',
+			success: function (data) {
+				$('#content').replaceWith(data);
+			}
+		});
+	}
+}
+const observerSync = new MutationObserver(funDatabase);
+observerSync.observe(database, config);
+observerSync.observe(peerInfo, config);
+
+var old = $('input:radio[name=lock]').val();
+$('.block_ddos').on('click', function() {
+	var answer = $('.block_ddos').prop('checked');
+	if (answer == true) {
+		$('#js_unlock').prop('checked', true);
+		$('input:radio[name=lock]').prop('disabled', true);
+	} else {
+		$('#js_unlock').prop('checked', false);
+		$('#' + old).prop('checked', true);
+		$('input:radio[name=lock]').prop('disabled', false);
+	}
+	s = $('input:radio[name=lock]').val();
+	console.log(s);
+})
+	$('.saveLockSetting').on('click', function() {
+		setTimeout(function() {
+	  $.ajax({
+		url: 'index.php?route=extension/module/messor/saveSetting&user_token={{ user_token }} ',
+		type: 'POST',
+    	data: $("#ajax_save_settings").serialize(),
+		dataType: 'json',
+			success: function (data) {
+				switch(data.status) {
+					case 'OK':
+						var instance = $.fancybox.open(`<div class="ms-modal--double" id="modalSettings">
+        <div class="ms-modal ms-modal-alert">
+            <div class="ms-modal__content ms-modal__content-centered">
+            <span class="ms-modal-alert__icon">
+                <img src="view/image/messor/icons/icon-checkbox-modal.svg" alt="">
+            </span>
+                <span class="ms-modal-alert__title">${data.text}</span>
+            </div>
+        </div>
+    </div>`);
+						setTimeout(function() {
+							$.fancybox.close();
+						}, 1500);
+					break;
+					case 'ERROR':
+						var instance = $.fancybox.open(`<div class="ms-modal--double" id="modalError">
+        <div class="ms-modal ms-modal-alert">
+            <div class="ms-modal__content ms-modal__content-centered">
+            <span class="ms-modal-alert__icon text-danger"><svg class="icon"><use xlink:href="#icon-close-thin"></use></svg></span>
+                <span class="ms-modal-alert__title">${data.text}</span>
+            </div>
+        </div>
+    </div>`);
+						setTimeout(function() {
+							$.fancybox.close();
+						}, 1500);
+					break;
+			}
+		}
+	  });
+		}, 500);
+	})
+
+	$('.sync').on('click', function() {
+		$.fancybox.open(`<div class="ms-modal--double" id="modalSynchronized">
+        <div class="ms-modal ms-modal-alert">
+            <div class="ms-modal__content ms-modal__content-centered">
+            <span class="ms-modal-alert__icon">
+                <img src="view/image/messor/icons/icon-synchronize.svg" alt="">
+            </span>
+                <span class="ms-modal-alert__title">Synchronized</span>
+            </div>
+        </div>
+    </div>`);
+	  $.ajax({
+		url: 'index.php?route=extension/module/messor/Synchronization&user_token={{ user_token }} ',
+		type: 'POST',
+		dataType: 'text',
+		success: function (data) {
+				$.fancybox.close();
+    }
+	  });
+	})
+	$('.copy-link').on('click', function() {
+		var $tmp = $("<input>");
+  	$("body").append($tmp);
+  	$tmp.val($(this).parent().text().trim()).select();
+	  document.execCommand("copy");
+  	$tmp.remove(); 
+	})
+	
+
+		</script><!--<svg class="icon"><use xlink:href="#icon-footer-vk"></use></svg>-->
+	  	{{ footer }}

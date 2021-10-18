@@ -1,0 +1,3 @@
+https://nl.messor.io/messor/	NL,Amsterdam
+https://us.messor.us/messor/	US,SantaClara
+https://sg.messor.net/messor/	SG,Singapour
