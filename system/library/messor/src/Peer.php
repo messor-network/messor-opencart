@@ -256,7 +256,7 @@ class Peer
                 self::$content = array(
                     'database' => File::read(Path::PATH_DATABASE . File::read(Path::VERSION_BD)),
                 );
-                File::write(Path::PEER_LOG, Logger::addTime() ."\t". self::$header['network_id'] ."\t". 'peer_download_database' ."\t". 'Peer peer_download_database request' ."\t". self::$data ."\n");
+                File::write(Path::PEER_LOG, Logger::addTime() ."\t". self::$header['network_id'] ."\t". 'peer_download_database' ."\t". 'Peer peer_download_database request' ."\t". self::$data['database_version'] ."\n");
                 break;
                 // peer_get_server_list
             case "peer_get_server_list":

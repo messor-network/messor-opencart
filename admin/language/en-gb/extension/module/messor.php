@@ -59,9 +59,9 @@ $_['block_database_update']         = 'Update';
 
 $_['block_main_setting']                                    = 'Main settings';
 $_['block_main_setting_ip_firewall']                        = 'IP firewall';
-$_['block_main_setting_ip_firewal_text']                    = 'Block ip from messor database and block lists.';
+$_['block_main_setting_ip_firewal_text']                    = 'Block ip from messor database and black lists.';
 $_['block_main_setting_lock_settings']                      = 'Lock settings';
-$_['block_main_setting_ip_firewall_add_ip']                 = 'Add IP attackers to a temporary block list after';
+$_['block_main_setting_ip_firewall_add_ip']                 = 'Add IP attackers to a temporary blacklist after';
 $_['block_main_setting_ip_firewall_add_ip_attemps']         = 'attemps';
 $_['block_main_setting_useragent_firewall']                 = 'User Agent firewall';
 $_['block_main_setting_useragent_firewall_text']            = 'Block users by useragent from messor database.';
@@ -115,7 +115,7 @@ $_['block_statistic_last_update']          = 'Last update';
 // Settings
 
 $_['block_settings']                          = 'Settings';
-$_['block_settings_detect_list']              = 'Block list';
+$_['block_settings_detect_list']              = 'List detect';
 $_['block_settings_detect_list_text']         = 'List blocked ip or network.';
 $_['block_settings_allow_list']               = 'Allow list';
 $_['block_settings_allow_list_text']          = 'List allow ip or network.';

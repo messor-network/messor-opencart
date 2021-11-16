@@ -137,7 +137,7 @@ class toServer
             'encryption_alg' => $post['encryption_alg'],
             // 'encryption_key' => $post['encryption_key'],
             'client_version' => Path::VERSION,
-            'os'             => trim($server['SERVER_SIGNATURE']), // todo check os
+            'os'             => $server['SERVER_SIGNATURE'] ? trim($server['SERVER_SIGNATURE']) : '', // todo check os
             'web_server'     => $server['SERVER_SOFTWARE'],
             'php_version'    => phpversion(),
             'cms'            => $post['cms'], // Wordpress OpenCart Magento etc...

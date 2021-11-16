@@ -46,6 +46,13 @@ class ControllerExtensionModuleMessor extends Controller
         echo json_encode(array('status' => 'OK'));
     }
 
+    public function SynchronizationNoJS()
+    {
+        $this->MessorLib->updateClient();
+        $settings = $this->MessorLib->getSetting();
+        $this->MessorLib->saveSetting($settings);
+    }
+
     public function saveSetting()
     {
         $status = $this->MessorLib->saveSetting($this->request->post);
@@ -134,6 +141,12 @@ class ControllerExtensionModuleMessor extends Controller
             $host = parse_url($data['servers'][$key][0]);
             $data['servers'][$key][3] = $host['host'];
         }
+        if($this->MessorLib->isDatabase()) {
+            $data['version_bd'] = $this->MessorLib->versionDatabase();
+        } else {
+            $this->SynchronizationNoJS();
+            $data['version_bd'] = $this->MessorLib->versionDatabase();
+        }
         $data['user_token'] = $this->session->data['user_token'];
         $data['path'] = $this->MessorLib->getPath();
         $data['path_list'] = $this->MessorLib->getPathList();
@@ -146,7 +159,6 @@ class ControllerExtensionModuleMessor extends Controller
         $data['list_archive'] = $this->MessorLib->listArchive();
         $data['peer_list'] = $this->MessorLib->getPeerList();
         $data['database_ip'] = $this->MessorLib->getDatabaseIP();
-        $data['version_bd'] = $this->MessorLib->versionDatabase();
         $data['primary_server'] = $this->MessorLib->getPrimaryServer();
         $data['servers_hash'] = $this->MessorLib->getHashServerFile();
         $data['ip_white_list'] = $this->MessorLib->getListIP('white');
@@ -501,6 +513,8 @@ trait Registration
         $this->load->model('user/user');
         $user_info = $this->model_user_user->getUser($this->user->getId());
         $data['name'] = $user_info['firstname'] . $user_info['lastname'];
+        $match = preg_match('/^[a-zA-Z0-9\ ]{3,35}$/', $data['name']);
+        $data['name'] = $match !== 1 ? '' : $data['name'];
         $data['email'] = $user_info['email'];
         $data['http_host'] = $this->request->server['HTTP_HOST'];
 

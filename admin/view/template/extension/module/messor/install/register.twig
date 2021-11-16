@@ -300,6 +300,21 @@ $("input[name='user_password']").focus( function() {
  $(this).removeAttr('style');
 });
 
+$("input[name='name']").on('input', function() {
+    if (!$("input[name='name']").val().trim().match(/^[a-zA-Z0-9\ ]{3,35}$/)) {
+        $("input[name='name']").css("border-color" , "red");
+        $("#error_lname").css("display","none");
+    } else {
+		 $("input[name='name']").removeAttr('style');
+	}
+})
+
+var filled = $("input[name='name']").val().trim();
+if(!filled) {
+	$(".ms-page-box__content-hidden-pull").toggleClass("active").parents(".ms-page-box").find(".ms-page-box__content-hidden").slideToggle(300);
+	$("input[name='name']").css("border-color" , "red");
+}
+
 $("input[name='accept']").on("click", function(){
 	  $("#license").removeAttr('style');
 });

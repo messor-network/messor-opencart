@@ -70,8 +70,8 @@ class Database
             $this->log .= "You have last version of database: $version\n";
         }
         $end = microtime(true);
-        $result = $end-$start;
-        $this->log .=  "[*] End work, worked time ". round($result, 2). " second\n\n\n";
+        $result = $end - $start;
+        $this->log .=  "[*] End work, worked time " . round($result, 2) . " second\n\n\n";
         File::clear(Path::SYNC_LAST);
         File::write(Path::SYNC_LAST, time());
         return $this->log;
@@ -107,13 +107,13 @@ class Database
         shuffle($downloadLinks);
 
         $savedPeerList = Parser::toArray(File::read(Path::PEERS));
-        foreach($downloadLinks as $item) {
-            $peer = substr($item, 0 , strpos($item, '/', 8));
-            $newDownloadLinks[$peer] = $item; 
+        foreach ($downloadLinks as $item) {
+            $peer = substr($item, 0, strpos($item, '/', 8));
+            $newDownloadLinks[$peer] = $item;
         }
-        foreach($savedPeerList as $item) {
-            $peer = substr($item, 0 , strpos($item, '/', 8));
-            $newSavePeerList[$peer] = $item; 
+        foreach ($savedPeerList as $item) {
+            $peer = substr($item, 0, strpos($item, '/', 8));
+            $newSavePeerList[$peer] = $item;
         }
         $mergeList = $newDownloadLinks + $newSavePeerList;
         $savedPeerList = [];
@@ -224,10 +224,12 @@ class Database
         $newVersion = File::read(Path::VERSION_BD);
         if ($version != $newVersion) {
             $this->log .= " Remove old database $oldDatabase\t";
-            if (unlink($oldDatabase)) {
-                $this->log .= "[ok]\n";
-            } else {
-                $this->log .= "[error]\nCheck permission or remove old database manual $oldDatabase\n";
+            if ($version != false) {
+                if (unlink($oldDatabase)) {
+                    $this->log .= "[ok]\n";
+                } else {
+                    $this->log .= "[error]\nCheck permission or remove old database manual $oldDatabase\n";
+                }
             }
         }
     }

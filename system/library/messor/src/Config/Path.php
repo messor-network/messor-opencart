@@ -5,7 +5,7 @@ namespace src\Config;
 class Path
 {
     const USERCONF = BASE_PATH . "/data/config.txt";
-    const VERSION = "1.0";
+    const VERSION = "1.0.1";
     const VERSION_BD = BASE_PATH . "/data/version.txt";
     const UPDATE  = BASE_PATH . "/data/update.txt";
     const SERVERS = BASE_PATH . "/data/servers.txt";

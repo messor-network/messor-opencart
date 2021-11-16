@@ -338,22 +338,24 @@ class Messor
 
     public static function logger($type, $file)
     {
+        $data = '';
+        switch ($type) {
+            case 'post':
+                $data =  Logger::addPost();
+                break;
+            case 'cookie':
+                $data = Logger::addCookie();
+                break;
+            case 'get':
+                $data = Logger::addGet();
+                break;
+        }
         $log = "\n" . Logger::addIP(self::$remoteIp) . "\t" .
             Logger::addTime() . "\t" .
             Logger::addRequestUri() . "\t" .
             Logger::addUserAgent() . "\t" .
-            $type . "\t";
-        switch ($type) {
-            case 'post':
-                $type . Logger::addPost();
-                break;
-            case 'cookie':
-                $type . Logger::addCookie();
-                break;
-            case 'get':
-                $type . Logger::addGet();
-                break;
-        }
+            $type . "\t" .
+            $data . "\t";
         try {
             if (!File::write($file, trim($log) . "\n")) {
                 throw new FileException();

@@ -1,1 +1,2 @@
-http://messor.io/messor/
+https://messor.dev/messor/
+http://messor.lock/messor-server/messor/

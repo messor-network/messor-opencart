@@ -694,6 +694,15 @@ final class MessorLib
         return date('d.m.Y', File::read(PATH::SYNC_LAST));
     }
 
+    public function isDatabase() {
+        if (!File::read(PATH::VERSION_BD)) {
+            return false;
+        } else {
+            return true;
+        } 
+        
+    }
+
     public function versionDatabase()
     {
         $version = Parser::versionDatabase(File::read(PATH::VERSION_BD));
