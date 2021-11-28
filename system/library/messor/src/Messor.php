@@ -226,6 +226,10 @@ class Messor
     public static function blockRequest($type, $string)
     {
         foreach ($type as $k => $v) {
+            if (is_array($v)) {
+                self::blockRequest($v, $string);
+                continue;
+            }
             foreach (self::$rules['rules']['request'] as $rule) {
                 preg_match_all('@' . $rule . '@', strtolower($k . '=' . $v), $matches);
                 if (preg_match('@' . $rule . '@', strtolower($k . '=' . $v))) {

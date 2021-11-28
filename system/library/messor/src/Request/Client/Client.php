@@ -104,8 +104,7 @@ class Client
                 } catch (FileException $e) {
                     self::$log .= "Error write: " . PATH::UPDATE. "\n";
                 }
-            } else {
-            }
+            } 
         } else {
             File::clear(PATH::UPDATE);
             self::$log .= "You have last version of messor: " . Path::VERSION . "\n";
