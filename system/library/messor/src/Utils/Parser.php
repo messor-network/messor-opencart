@@ -65,7 +65,7 @@ class Parser
     static function toString($data)
     {
         $string = '';
-        foreach ($data as $item){
+        foreach ($data as $item) {
             $string .= $item . "\n";
         }
         $string = trim($string);
@@ -92,7 +92,7 @@ class Parser
         }
     }
 
-     /**
+    /**
      * Массив в строку, разделитель "="
      *
      * @param [string] $data
@@ -101,8 +101,8 @@ class Parser
     static function toSettingArray($data)
     {
         $request = '';
-        foreach($data as $key => $value){
-            $request .= trim($key). ' = ' .trim(urlencode($value)). "\n";
+        foreach ($data as $key => $value) {
+            $request .= trim($key) . ' = ' . trim(urlencode($value)) . "\n";
         }
         return $request;
     }
@@ -116,9 +116,13 @@ class Parser
     static function versionDatabase($string)
     {
         $version = trim($string);
-        $version = explode("_", trim($version));
-        $version['version'] = $version[0];
-        $version['hash'] = $version[1];
+        if ($version != null) {
+            $version = explode("_", trim($version));
+            $version['version'] = $version[0];
+            $version['hash'] = $version[1];
+        } else {
+            $version = '';
+        }
         return $version;
     }
 
@@ -167,11 +171,11 @@ class Parser
                 }
                 File::deleteFilesInDir(Path::DB_TREE);
                 for ($i = 0; $i < count($ip['ip']); $i++) {
-                    if (self::ipFile($ip['ip'][$i])){
-                        File::write(Path::DB_TREE . self::ipFile($ip['ip'][$i]) , $ip['ip'][$i] . "\n");
+                    if (self::ipFile($ip['ip'][$i])) {
+                        File::write(Path::DB_TREE . self::ipFile($ip['ip'][$i]), $ip['ip'][$i] . "\n");
+                    }
                 }
-            }
-            return $ip;
+                return $ip;
             } else {
                 throw new FileException();
             }
@@ -188,6 +192,6 @@ class Parser
      */
     static function ipFile($string)
     {
-        return substr($string, 0 ,strpos($string, '.'));
+        return substr($string, 0, strpos($string, '.'));
     }
 }
