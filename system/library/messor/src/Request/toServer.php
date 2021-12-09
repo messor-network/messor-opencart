@@ -137,8 +137,8 @@ class toServer
             'encryption_alg' => $post['encryption_alg'],
             // 'encryption_key' => $post['encryption_key'],
             'client_version' => Path::VERSION,
-            'os'             => $server['SERVER_SIGNATURE'] ? trim($server['SERVER_SIGNATURE']) : '', // todo check os
-            'web_server'     => $server['SERVER_SOFTWARE'],
+            'os'             => isset($server['SERVER_SIGNATURE']) ? trim($server['SERVER_SIGNATURE']) : '', // todo check os
+            'web_server'     => isset($server['SERVER_SOFTWARE']) ? trim($server['SERVER_SOFTWARE']) : '',
             'php_version'    => phpversion(),
             'cms'            => $post['cms'], // Wordpress OpenCart Magento etc...
             'cms_version'    => $post['cms_version'], // Wordpress 3.4.3

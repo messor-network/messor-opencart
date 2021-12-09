@@ -31,12 +31,6 @@ class ControllerExtensionModuleMessor extends Controller
         $this->response->redirect($this->url->link('extension/module/messor/Messor', 'user_token=' . $this->session->data['user_token'], true));
     }
 
-
-    public function SynchronizationBeforeRemove()
-    {
-        $this->MessorLib->updateClient();
-    }
-
     public function Synchronization()
     {
         $this->MessorLib->updateClient();
@@ -55,16 +49,17 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function saveSetting()
     {
+        $this->load->language('extension/module/messor');
         $status = $this->MessorLib->saveSetting($this->request->post);
         if ($status) {
             $status = "OK";
-            $message = "Настройки сохранены";
+            $message = $this->language->get('save_settings');
         } else {
             $status = "ERROR";
-            $message = "Ошибка, проверьте права на запись";
+            $message = $this->language->get('error_save_settings');
         }
 
-        $this->session->data['success'] = 'Настройки сохранены';
+        $this->session->data['success'] = $this->language->get('save_settings');
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(array('status' => $status, 'text' => $message));
     }
@@ -123,7 +118,7 @@ class ControllerExtensionModuleMessor extends Controller
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && isset($this->request->post['block_ip'])) {
             $this->model_extension_module_messor->SaveSettings();
             $this->MessorLib->SaveSetting($this->request->post);
-            $this->session->data['success'] = 'Настройки сохранены';
+            $this->session->data['success'] = $this->language->get('save_settings');
         }
 
         $list = $this->MessorLib->listSynchronization(true);
@@ -648,6 +643,7 @@ trait OpencartSystem
     public function install()
     {
         $this->load->model('extension/module/messor');
+       
         if ($this->validate()) {
             $settings['module_messor_status'] = 1;
             $this->load->model('setting/setting');
@@ -655,6 +651,13 @@ trait OpencartSystem
             $this->load->model('user/user_group');
 		    $this->model_setting_setting->editSetting('module_messor', $settings);
 
+            $extension_install_id=$this->model_extension_module_messor->getInstallId();
+            unset($extension_install_id->rows[0]);
+            foreach ($extension_install_id->rows as $result) {
+                $this->model_setting_extension->deleteExtensionInstall($result['extension_install_id']);
+                $this->model_extension_module_messor->deleteExtensionPathOfInstall($result['extension_install_id']);
+            }
+            // $this->model_setting_extension->uninstall('module', 'messor');
             $settings['module_messor_status'] = 1;
             $this->model_setting_extension->install('module', 'messor');
 

@@ -23,11 +23,13 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function alertMessor()
     {
-        if(isset($this->request->get['route']) && $this->request->get['route'] == "extension/module/messor/requestToPeer") {
-            return;
+        if (isset($this->request->get['route'])) {
+            if ($this->request->get['route'] == "extension/module/messor/requestToPeer") {
+                return;
+            }
         }
         $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
-        if ($this->MessorLib->checkUpdateDay($hour=24, PATH::SETTINGS)) {
+        if ($this->MessorLib->checkUpdateDay($hour = 24, PATH::SETTINGS)) {
             $setting['js_salt'] = Random::Rand(7, 12);
             $string = '';
             $string .= $setting['js_salt'];
@@ -35,22 +37,22 @@ class ControllerExtensionModuleMessor extends Controller
             File::write(PATH::SETTINGS, Parser::toSettingArray($setting));
         }
 
-        if ($setting['lock'] = "js_unlock") {
+        if ($setting['lock'] == "js_unlock") {
             $http = new HttpRequest();
             $ip = $http->server('REMOTE_ADDR');
-            if(!file_exists(PATH::IPHASH.$ip)) {
+            if (!file_exists(PATH::IPHASH . $ip)) {
                 $string = '';
-                $string .= $ip.$setting['js_salt'];
+                $string .= $ip . $setting['js_salt'];
                 $hash = hash('sha256', $string);
-                File::write(PATH::IPHASH.$ip, $hash);
+                File::write(PATH::IPHASH . $ip, $hash);
             }
         }
 
-        if ($this->MessorLib->checkUpdateDay($hour=26, PATH::DAY)) {
+        if ($this->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
             $files = scandir(PATH::IPHASH);
             foreach ($files as $file) {
                 if (!is_dir($file)) {
-                    unlink(PATH::IPHASH.$file);
+                    unlink(PATH::IPHASH . $file);
                 }
             }
             $this->MessorLib->deleteScoresDetect();
@@ -59,20 +61,20 @@ class ControllerExtensionModuleMessor extends Controller
             File::clear(PATH::DAY);
         }
 
-        if(isset($this->request->get['status']) && $this->request->get['status']=='redirect') {
+        if (isset($this->request->get['status']) && $this->request->get['status'] == 'redirect') {
             return;
         }
         $url = $this->url->link('extension/module/messor/hashJs');
-        if(isset($this->request->get['route'])) {
-            $route='default_route='.$this->request->get['route'];
+        if (isset($this->request->get['route'])) {
+            $route = 'default_route=' . $this->request->get['route'];
         } else {
-            $route='default_route=common/home';
+            $route = 'default_route=common/home';
         }
         if (isset($this->request->get['path'])) {
-            $route.='&path='.$this->request->get['path'];
+            $route .= '&path=' . $this->request->get['path'];
         }
         if (isset($this->request->get['product_id'])) {
-            $route.='&product_id='.$this->request->get['product_id'];
+            $route .= '&product_id=' . $this->request->get['product_id'];
         }
         static $flag = '';
         if (!(isset($this->request->get['route']) && $this->request->get['route'] == "extension/module/messor/hashJs")) {
@@ -85,22 +87,23 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function detect()
     {
-        if ($setting['lock'] = "js_unlock") {
+        $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
+        if ($setting['lock'] == "js_unlock") {
             $http = new HttpRequest();
             $ip = $http->server('REMOTE_ADDR');
-            if(!file_exists(PATH::IPHASH.$ip)) {
+            if (!file_exists(PATH::IPHASH . $ip)) {
                 $string = '';
-                $string .= $ip.$setting['js_salt'];
+                $string .= $ip . $setting['js_salt'];
                 $hash = hash('sha256', $string);
-                File::write(PATH::IPHASH.$ip, $hash);
+                File::write(PATH::IPHASH . $ip, $hash);
             }
         }
 
-        if ($this->MessorLib->checkUpdateDay($hour=26, PATH::DAY)) {
+        if ($this->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
             $files = scandir(PATH::IPHASH);
             foreach ($files as $file) {
                 if (!is_dir($file)) {
-                    unlink(PATH::IPHASH.$file);
+                    unlink(PATH::IPHASH . $file);
                 }
             }
             $this->MessorLib->deleteScoresDetect();
@@ -108,36 +111,36 @@ class ControllerExtensionModuleMessor extends Controller
             Client::update();
             File::clear(PATH::DAY);
         }
-        
-        if(isset($this->request->get['status']) && $this->request->get['status']=='redirect') {
+
+        if (isset($this->request->get['status']) && $this->request->get['status'] == 'redirect') {
             return;
         }
         $url = $this->url->link('extension/module/messor/hashJs');
-        if(isset($this->request->get['route'])) {
-            $route='default_route='.$this->request->get['route'];
+        if (isset($this->request->get['route'])) {
+            $route = 'default_route=' . $this->request->get['route'];
         } else {
-            $route='default_route=common/home';
+            $route = 'default_route=common/home';
         }
         if (isset($this->request->get['path'])) {
-            $route.='&path='.$this->request->get['path'];
+            $route .= '&path=' . $this->request->get['path'];
         }
         if (isset($this->request->get['product_id'])) {
-            $route.='&product_id='.$this->request->get['product_id'];
+            $route .= '&product_id=' . $this->request->get['product_id'];
         }
         if (isset($this->request->get['_route_'])) {
             $check = pathinfo($this->request->get['_route_']);
-            $list = array('svg','jpg','jpeg','png','webp','gif','woff','ttf','eot','woff2','css','js');
+            $list = array('svg', 'jpg', 'jpeg', 'png', 'webp', 'gif', 'woff', 'ttf', 'eot', 'woff2', 'css', 'js');
             if (isset($check['extension']) && in_array(strtolower($check['extension']), $list)) {
                 return;
-            } 
+            }
         }
         if (isset($this->request->get['route'])) {
             $check = pathinfo($this->request->get['route']);
-            $list = array('svg','jpg','jpeg','png','webp','gif','woff','ttf','eot','woff2','css','js');
+            $list = array('svg', 'jpg', 'jpeg', 'png', 'webp', 'gif', 'woff', 'ttf', 'eot', 'woff2', 'css', 'js');
 
             if (isset($check['extension']) && in_array(strtolower($check['extension']), $list)) {
                 return;
-            } 
+            }
         }
         static $flag = '';
         if (!(isset($this->request->get['route']) && $this->request->get['route'] == "extension/module/messor/hashJs")) {
@@ -157,12 +160,12 @@ class ControllerExtensionModuleMessor extends Controller
     public function hashJs()
     {
         $route = $this->request->get['default_route'];
-        if($route == '') $route = "common/home";
+        if ($route == '') $route = "common/home";
         if (isset($this->request->get['path'])) {
-            $route.='&path='.$this->request->get['path'];
+            $route .= '&path=' . $this->request->get['path'];
         }
         if (isset($this->request->get['product_id'])) {
-            $route.='&product_id='.$this->request->get['product_id'];
+            $route .= '&product_id=' . $this->request->get['product_id'];
         }
         if (isset($this->request->get['key'])) {
             $key = $this->request->get['key'];

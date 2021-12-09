@@ -366,7 +366,7 @@ final class MessorLib
 
     public function newVersion()
     {
-        if(filesize(Path::UPDATE)) {
+        if (filesize(Path::UPDATE)) {
             $file = File::read(Path::UPDATE);
             $file = htmlspecialchars($file);
             $file = str_replace("\n", "</br>", $file);
@@ -588,11 +588,11 @@ final class MessorLib
                     $log = Parser::toArrayTab(Parser::toArray(File::read($file)));
                     foreach ($log as $key => $value) {
                         $log[$key][0] = date("m.d.Y H:s", (int)$value[0]);
-                    } 
+                    }
                 } else {
                     return "";
                 }
-				return Parser::toString(Parser::toStringTab($log));
+                return Parser::toString(Parser::toStringTab($log));
             }
         }
         return false;
@@ -694,13 +694,13 @@ final class MessorLib
         return date('d.m.Y', File::read(PATH::SYNC_LAST));
     }
 
-    public function isDatabase() {
+    public function isDatabase()
+    {
         if (!File::read(PATH::VERSION_BD)) {
             return false;
         } else {
             return true;
-        } 
-        
+        }
     }
 
     public function versionDatabase()
@@ -729,11 +729,15 @@ final class MessorLib
             }
             $detect_list = Parser::toArraySetting(File::read(Path::DETECT_LIST));
             if (isset($detect_list[$this->http->server('REMOTE_ADDR')])) {
+                File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "3" . "\n");
+            } else if ($setting["lock"] == "js_unlock") {
                 File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "1" . "\n");
             }
             unset($detect_list[$this->http->server('REMOTE_ADDR')]);
             File::clear((Path::DETECT_LIST));
-            File::write(Path::DETECT_LIST, Parser::toSettingArray($detect_list));
+            if ($detect_list != null) {
+                File::write(Path::DETECT_LIST, Parser::toSettingArray($detect_list));
+            }
         }
         return true;
     }

@@ -92,7 +92,7 @@ class Messor
                 self::blockRequest(self::$http->get(), 'get');
             }
         }
-        
+
 
         if (file_exists(Path::DB_TREE . Parser::ipFile(self::$remoteIp))) {
             self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipFile(self::$remoteIp)));
@@ -208,7 +208,7 @@ class Messor
                         }
                     }
                     self::logger($string, Path::ARCHIVE);
-                    if (self::isWhite()) return false;
+                    if (self::$isWhite) return false;
                     self::block();
                     return true;
                 }
@@ -291,6 +291,11 @@ class Messor
      */
     public static function block()
     {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+                return;
+            }
+        }
         switch (self::$settings['lock']) {
             default:
             case "error":

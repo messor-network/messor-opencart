@@ -51,7 +51,7 @@ $_['block_peer_status']             = 'Статус';
 $_['block_peer_trust']              = 'Доверие';
 $_['block_server_hash']             = 'Хеш';
 $_['block_server_servers']          = 'Серверы';
-$_['block_server_last_sync']        = 'Синхронизация';
+$_['block_server_last_sync']        = 'Sync';
 $_['block_database_version']        = 'Версия';
 $_['block_database_update']         = 'Обновление';
 
