@@ -706,10 +706,12 @@ final class MessorLib
     public function versionDatabase()
     {
         $version = Parser::versionDatabase(File::read(PATH::VERSION_BD));
-        $tmp = str_split($version['version'], 2);
-        $tmp[2] = '20' . $tmp[2];
-        $tmp = implode('.', $tmp);
-        $version['version'] = $tmp;
+        if ($version != null) {
+            $tmp = str_split($version['version'], 2);
+            $tmp[2] = '20' . $tmp[2];
+            $tmp = implode('.', $tmp);
+            $version['version'] = $tmp;
+        }
         return $version;
     }
 
@@ -730,7 +732,7 @@ final class MessorLib
             $detect_list = Parser::toArraySetting(File::read(Path::DETECT_LIST));
             if (isset($detect_list[$this->http->server('REMOTE_ADDR')])) {
                 File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "3" . "\n");
-            } else if ($setting["lock"] == "js_unlock") {
+            } else if ($setting["lock"] == "js_unlock" && $setting["block_ddos"] != 1) {
                 File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "1" . "\n");
             }
             unset($detect_list[$this->http->server('REMOTE_ADDR')]);
