@@ -4,6 +4,9 @@
 	<div class="ms-wrapper">
 		<div id="install" class="ms-container">
 			<div class="ms-page">
+			{% if oncloudflare %}
+				<div class="alert alert-info">{{ system_settings_cloudflare_on }}</div>
+			{% endif %}
 				<div class="ms-page-row ms-page-row-fluid">
 					<div class="ms-page-col ms-page-col-fluid">
 						<div class="ms-page-box ms-page-box--padding">

@@ -16,7 +16,7 @@ class Request
     private $type;
     private $request;
 
-    public function __construct($server) 
+    public function __construct($server)
     {
         $this->server = $server;
         USER::init();
@@ -27,27 +27,27 @@ class Request
      *
      * @return void
      */
-    public function send() 
+    public function send()
     {
-        if(function_exists('curl_init')) {
-           return $this->CurlRequest();
+        if (function_exists('curl_init')) {
+            return $this->CurlRequest();
         } else {
-           return $this->GetContentRequest();
+            return $this->GetContentRequest();
         }
     }
-    
-    public function setRequest($request=null)
+
+    public function setRequest($request = null)
     {
         $this->request = $request;
     }
-    
+
     /**
      * Установка данных для передачи на сервер *data*
      *
      * @param string $data
      * @return void
      */
-    public function setData($data='') 
+    public function setData($data = '')
     {
         $this->data = Parser::toStringURL($data);
     }
@@ -58,7 +58,7 @@ class Request
      * @param [string] $header
      * @return void
      */
-    public function setHeader($header) 
+    public function setHeader($header)
     {
         $this->header = Parser::toStringURL($header);
     }
@@ -72,7 +72,7 @@ class Request
     {
         $this->request = $this->header;
         if ($this->data) {
-            $this->request .= '*data*'. "\n";
+            $this->request .= '*data*' . "\n";
             $this->request .= $this->crypt->Encrypt($this->data);
         }
     }
@@ -94,7 +94,7 @@ class Request
      * @param iCrypt $crypt
      * @return void
      */
-    public function setCrypt(iCrypt $crypt) 
+    public function setCrypt(iCrypt $crypt)
     {
         $this->crypt = $crypt;
     }
@@ -104,7 +104,7 @@ class Request
      *
      * @return void
      */
-    public function getCrypt() 
+    public function getCrypt()
     {
         return $this->crypt;
     }
@@ -114,7 +114,7 @@ class Request
      *
      * @return void
      */
-    private function CurlRequest() 
+    private function CurlRequest()
     {
         $ch = curl_init($this->server);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -125,8 +125,9 @@ class Request
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->request);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/x-www-form-urlencoded',
-            'Content-Length: ' . strlen($this->request)));
-        if($content = curl_exec($ch)) {
+            'Content-Length: ' . strlen($this->request)
+        ));
+        if ($content = curl_exec($ch)) {
             curl_close($ch);
             return $content;
         } else {
@@ -138,18 +139,21 @@ class Request
      *
      * @return void
      */
-    private function GetContentRequest() {
-    $opts = array('http' =>
-    array(
-        'method'     => 'POST',
-        'user_agent' => USER::$userAgent,
-        'header'     => 'Content-type: application/x-www-form-urlencoded',
-        'content'    => $this->request)
-    );
+    private function GetContentRequest()
+    {
+        $opts = array(
+            'http' =>
+            array(
+                'method'     => 'POST',
+                'user_agent' => USER::$userAgent,
+                'header'     => 'Content-type: application/x-www-form-urlencoded',
+                'content'    => $this->request
+            )
+        );
 
-    $context  = stream_context_create($opts);
-    // @ dirt huk=)
-    $content= @file_get_contents($this->url, false, $context);
-    var_dump($context);
+        $context  = stream_context_create($opts);
+        // @ dirt huk=)
+        $content = file_get_contents($this->server, false, $context);
+        return $content;
     }
 }

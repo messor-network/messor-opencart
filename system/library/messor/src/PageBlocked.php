@@ -8,6 +8,7 @@ use src\JavaScriptPacker;
 use src\Config\User;
 use src\Config\Path;
 use src\Utils\File;
+use src\Utils\Parser;
 
 class PageBlocked
 {
@@ -32,11 +33,16 @@ class PageBlocked
     public static function viewPageUser($url, $route)
     {
         $http = new HttpRequest();
-        $ip = $http->server('REMOTE_ADDR');
+        $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
+        if ($systemSetting['cloudflare'] == 1) {
+            $ip = $http->server('HTTP_CF_CONNECTING_IP');
+        } else {
+            $ip = $http->server('REMOTE_ADDR');
+        }
         $hash = File::read(PATH::IPHASH.$ip);
         $script = "
         window.setTimeout(function(){
-            window.location.href = '$route&key=$hash&$url'}, 5000);
+            window.location.href = '$route&key=$hash&$url'}, 2000);
         ";
         
         $script = self::encodeJsKey($script);

@@ -27,6 +27,7 @@ class Path
     const SYNC_LAST = BASE_PATH . "/data/log/last_sync.txt";
     const INFO = BASE_PATH . "/data/info.txt";
     const SETTINGS = BASE_PATH . "/data/settings.txt";
+    const SYSTEM_SETTINGS = BASE_PATH . "/data/system_settings.txt";
     const ATTACK_URL = BASE_PATH . "/data/database/attack_url.txt";
     const RULES = BASE_PATH . "/data/database/rules.txt";
     const DAY = BASE_PATH . "/data/day.txt";

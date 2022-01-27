@@ -130,6 +130,48 @@ final class MessorLib
         return Random::Rand(4, 7, "lu");
     }
 
+    public function onCloudFlare()
+    {
+        $systemSetting = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
+        $ip = $this->http->server('HTTP_CF_CONNECTING_IP');
+        if ($ip) {
+            $systemSetting['cloudflare'] = 1;
+            File::clear(Path::SYSTEM_SETTINGS);
+            File::write(Path::SYSTEM_SETTINGS, Parser::toSettingArray($systemSetting));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function offCloudFlare()
+    {
+        $ip = $this->http->server('HTTP_CF_CONNECTING_IP');
+        if (!$ip) {
+            $systemSetting = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
+            if ($systemSetting['cloudflare'] == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function offCloudFlareAjax()
+    {
+        $systemSetting = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
+        $systemSetting['cloudflare'] = 0;
+        File::clear(Path::SYSTEM_SETTINGS);
+        $res = File::write(Path::SYSTEM_SETTINGS, Parser::toSettingArray($systemSetting));
+        if ($res) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function generatePassword()
     {
         return Random::Rand();
@@ -723,19 +765,25 @@ final class MessorLib
     public function hashJs($key)
     {
         $setting = $this->getSetting();
-        $ip = $this->http->server('REMOTE_ADDR');
+        $systemSetting = Parser::toArraySetting(File::read(Path::SETTINGS));
+        $http = new HttpRequest();
+        if ($systemSetting['cloudflare'] == 1) {
+            $ip = $http->server('HTTP_CF_CONNECTING_IP');
+        } else {
+            $ip = $http->server('REMOTE_ADDR');
+        }
         $hashKey = File::read(PATH::IPHASH . $ip);
         if ($hashKey == $key) {
             if ($setting["block_ddos"] == 1) {
-                File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "ddos" . "\n");
+                File::write(Path::WHITE_LIST, $ip . " = " . "ddos" . "\n");
             }
             $detect_list = Parser::toArraySetting(File::read(Path::DETECT_LIST));
-            if (isset($detect_list[$this->http->server('REMOTE_ADDR')])) {
-                File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "3" . "\n");
+            if (isset($detect_list[$ip])) {
+                File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
             } else if ($setting["lock"] == "js_unlock" && $setting["block_ddos"] != 1) {
-                File::write(Path::WHITE_LIST, $this->http->server('REMOTE_ADDR') . " = " . "1" . "\n");
+                File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
             }
-            unset($detect_list[$this->http->server('REMOTE_ADDR')]);
+            unset($detect_list[$ip]);
             File::clear((Path::DETECT_LIST));
             if ($detect_list != null) {
                 File::write(Path::DETECT_LIST, Parser::toSettingArray($detect_list));

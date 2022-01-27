@@ -6,8 +6,11 @@ $_['name_left_column']              = 'Security';
 
 // window modal
 
-$_['error_save_settings']           = 'Error, check write permissions';
-$_['save_settings']                 = 'Settings saved';
+$_['error_save_settings']                   = 'Error, check write permissions';
+$_['save_settings']                         = 'Settings saved';
+$_['system_settings_cloudflare_on']         = 'Warning, Messor has detected that you have CloudFlare enabled. For Collaboration CloudFlare support option included.';
+$_['system_settings_cloudflare_off']        = 'Attention, Messor has determined that you have stopped using CloudFlare. However, you have the compatibility option enabled. If you are not using CloudFlare, disable this option!.';
+$_['system_settings_cloudflare_disabled']   = 'Disable';
 
 // Peer Info
 
@@ -110,7 +113,6 @@ $_['block_statistic']                      = 'Statistic';
 $_['block_statistic_attack_blocked']       = 'Attack blocked';
 $_['block_statistic_sync_list']            = 'Sync list';
 $_['block_statistic_last_update']          = 'Last update';
-
 
 // Settings
 

@@ -29,6 +29,7 @@ class ControllerExtensionModuleMessor extends Controller
             }
         }
         $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
+        $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
         if ($this->MessorLib->checkUpdateDay($hour = 24, PATH::SETTINGS)) {
             $setting['js_salt'] = Random::Rand(7, 12);
             $string = '';
@@ -39,7 +40,11 @@ class ControllerExtensionModuleMessor extends Controller
 
         if ($setting['lock'] == "js_unlock") {
             $http = new HttpRequest();
-            $ip = $http->server('REMOTE_ADDR');
+            if ($systemSetting['cloudflare'] == 1) {
+                $ip = $http->server('HTTP_CF_CONNECTING_IP');
+            } else {
+                $ip = $http->server('REMOTE_ADDR');
+            }
             if (!file_exists(PATH::IPHASH . $ip)) {
                 $string = '';
                 $string .= $ip . $setting['js_salt'];
@@ -88,9 +93,15 @@ class ControllerExtensionModuleMessor extends Controller
     public function detect()
     {
         $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
+        $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
+        $http = new HttpRequest();
+        if ($systemSetting['cloudflare'] == 1) {
+            $ip = $http->server('HTTP_CF_CONNECTING_IP');
+        } else {
+            $ip = $http->server('REMOTE_ADDR');
+        }
         if ($setting['lock'] == "js_unlock") {
             $http = new HttpRequest();
-            $ip = $http->server('REMOTE_ADDR');
             if (!file_exists(PATH::IPHASH . $ip)) {
                 $string = '';
                 $string .= $ip . $setting['js_salt'];

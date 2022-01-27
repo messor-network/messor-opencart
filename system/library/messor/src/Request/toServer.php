@@ -22,7 +22,7 @@ class toServer
         $this->http = new HttpRequest();
         $this->request = new Request($server);
         $this->cryptPlain = new CryptPlain();
-        if (USER::$encryptionAlg == "RC4") {
+        if (User::$encryptionAlg == "rc4") {
             $this->cryptEncrypt = new CryptRC4();
         } else {
             $this->cryptEncrypt = new CryptOpenSSL();

@@ -7,6 +7,12 @@
 			{% if new_version %}
 				<div class="alert alert-info">{{ new_version }}</div>
 			{% endif %}
+			{% if oncloudflare %}
+				<div class="alert alert-info">{{ system_settings_cloudflare_on }}</div>
+			{% endif %}
+			{% if offcloudflare %}
+				<div class="alert alert-danger cloudflare">{{ system_settings_cloudflare_off }}&nbsp&nbsp&nbsp&nbsp&nbsp<div class="btn cloudflareoff btn-danger btn-sm">{{ system_settings_cloudflare_disabled }}</div></div>
+			{% endif %}
 				<div class="ms-page-row">
 					<div class="ms-page-col ms-page-col-fluid ms-page-col-third">
 						<div class="ms-page-box ms-page-box-third">
@@ -1247,6 +1253,21 @@ $('#reset').on('click', function () {
 	      }
 	    });
 	  }
+	});
+
+	$('.cloudflareoff').on('click', function() {
+		console.log("ok");
+	    $.ajax({
+	      url: 'index.php?route=extension/module/messor/cloudFlareAjax&user_token={{ user_token }} ',
+	      type: 'POST',
+	      data: '',
+	      dataType: 'json',
+	      success: function (data) {
+	        if (data.status == "OK") {
+		        $('.cloudflare').remove();
+	        }
+	      }
+	    });
 	});
 	
 	$('.ajax-clean-file').on('click', function() {

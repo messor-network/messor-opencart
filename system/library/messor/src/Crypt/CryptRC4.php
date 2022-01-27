@@ -43,6 +43,7 @@ class CryptRC4 implements iCrypt
 
     public function Decrypt($data)
     {
+        $data = base64_decode($data);
         for ($i = 0; $i < 256; $i++) {
             $s[$i] = $i;
         }

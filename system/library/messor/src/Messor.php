@@ -19,6 +19,7 @@ class Messor
     private static $crypt;
     private static $http;
     private static $settings;
+    private static $systemSettings;
     private static $sync;
     private static $detectList;
     private static $white;
@@ -33,8 +34,8 @@ class Messor
     {
         self::$crypt = new CryptPlain();
         self::$http = new HttpRequest();
-        self::$remoteIp = self::$http->server('REMOTE_ADDR');
         self::$settings = Parser::toArraySetting(File::read(Path::SETTINGS));
+        self::$systemSettings = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
         self::$sync = Parser::toArrayTab(Parser::toArray(File::read(Path::SYNC_LIST)));
         self::$detectList = Parser::toArraySetting(File::read(Path::DETECT_LIST));
         self::$white = Parser::toArraySetting(File::read(Path::WHITE_LIST));
@@ -52,8 +53,12 @@ class Messor
     {
         self::$route = $route;
         self::$url = $url;
-        if (!is_null($ip)) {
-            self::$remoteIp = $ip;
+        if (is_null($ip)) {
+            if (self::$systemSettings['cloudflare'] == 1) {
+                self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP');
+            } else {
+                self::$remoteIp = self::$http->server('REMOTE_ADDR');
+            }
         }
 
         if (self::$settings['block_ip'] == 1) {

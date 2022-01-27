@@ -173,10 +173,8 @@ class Server
                  $this->log .= "Write new server list...\n";
                 $this->backupServerList($serverList);
             } else {
-                $d = $serverList->status;
-                if (!empty($serverList->status) and $serverList->status != 'ok') {
-                    $dd = $serverList->status;
-                     $this->log .= "Response status " . $serverList['status'] . "\t" . $serverList['data'] . "\n";
+                if (!empty($serverList->getResponseData('status')) and $serverList->getResponseData('status') != 'ok') {
+                     $this->log .= "Response status " . $serverList['status'] . "\n";
                 } else {
                      $this->log .= "Error get server list from this url.\n";
                 }

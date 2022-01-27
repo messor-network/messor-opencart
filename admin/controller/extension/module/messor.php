@@ -130,18 +130,24 @@ class ControllerExtensionModuleMessor extends Controller
         }
         $data['servers'] = $this->MessorLib->getServers();
         foreach ($data['servers'] as $key => $server) {
-            $country = explode(',' , $server[1]);
+            $country = explode(',', $server[1]);
             $data['servers'][$key][] = $country[0];
             $data['servers'][$key][1] = $country[1];
             $host = parse_url($data['servers'][$key][0]);
             $data['servers'][$key][3] = $host['host'];
         }
-        if($this->MessorLib->isDatabase()) {
+        if ($this->MessorLib->isDatabase()) {
             $data['version_bd'] = $this->MessorLib->versionDatabase();
         } else {
             $this->SynchronizationNoJS();
             $data['version_bd'] = $this->MessorLib->versionDatabase();
         }
+        $data['list_archive'] = $this->MessorLib->listArchive();
+        if (empty($data['list_archive'][0])) {
+            $data['list_archive'] = [];
+        }
+        $data['oncloudflare'] = $this->MessorLib->onCloudFlare();
+        $data['offcloudflare'] = $this->MessorLib->offCloudFlare();
         $data['user_token'] = $this->session->data['user_token'];
         $data['path'] = $this->MessorLib->getPath();
         $data['path_list'] = $this->MessorLib->getPathList();
@@ -151,7 +157,6 @@ class ControllerExtensionModuleMessor extends Controller
         $data['peer_log'] = $this->MessorLib->getPeerLog();
         $data['peer_info'] = $this->MessorLib->getAboutPeer();
         $data['last_sync'] = $this->MessorLib->lastSync();
-        $data['list_archive'] = $this->MessorLib->listArchive();
         $data['peer_list'] = $this->MessorLib->getPeerList();
         $data['database_ip'] = $this->MessorLib->getDatabaseIP();
         $data['primary_server'] = $this->MessorLib->getPrimaryServer();
@@ -222,11 +227,23 @@ class ControllerExtensionModuleMessor extends Controller
         }
     }
 
+    public function cloudFlareAjax()
+    {
+        $res = $this->MessorLib->offCloudFlareAjax();
+        if ($res) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(array('status' => 'OK'));
+        } else {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(array('status' => 'OK'));
+        }
+    }
+
     public function archiveTable()
     {
         // $data += $this->load->language('extension/module/messor');
-				// $data += $this->GetBreadCrumbs();
-		$this->document->addStyle('view/stylesheet/messor/main.min.css');
+        // $data += $this->GetBreadCrumbs();
+        $this->document->addStyle('view/stylesheet/messor/main.min.css');
         $this->document->addScript('view/javascript/messor/main.min.js');
         $url = '';
 
@@ -269,10 +286,15 @@ class ControllerExtensionModuleMessor extends Controller
             $listIP = array();
         }
         $data['list_attack'] = $this->MessorLib->sortAttack($sort, $listIP, $sortDirection);
-		foreach($data['list_attack'] as $item) {
-			$data['ip_list'][] = $item[0];
-		}
-        list($data['list_attack'], $data['urls_pagination'], $data['num_page'], $data['prev'], $data['next']) = $this->MessorLib->pagination(count($data['ip_list']), 10, $page, $data['list_attack'],  $this->url->link('extension/module/messor/archiveTable', 'user_token=' . $this->session->data['user_token'] . '&sort_direction='. $sortDirection . '&sort='.$sort .  '&page={page}', true));
+        foreach ($data['list_attack'] as $item) {
+            $data['ip_list'][] = $item[0];
+        }
+        if (isset($data['ip_list'])) {
+            $countnum = count($data['ip_list']);
+        } else {
+            $countnum = 0;
+        }
+        list($data['list_attack'], $data['urls_pagination'], $data['num_page'], $data['prev'], $data['next']) = $this->MessorLib->pagination($countnum, 10, $page, $data['list_attack'],  $this->url->link('extension/module/messor/archiveTable', 'user_token=' . $this->session->data['user_token'] . '&sort_direction=' . $sortDirection . '&sort=' . $sort .  '&page={page}', true));
         $data['sort'] = $sort;
         $data['sort_direction'] = $sortDirection;
 
@@ -336,15 +358,15 @@ class ControllerExtensionModuleMessor extends Controller
             $listIP = array();
         }
         $data['list_attack'] = $this->MessorLib->sortAttack($sort, $listIP, $sortDirection);
-		foreach($data['list_attack'] as $item) {
-			$data['ip_list'][] = $item[0];
-		}
+        foreach ($data['list_attack'] as $item) {
+            $data['ip_list'][] = $item[0];
+        }
         if (isset($data['ip_list'])) {
             $count = count($data['ip_list']);
         } else {
             $count = 0;
         }
-        list($data['list_attack'], $data['urls_pagination'], $data['num_page'], $data['prev'], $data['next']) = $this->MessorLib->pagination($count, 10, $page, $data['list_attack'],  $this->url->link('extension/module/messor/synchronizationTable', 'user_token=' . $this->session->data['user_token'] . '&sort_direction='. $sortDirection . '&sort='.$sort .  '&page={page}', true));
+        list($data['list_attack'], $data['urls_pagination'], $data['num_page'], $data['prev'], $data['next']) = $this->MessorLib->pagination($count, 10, $page, $data['list_attack'],  $this->url->link('extension/module/messor/synchronizationTable', 'user_token=' . $this->session->data['user_token'] . '&sort_direction=' . $sortDirection . '&sort=' . $sort .  '&page={page}', true));
         $data['sort'] = $sort;
         $data['sort_direction'] = $sortDirection;
 
@@ -526,6 +548,8 @@ trait Registration
             $data['protocol'] = "http://";
         }
 
+        $data['oncloudflare'] = $this->MessorLib->onCloudFlare();
+        $data['offcloudflare'] = $this->MessorLib->offCloudFlare();
         $data['redirect'] = $this->url->link('extension/module/messor/Messor', 'user_token=' . $this->session->data['user_token'], true);
         $data['version_plugin'] = $this->MessorLib->versionPlugin();
         $data['op_version'] = VERSION;
@@ -612,7 +636,7 @@ trait OpencartSystem
 
         $data['menus'][] = array(
             'id'       => 'menu-security',
-            'icon'	   => 'fa-shield',
+            'icon'       => 'fa-shield',
             'name'     => $this->language->get('name_left_column'),
             'href'     => '',
             'children' => $messor
@@ -643,15 +667,15 @@ trait OpencartSystem
     public function install()
     {
         $this->load->model('extension/module/messor');
-       
+
         if ($this->validate()) {
             $settings['module_messor_status'] = 1;
             $this->load->model('setting/setting');
             $this->load->model('setting/extension');
             $this->load->model('user/user_group');
-		    $this->model_setting_setting->editSetting('module_messor', $settings);
+            $this->model_setting_setting->editSetting('module_messor', $settings);
 
-            $extension_install_id=$this->model_extension_module_messor->getInstallId();
+            $extension_install_id = $this->model_extension_module_messor->getInstallId();
             unset($extension_install_id->rows[0]);
             foreach ($extension_install_id->rows as $result) {
                 $this->model_setting_extension->deleteExtensionInstall($result['extension_install_id']);
@@ -671,7 +695,6 @@ trait OpencartSystem
             $this->session->data['success'] = $this->language->get('text_success');
             $this->model_extension_module_messor->createEvents();
         }
-
     }
 
     public function uninstall()
@@ -685,7 +708,6 @@ trait OpencartSystem
             $this->model_extension_module_messor->deleteEvents();
             $this->session->data['success'] = $this->language->get('text_success');
         }
-    
     }
 
 
@@ -720,7 +742,7 @@ trait MalwareClean
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        if($this->free) {
+        if ($this->free) {
             $data['link'] = "https://messor.network/upgrade/OpenCart/#MalwareCleaner";
             $this->response->setOutput($this->load->view('extension/module/messor/upgrade', $data));
             return;
@@ -790,7 +812,7 @@ trait MalwareClean
         $data['work_time'] = $work_time;
         $data['result'] = $MCleaner->GetResult();
         $data['config'] = $MCleaner->GetConfig();
-        $data['config']['signature_version'] = str_replace('Version','', $data['config']['signature_version']);
+        $data['config']['signature_version'] = str_replace('Version', '', $data['config']['signature_version']);
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
@@ -843,12 +865,12 @@ trait FileSystemControl
         $this->document->addStyle('view/stylesheet/messor/main.min.css');
         $this->document->addScript('view/javascript/messor/main.min.js');
 
-        
+
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        if($this->free) {
+        if ($this->free) {
             $data['link'] = "https://messor.network/upgrade/OpenCart/#FsControll";
             $this->response->setOutput($this->load->view('extension/module/messor/upgrade', $data));
             return;
@@ -953,7 +975,7 @@ trait FileDatabaseBackup
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        if($this->free) {
+        if ($this->free) {
             $data['link'] = "https://messor.network/upgrade/OpenCart/#BackUp";
             $this->response->setOutput($this->load->view('extension/module/messor/upgrade', $data));
             return;
@@ -1029,7 +1051,7 @@ trait FileSystemCheck
             $this->registerPage();
             return;
         }
-        
+
         $FSCheck = $this->MessorLib->FSCheck();
         $data['path'] = $FSCheck->getDefaultPath();
         $data['action'] = $this->url->link('extension/module/messor/FSCheckResult', 'user_token=' . $this->session->data['user_token']);
@@ -1090,7 +1112,7 @@ trait SecuritySettings
         $data['admin_panel'] = $SecuritySettings->checkAdminPanel();
         foreach ($users as $item) {
             $group = $this->model_user_user_group->getUserGroup($item['user_group_id']);
-            if(preg_match('/admin|administrator|manager|test|root|support/', $item['username'])) {
+            if (preg_match('/admin|administrator|manager|test|root|support/', $item['username'])) {
                 $novalid = true;
             } else {
                 $novalid = false;

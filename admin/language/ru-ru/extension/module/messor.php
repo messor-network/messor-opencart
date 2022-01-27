@@ -6,8 +6,11 @@ $_['name_left_column']              = 'Безопасность';
 
 // window modal
 
-$_['save_settings']                 = 'Настройки сохранены';
-$_['error_save_settings']           = 'Ошибка.Проверьте права на запись';
+$_['save_settings']                         = 'Настройки сохранены';
+$_['error_save_settings']                   = 'Ошибка.Проверьте права на запись';
+$_['system_settings_cloudflare_on']         = 'Внимание, Messor определил, что у Вас включен CloudFlare. Для совместной работы Включена опция поддержки CloudFlare.';
+$_['system_settings_cloudflare_off']        = 'Внимание, Messor определил, что Вы перестали использовать CloudFlare. Однако у вас включена опция совместимости. Если Вы не используете CloudFlare, отключите эту опцию!';
+$_['system_settings_cloudflare_disabled']   = 'Отключить';
 
 // Peer Info
 
