@@ -36,6 +36,9 @@ class PageBlocked
         $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
         if ($systemSetting['cloudflare'] == 1) {
             $ip = $http->server('HTTP_CF_CONNECTING_IP');
+            if (!$ip) {
+                $ip = $http->server('REMOTE_ADDR');
+            }            
         } else {
             $ip = $http->server('REMOTE_ADDR');
         }

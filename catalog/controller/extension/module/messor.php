@@ -42,6 +42,9 @@ class ControllerExtensionModuleMessor extends Controller
             $http = new HttpRequest();
             if ($systemSetting['cloudflare'] == 1) {
                 $ip = $http->server('HTTP_CF_CONNECTING_IP');
+                if (!$ip) {
+                    $ip = $http->server('REMOTE_ADDR');
+                }
             } else {
                 $ip = $http->server('REMOTE_ADDR');
             }
@@ -95,8 +98,12 @@ class ControllerExtensionModuleMessor extends Controller
         $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
         $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
         $http = new HttpRequest();
+
         if ($systemSetting['cloudflare'] == 1) {
             $ip = $http->server('HTTP_CF_CONNECTING_IP');
+            if (!$ip) {
+                $ip = $http->server('REMOTE_ADDR');
+            }
         } else {
             $ip = $http->server('REMOTE_ADDR');
         }

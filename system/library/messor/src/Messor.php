@@ -56,6 +56,9 @@ class Messor
         if (is_null($ip)) {
             if (self::$systemSettings['cloudflare'] == 1) {
                 self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP');
+                if (!self::$remoteIp) {
+                    self::$remoteIp = self::$http->server('REMOTE_ADDR');
+                }
             } else {
                 self::$remoteIp = self::$http->server('REMOTE_ADDR');
             }
