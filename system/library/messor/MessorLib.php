@@ -765,7 +765,7 @@ final class MessorLib
     public function hashJs($key)
     {
         $setting = $this->getSetting();
-        $systemSetting = Parser::toArraySetting(File::read(Path::SETTINGS));
+        $systemSetting = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
         $http = new HttpRequest();
         if ($systemSetting['cloudflare'] == 1) {
             $ip = $http->server('HTTP_CF_CONNECTING_IP');
