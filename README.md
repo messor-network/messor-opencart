@@ -1,11 +1,9 @@
 # Messor security - plugin for OpenCart
-![GitHub Releases](https://img.shields.io/github/downloads/messor-network/messor-opencart/latest/total) 
-![PHP from Packagist](https://img.shields.io/packagist/php-v/messor-network/messor) 
-[![Download messor-opencart](https://img.shields.io/sourceforge/dt/messor-opencart.svg)](https://sourceforge.net/projects/messor-opencart/files/latest/download)
-![GitHub repo size](https://img.shields.io/github/repo-size/messor-network/messor-opencart) 
-![GitHub All Releases](https://img.shields.io/github/downloads/messor-network/messor-opencart/total) 
-![GitHub last commit](https://img.shields.io/github/last-commit/messor-network/messor-opencart) ![GitHub](https://img.shields.io/github/license/messor-network/messor-opencart)
 
+![GitHub last commit](https://img.shields.io/github/last-commit/messor-network/messor-opencart) 
+![GitHub](https://img.shields.io/github/license/messor-network/messor-opencart)
+![GitHub repo size](https://img.shields.io/github/repo-size/messor-network/messor-opencart) 
+![Download messor-opencart](https://img.shields.io/sourceforge/dt/messor-opencart.svg)
 ![Messor-OpenCart](https://messor.network/images/github/opencart/messor-opencart.png)
 
 Free open source plugin for OpenCart to protect your store.
