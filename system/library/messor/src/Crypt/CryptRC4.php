@@ -4,17 +4,20 @@ namespace src\Crypt;
 
 use src\Config\User;
 
+/**
+ * Шифрование алгоритмом RC4
+ */
 class CryptRC4 implements iCrypt
 {   
-    private $typeCrypt;
+    /** @see CryptOpenSSL::$encryptionKey */
     private $encryptionKey;
 
     function __construct()
     {
-        $this->typeCrypt = User::$encryptionAlg;
         $this->encryptionKey = User::$encryptionKey;
     }
 
+    /** @see iCrypt::Encrypt() */
     public function Encrypt($data)
     {
         for ($i = 0; $i < 256; $i++) {
@@ -22,7 +25,7 @@ class CryptRC4 implements iCrypt
         }
         $j = 0;
         for ($i = 0; $i < 256; $i++) {
-            $j = ($j + $s[$i] + ord(User::$encryptionKey[$i % strlen(User::$encryptionKey)])) % 256;
+            $j = ($j + $s[$i] + ord($this->encryptionKey[$i % strlen($this->encryptionKey)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;
@@ -41,6 +44,7 @@ class CryptRC4 implements iCrypt
         return base64_encode($res);
     }
 
+    /** @see iCrypt::Decrypt() */
     public function Decrypt($data)
     {
         $data = base64_decode($data);
@@ -49,7 +53,7 @@ class CryptRC4 implements iCrypt
         }
         $j = 0;
         for ($i = 0; $i < 256; $i++) {
-            $j = ($j + $s[$i] + ord(User::$encryptionKey[$i % strlen(User::$encryptionKey)])) % 256;
+            $j = ($j + $s[$i] + ord($this->encryptionKey[$i % strlen($this->encryptionKey)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;

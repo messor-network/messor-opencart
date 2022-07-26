@@ -1,7 +1,10 @@
-<?php 
+<?php
 
 namespace src\Request;
 
+/**
+ * Работа с переменными GET, POST, COOKIE, SERVER, SESSION и потоком stream
+ */
 class HttpRequest
 {
     /**
@@ -27,10 +30,10 @@ class HttpRequest
     /**
      * Добавляет значение в массив $_POST
      *
-     * @param [string] $name
-     * @param [string] $value
+     * @param string $name
+     * @param string $value
      */
-    public function setPost($name, $value) 
+    public function setPost($name, $value)
     {
         $_POST[$name] = $value;
     }
@@ -38,10 +41,10 @@ class HttpRequest
     /**
      * Получает глобальный массив $_POST или один из его значений
      *
-     * @param [string] $name
-     * @return array
+     * @param string|null $name
+     * @return array|bool
      */
-    public function post($name=null)
+    public function post($name = null)
     {
         if (!is_null($name)) {
             if (isset($_POST[$name])) {
@@ -56,10 +59,11 @@ class HttpRequest
     /**
      * Добавляет значение в массив $_SERVER
      *
-     * @param [string] $name
-     * @param [string] $value
+     * @param string $name
+     * @param string $value
+     * @return void
      */
-    public function setServer($name, $value) 
+    public function setServer($name, $value)
     {
         $_SERVER[$name] = $value;
     }
@@ -67,10 +71,10 @@ class HttpRequest
     /**
      * Получает глобальный массив $_SERVER или один из его значений
      *
-     * @param [string] $name
-     * @return array
+     * @param string|null $name
+     * @return array|bool
      */
-    public function server($name=null) 
+    public function server($name = null)
     {
         if (!is_null($name)) {
             if (isset($_SERVER[$name])) {
@@ -80,10 +84,15 @@ class HttpRequest
             }
         }
         return $_SERVER;
-        
     }
 
-    public function session($name=null) 
+    /**
+     * Получает массив $_SESSION
+     *
+     * @param string|null $name
+     * @return array|bool
+     */
+    public function session($name = null)
     {
         if (!is_null($name)) {
             if (isset($_SESSION[$name])) {
@@ -93,10 +102,16 @@ class HttpRequest
             }
         }
         return $_SESSION;
-        
     }
-
-    public function setSession($name, $value) 
+    
+    /**
+     * Добавляет значение в массив $_SESSION
+     *
+     * @param string $name
+     * @param string $value
+     * @return void
+     */
+    public function setSession($name, $value)
     {
         $_SESSION[$name] = $value;
     }
@@ -104,12 +119,11 @@ class HttpRequest
     /**
      * Получает поток php
      *
-     * @return stream
+     * @return string
      */
     public function stream()
     {
         $stream = fopen('php://input', 'r');
         return $stream;
     }
-
 }

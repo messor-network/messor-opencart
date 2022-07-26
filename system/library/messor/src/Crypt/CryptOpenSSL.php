@@ -5,9 +5,15 @@ namespace src\Crypt;
 use src\Config\User;
 use src\Exception\CryptException;
 
+/**
+ *  Шифрование с использованием алгоритмов библиотеки OpenSSL
+ */
 class CryptOpenSSL implements iCrypt
 {
+    /** @var string Тип шифрования */
     private $typeCrypt;
+
+    /** @var string Ключ шифрования */
     private $encryptionKey;
 
     function __construct()
@@ -17,6 +23,7 @@ class CryptOpenSSL implements iCrypt
 
     }
 
+    /** @see iCrypt::Encrypt() */
     public function Encrypt($data)
     {
         $ivlen = openssl_cipher_iv_length($cipher=$this->getAlgCrypt());
@@ -26,6 +33,10 @@ class CryptOpenSSL implements iCrypt
         return base64_encode( $iv.$hmac.$ciphertext_raw );
     }
 
+    /** 
+     * @see iCrypt::Decrypt()
+     * @throws CryptException
+     */
     public function Decrypt($data)
     {
         $data = base64_decode($data);
@@ -36,7 +47,7 @@ class CryptOpenSSL implements iCrypt
         $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $this->encryptionKey, $options=OPENSSL_RAW_DATA, $iv);
         $calcmac = hash_hmac('sha256', $ciphertext_raw, $this->encryptionKey, $as_binary=true);
         try {
-            if (hash_equals($hmac, $calcmac)) { // с PHP 5.6+ сравнение, не подверженное атаке по времени
+            if (hash_equals($hmac, $calcmac)) {
                 return $original_plaintext;
             } else {
                 throw new CryptException();
@@ -46,6 +57,11 @@ class CryptOpenSSL implements iCrypt
         }
     }
 
+    /**
+     * Получить алгоритм шифрования доступный в OpenSSL
+     * 
+     * @return string
+     */
     public function getAlgCrypt() 
     {
         switch($this->typeCrypt) {

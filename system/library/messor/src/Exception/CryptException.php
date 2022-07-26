@@ -6,15 +6,24 @@ use src\Logger\Logger;
 use src\Utils\File;
 use src\Config\Path;
 
+/**
+ * Класс исключений шифрования
+ */
 class CryptException extends \Exception {
 
+    /**
+     * @param string $message
+     * @param integer $code
+     * @param \Exception|null $previous
+     */
     public function __construct($message="", $code = 0, \Exception $previous = null) 
     {    
         parent::__construct($message, $code, $previous);
     }
 
     /**
-     * Перехватывает исключение при ошибке decrypt
+     * Перехватывает исключение при невозможности дешифровать 
+     * полученные данные, записает в лог.
      *
      * @param [string] $string
      * @return void

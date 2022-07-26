@@ -2,8 +2,19 @@
 
 namespace src\Utils;
 
+/**
+ * Класс создания рандомных данных
+ */
 class Random 
 {
+    /**
+     * Создание рандомной строки
+     *
+     * @param int $min
+     * @param int $max
+     * @param string $available_sets
+     * @return string
+     */
     public static function Rand($min=5, $max=9, $available_sets = 'luds'){
         $length = rand($min, $max);
         $sets = array();

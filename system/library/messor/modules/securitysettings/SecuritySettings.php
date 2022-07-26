@@ -7,9 +7,9 @@ class SecuritySettings
     private $list;
     private $version;
 
-    public function __construct()
+    public function __construct($path)
     {
-        $mainDir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(dirname(DIR_APPLICATION)));
+        $mainDir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
         foreach ($mainDir as $item) {
             $this->list[] = $item->getRealPath();
         }
@@ -17,11 +17,11 @@ class SecuritySettings
     }
 
 
-    public function checkAdminPanel()
+    public function checkAdminPanel($fullPath, $adminPanelName)
     {
-        $check = explode('/', DIR_APPLICATION);
+        $check = explode('/', $fullPath);
         array_pop($check);
-        if (end($check) == 'admin') {
+        if (end($check) == $adminPanelName) {
             return true;
         } else {
             return false;
@@ -38,47 +38,15 @@ class SecuritySettings
         return false;
     }
 
-    public function getVersionOpencart() 
-    {
-        return $this->version;
-    }
-
-    public function checkLastVersionOpencart($versionCurrent)
-    {
-        $url = "https://github.com/opencart/opencart/releases/latest";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        $a = curl_exec($ch);
-        curl_close($ch);
-        $headers = explode("\n", $a);
-        foreach ($headers as $item) {
-            if (strpos($item, "location:") !== false) {
-                $match = trim(str_replace("Location:", "", $item));
-                $match = explode('/', $match);
-                $this->version = end($match);
-                break;
-            }
-        }
-        if ($versionCurrent != $this->version) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public function checkConfigPerms()
+    public function checkConfigPerms($name)
     {
         $result = false;
         $configPerms = array();
         foreach ($this->list as $item) {
             $path = explode('/', $item);
-            if (end($path) == 'config.php') {
+            if (end($path) == $name) {
                 $perms = substr(sprintf('%o', fileperms($item)), -4);
-                if ($perms != "0755") {
+                if ($perms != "0644") {
                     $result = true;
                 }
                 $configPerms[$item] = $perms;
@@ -87,19 +55,18 @@ class SecuritySettings
         return array($configPerms, $result);
     }
 
-    public function checkInstallDirectory()
+    public function checkInstallDirectory($pathInstall)
     {
-        $check = dirname(DIR_APPLICATION) . '/install';
-        if (is_dir($check)) {
+        if (is_dir($pathInstall)) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function checkDBPrefix($prefix)
+    public function checkDBPrefix($prefix, $prefixForCMS)
     {
-        if ($prefix == "oc_") {
+        if ($prefix == $prefixForCMS) {
             return true;
         } else {
             return false;

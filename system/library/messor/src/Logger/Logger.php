@@ -5,10 +5,13 @@ namespace src\Logger;
 use src\Request\HttpRequest;
 use src\Crypt\CryptPlain;
 
+/**
+ * Класс логированния
+ */
 class Logger 
 {
     /**
-     * Добавляет в лог время
+     * Возвращает текущее время
      *
      * @return string
      */
@@ -18,9 +21,9 @@ class Logger
     }
     
     /**
-     * Добавляет в лог IP адрес
+     * Возвращает IP адрес
      *
-     * @param [string] $ip
+     * @param string $ip
      * @return string
      */
     public static function addIP($ip)
@@ -33,9 +36,9 @@ class Logger
     }
 
     /**
-     * Добавляет в лог строку по которой пришёл запрос
+     * Возвращает закодированную Uri строку по которой пришёл запрос
      *
-     * @param [string] $requestUri
+     * @param string|null $requestUri
      * @return string
      */
     public static function addRequestUri($requestUri = null)
@@ -49,9 +52,9 @@ class Logger
     }
     
     /**
-     * Добавляет в лог User-Agent
+     * Возвращает закодированный User-Agent
      *
-     * @param [string] $userAgent
+     * @param string|null $userAgent
      * @return string
      */
     public static function addUserAgent($userAgent = null)
@@ -65,9 +68,9 @@ class Logger
     }
 
     /**
-     * Добавляет в лог post данные
+     * Возвращает закодированные post данные
      *
-     * @param [string] $post
+     * @param string|null $post
      * @return string
      */
     public static function addPost($post = null)
@@ -80,6 +83,12 @@ class Logger
         return $crypt->Encrypt(http_build_query($post));
     }
     
+    /**
+     *  Возвращает закодированные cookie данные
+     *
+     * @param string|null $cookie
+     * @return string
+     */
     public static function addCookie($cookie = null)
     {
         $http = new HttpRequest();
@@ -90,6 +99,12 @@ class Logger
         return $crypt->Encrypt(http_build_query($cookie));
     }
 
+    /**
+     * Возвращает закодированные get данные
+     *
+     * @param string|null $get
+     * @return string
+     */
     public static function addGet($get = null)
     {
         $http = new HttpRequest();

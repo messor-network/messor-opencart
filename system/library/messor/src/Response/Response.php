@@ -2,6 +2,9 @@
 
 namespace src\Response;
 
+/**
+ * Класс ответа от сервера
+ */
 class Response
 {
     private $rawResponse;
@@ -11,7 +14,13 @@ class Response
     private $responseRawData;
     private $responseData;
 
-    public function __construct($rawResponse, $crypt)
+    /**
+     * Инициализация
+     *
+     * @param string $rawResponse
+     * @param \src\Crypt\iCrypt $crypt
+     */
+    public function __construct($rawResponse, \src\Crypt\iCrypt $crypt)
     {
         $this->crypt = $crypt;
         $this->parseResponse($rawResponse);
@@ -20,8 +29,8 @@ class Response
     /**
      * Распарсивает строку ответа
      *
-     * @param [string] $rawResponse
-     * @return void
+     * @param string $rawResponse
+     * @return string
      */
     private function parseResponse($rawResponse)
     {
@@ -50,7 +59,7 @@ class Response
          $this->status = $responseHeader['status'];
          $this->versionServer = $responseHeader['server_version'];
 
-         if(isset($beginResponseData)) {
+         if(isset($beginResponseData) && isset($endResponse)) {
             for($i=$beginResponseData+1; $i!=$endResponse; $i++) {
                 $this->responseRawData .= $rawResponse[$i]."\n";
             }
@@ -58,6 +67,11 @@ class Response
         }
     }
 
+    /**
+     * Устанавливает в переменную статус ошибку
+     *
+     * @return void
+     */
     private function errorParseResponse() 
     {
         $this->status = 'Error parse response';
@@ -73,10 +87,11 @@ class Response
         return $this->status;
     }
 
-    /** Устанавливает статус ответа 
+    /**  
+     * Устанавливает статус ответа
      * 
      * @param string $status
-     * 
+     * @return void
     */
     public function setStatus($status)
     {
@@ -117,9 +132,9 @@ class Response
     }
 
     /**
-     * Получение распарсиных данных после *data*
+     * Получение распарсиваемых данных после *data*
      *
-     * @param [string] $data
+     * @param string|null $data
      * @return string|array
      */
     public function getResponseData($data=null)

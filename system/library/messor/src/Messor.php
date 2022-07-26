@@ -14,12 +14,15 @@ use src\Utils\Check;
 use src\Crypt\CryptPlain;
 use src\PageBlocked;
 
+/**
+ * Обнаружение злонамеренных атак
+ */
 class Messor
 {
     private static $crypt;
     private static $http;
-    private static $settings;
     private static $systemSettings;
+    private static $settings;
     private static $sync;
     private static $detectList;
     private static $white;
@@ -29,11 +32,21 @@ class Messor
     private static $ipBaseList;
     private static $isWhite;
     private static $route;
+    private static $pageNotFound;
 
+    /**
+     * Инициализация
+     *
+     * @return void
+     */
     public static function init()
     {
         self::$crypt = new CryptPlain();
         self::$http = new HttpRequest();
+        self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP');
+        if (!self::$remoteIp) {
+            self::$remoteIp = self::$http->server('REMOTE_ADDR');
+        }
         self::$settings = Parser::toArraySetting(File::read(Path::SETTINGS));
         self::$systemSettings = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
         self::$sync = Parser::toArrayTab(Parser::toArray(File::read(Path::SYNC_LIST)));
@@ -44,24 +57,33 @@ class Messor
     }
 
     /**
-     * Ппроверяет пришедший ip адрес на аттаку 
+     * Проверка IP адреса на аттаку, проверка осуществляется согласно
+     * включенных настроек в файле setting.txt
      *
-     * @param [string] $ip
+     * @param string $ip
+     * @param array  $disableDetect
+     * @param string   $route
+     * @param string|null $url
      * @return void
      */
-    public static function check($ip, $disableDetect, $route, $url = null)
+    public static function check($ip, $disableDetect, $pageNotFound, $route, $url = null)
     {
+        self::$pageNotFound = $pageNotFound;
         self::$route = $route;
         self::$url = $url;
         if (is_null($ip)) {
             if (self::$systemSettings['cloudflare'] == 1) {
-                self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP');
+                self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP'); 
                 if (!self::$remoteIp) {
                     self::$remoteIp = self::$http->server('REMOTE_ADDR');
                 }
             } else {
                 self::$remoteIp = self::$http->server('REMOTE_ADDR');
             }
+        }
+
+        if (self::$settings['block_agent_search_engines'] == 0) {
+            if (self::noBlockSearchEngine()) return;
         }
 
         if (self::$settings['block_ip'] == 1) {
@@ -118,11 +140,43 @@ class Messor
     }
 
     /**
+     * проверяет ip адрес и user-agent если
+     * принадлежит поисковому движку то пропускает
+     *
+     * @return bool
+     */
+    public static function noBlockSearchEngine()
+    {
+        $se_list = array(
+            'google'       => '\.(google|googlebot)\.com$',  
+            'yahoo'        => '\.yahoo\.',                   
+            'msn'          => '\.msn\.com$',                
+            'bing'         => '\.msn\.com$',                  
+            'yandex'       => '\.(yandex|yndx)\.(com|net)$', 
+            'baidu|bdbrow' => '\.baidu\.(com|jp)$',          
+            'mail.ru'      => '\.mail\.ru$'                  
+            );
+            $agent = strtolower(self::$http->server('HTTP_USER_AGENT'));
+            foreach($se_list as $sengin=>$regexp) {
+                if(preg_match('#' . $sengin . '#', $agent)) {
+                    if($host = gethostbyaddr(self::$remoteIp)) {
+                        $host = strtolower($host);
+                        if(preg_match('#' . $regexp . '#', $host)) {
+                            return true;
+                        }
+                    } 
+                }
+            }
+            return false;
+    }
+
+
+    /**
      * Проверяет пришедший запрос на валидный user-agent
      *
-     * @param [string] $type
-     * @param [string] $string
-     * @param [string] $agent
+     * @param string $type
+     * @param string $string
+     * @param string|null $agent
      * @return bool
      */
     public static function blockAgent($type, $string, $agent = null)
@@ -142,6 +196,13 @@ class Messor
         }
     }
 
+    /**
+     * Проверка IP адреса 
+     * на нахождение его в detect листе
+     * 
+     * @param string $string
+     * @return bool
+     */
     public static function blockDetect($string)
     {
         if (!is_null(self::$detectList)) {
@@ -162,7 +223,6 @@ class Messor
     /**
      * Ip aдреса из белого листа которые не должны блокироватся
      *
-     * @param [string] self::$remoteIp
      * @return bool
      */
     public static function noBlockIP()
@@ -177,6 +237,11 @@ class Messor
         }
     }
 
+    /** 
+     * Разблокированные IP адреса при включенной опции DDOS
+     * 
+     * @return bool
+     */
     public static function noBlockIPDdos()
     {
         if (!is_null(self::$white)) {
@@ -192,9 +257,8 @@ class Messor
      * Проверка Ip адреса на содержание его в базе или в блэк листе,
      * в случае нахождения блокировка
      *
-     * @param [array] $ipList
-     * @param [string] self::$remoteIp
-     * @param [string] $string
+     * @param array $ipList
+     * @param string $string
      * @return bool
      */
     public static function blockIp($ipList, $string)
@@ -227,8 +291,8 @@ class Messor
     /**
      * Блокировка по совпадению частей запроса
      *
-     * @param [string] $type
-     * @param [string] $string
+     * @param array $type
+     * @param string $string
      * @return bool
      */
     public static function blockRequest($type, $string)
@@ -250,10 +314,13 @@ class Messor
         }
     }
 
+   
     /**
-     * Проверка Path
+     * Проверка URI на совпадение с запросом
      *
-     * @return void
+     * @param string $string
+     * @param array $disableDetect
+     * @return bool
      */
     public static function blockPath($string, $disableDetect)
     {
@@ -273,6 +340,12 @@ class Messor
         }
     }
 
+    /**
+     * Проверка на IP адреса в списке
+     * разрешённых адресов
+     *
+     * @return bool
+     */
     public static function isWhite()
     {
         $response = false;
@@ -307,7 +380,7 @@ class Messor
         switch (self::$settings['lock']) {
             default:
             case "error":
-                PageBlocked::codeError('error/not_found');
+                PageBlocked::codeError(self::$pageNotFound);
                 die;
                 break;
 
@@ -328,7 +401,15 @@ class Messor
         }
         return true;
     }
-
+    
+    /**
+     * Подсчёт попадания адреса в detect лист, при
+     * количестве детектов больше указаного в settings.txt
+     * IP адрес блокируется
+     *
+     * @throws FileException
+     * @return void
+     */
     public static function detectCount()
     {
         if (!is_null(self::$detectList)) {
@@ -347,12 +428,19 @@ class Messor
         } catch (FileException $e) {
             $e->writeError("Error write to file " . Path::DETECT_LIST . " please check your configuration file.");
         }
-        // Выше парога
         if (self::$detectList[self::$remoteIp] >= self::$settings['block_detect_count']) {
             self::block();
         }
     }
 
+    /**
+     * Логирование атак
+     *
+     * @param string $type
+     * @param string $file
+     * @throws FileException
+     * @return void
+     */
     public static function logger($type, $file)
     {
         $data = '';

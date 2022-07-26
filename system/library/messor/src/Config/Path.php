@@ -2,11 +2,15 @@
 
 namespace src\Config;
 
+/**
+ * Константы messor
+ */
 class Path
 {
     const USERCONF = BASE_PATH . "/data/config.txt";
-    const VERSION = "1.1.0";
+    const VERSION = "2.0";
     const VERSION_BD = BASE_PATH . "/data/version.txt";
+    const LICENSE = BASE_PATH . "/data/license.txt";
     const UPDATE  = BASE_PATH . "/data/update.txt";
     const SERVERS = BASE_PATH . "/data/servers.txt";
     const SPEED_SERVERS = BASE_PATH . "/data/speed_servers.txt";

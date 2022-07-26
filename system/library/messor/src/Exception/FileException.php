@@ -6,17 +6,25 @@ use src\Logger\Logger;
 use src\Utils\File;
 use src\Config\Path;
 
+/**
+ * Класс исключений при работе с файлами
+ */
 class FileException extends \Exception {
 
+    /**
+     * @param string $message
+     * @param integer $code
+     * @param \Exception|null $previous
+     */
     public function __construct($message="", $code = 0, \Exception $previous = null) 
     {    
         parent::__construct($message, $code, $previous);
     }
 
     /**
-     * Ошибка чтение файла
+     * Исключение чтение файла 
      *
-     * @param [string] $string
+     * @param string $string
      * @return void
      */
     public function readError($string) 
@@ -28,7 +36,7 @@ class FileException extends \Exception {
     /**
      * Ошибка записи в файл
      *
-     * @param [string] $string
+     * @param string $string
      * @return void
      */
     public function writeError($string) 

@@ -7,6 +7,9 @@ use src\Config\Path;
 use src\Utils\Parser;
 use src\Crypt\iCrypt;
 
+/**
+ * Формирует запрос к серверу для отправки данных
+ */
 class Request
 {
     private $server;
@@ -16,6 +19,7 @@ class Request
     private $type;
     private $request;
 
+    /** @param string $server */
     public function __construct($server)
     {
         $this->server = $server;
@@ -23,9 +27,9 @@ class Request
     }
 
     /**
-     * Отправка данных на сервер
+     * Отправка данные одним из методов
      *
-     * @return void
+     * @return mixed
      */
     public function send()
     {
@@ -34,11 +38,6 @@ class Request
         } else {
             return $this->GetContentRequest();
         }
-    }
-
-    public function setRequest($request = null)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -55,7 +54,7 @@ class Request
     /**
      * Установка данных header для отправки на сервер
      *
-     * @param [string] $header
+     * @param string $header
      * @return void
      */
     public function setHeader($header)
@@ -80,7 +79,7 @@ class Request
     /**
      * Установка сервера на который будут переданы данные
      *
-     * @param [string] $server
+     * @param string $server
      * @return void
      */
     public function setServer($server)
@@ -102,7 +101,7 @@ class Request
     /**
      * Получает тип шифрования
      *
-     * @return void
+     * @return iCrypt
      */
     public function getCrypt()
     {
@@ -112,7 +111,7 @@ class Request
     /**
      * Отправка с помощью Curl
      *
-     * @return void
+     * @return string|bool
      */
     private function CurlRequest()
     {
@@ -137,7 +136,7 @@ class Request
     /**
      * Отправка через file_get_contents
      *
-     * @return void
+     * @return string
      */
     private function GetContentRequest()
     {
@@ -152,7 +151,6 @@ class Request
         );
 
         $context  = stream_context_create($opts);
-        // @ dirt huk=)
         $content = file_get_contents($this->server, false, $context);
         return $content;
     }

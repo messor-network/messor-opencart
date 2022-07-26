@@ -1,93 +1,68 @@
 <?php
 
+use main\Adapter;
+use messor\cms\Opencart;
 use messor\Autoloader;
-use messor\MessorLib;
 use src\Config\Path;
-use src\Utils\Parser;
 use src\Utils\File;
-use src\Utils\Random;
 use src\Request\HttpRequest;
 use src\Request\Client\Client;
 
 class ControllerExtensionModuleMessor extends Controller
 {
+    use Opencart;
+
     private $MessorLib;
+    private $adapter;
 
     public function __construct($registry)
     {
         parent::__construct($registry);
         $this->load->library('messor/Autoloader');
-        $this->load->library('messor/MessorLib');
-        $this->MessorLib = new MessorLib($this->registry);
+        $this->adapter = new Adapter();
     }
 
     public function alertMessor()
     {
-        if (isset($this->request->get['route'])) {
-            if ($this->request->get['route'] == "extension/module/messor/requestToPeer") {
-                return;
-            }
+        if ($this->getRoute() == $this->pathToPeer) {
+            return;
         }
-        $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
-        $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
-        if ($this->MessorLib->checkUpdateDay($hour = 24, PATH::SETTINGS)) {
-            $setting['js_salt'] = Random::Rand(7, 12);
-            $string = '';
-            $string .= $setting['js_salt'];
-            File::clear(PATH::SETTINGS);
-            File::write(PATH::SETTINGS, Parser::toSettingArray($setting));
+        $setting = $this->adapter->MessorLib->getSetting();
+        $systemSetting = $this->adapter->MessorLib->getSystemSetting();
+        if ($this->adapter->MessorLib->checkUpdateDay($hour = 24, PATH::SETTINGS)) {
+            $this->adapter->MessorLib->saveSetting($setting);
+        }
+
+        if ($systemSetting['cloudflare'] == 1) {
+            $ip = $this->adapter->MessorLib->getIP(true);
+        } else {
+            $ip = $this->adapter->MessorLib->getIP();
         }
 
         if ($setting['lock'] == "js_unlock") {
-            $http = new HttpRequest();
-            if ($systemSetting['cloudflare'] == 1) {
-                $ip = $http->server('HTTP_CF_CONNECTING_IP');
-                if (!$ip) {
-                    $ip = $http->server('REMOTE_ADDR');
-                }
-            } else {
-                $ip = $http->server('REMOTE_ADDR');
-            }
-            if (!file_exists(PATH::IPHASH . $ip)) {
-                $string = '';
-                $string .= $ip . $setting['js_salt'];
-                $hash = hash('sha256', $string);
-                File::write(PATH::IPHASH . $ip, $hash);
+            if (!$this->adapter->MessorLib->existHashIP($ip)) {
+                $this->adapter->MessorLib->addHashIP($ip, $setting['js_salt']);
             }
         }
 
-        if ($this->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
-            $files = scandir(PATH::IPHASH);
-            foreach ($files as $file) {
-                if (!is_dir($file)) {
-                    unlink(PATH::IPHASH . $file);
-                }
-            }
-            $this->MessorLib->deleteScoresDetect();
-            Client::init();
-            Client::update();
+        if ($this->adapter->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
+            $this->adapter->MessorLib->deleteAllHashIP();
+            $this->adapter->MessorLib->deleteScoresDetect();
+            $this->adapter->MessorLib->updateClient();
             File::clear(PATH::DAY);
         }
 
         if (isset($this->request->get['status']) && $this->request->get['status'] == 'redirect') {
             return;
         }
-        $url = $this->url->link('extension/module/messor/hashJs');
-        if (isset($this->request->get['route'])) {
-            $route = 'default_route=' . $this->request->get['route'];
-        } else {
-            $route = 'default_route=common/home';
-        }
-        if (isset($this->request->get['path'])) {
-            $route .= '&path=' . $this->request->get['path'];
-        }
-        if (isset($this->request->get['product_id'])) {
-            $route .= '&product_id=' . $this->request->get['product_id'];
-        }
+
+        $route = $this->getUrlLink('hashJs', null, false);
+        $url = $this->defaultRoute();
         static $flag = '';
-        if (!(isset($this->request->get['route']) && $this->request->get['route'] == "extension/module/messor/hashJs")) {
+        $resp = $this->getRoute();
+        if (!(isset($resp) && $resp == "extension/module/messor/hashJs")) {
             if (!$flag) {
-                $this->MessorLib->check($ip = null, $disableDetect = array('path'), $route, $url);
+                $this->adapter->MessorLib->check($ip = null, $disableDetect = array('path'), $this->notFound(), $route, $url);
                 $flag = true;
             }
         }
@@ -95,75 +70,44 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function detect()
     {
-        $setting = Parser::toArraySetting(File::read(PATH::SETTINGS));
-        $systemSetting = Parser::toArraySetting(File::read(PATH::SYSTEM_SETTINGS));
+        $setting = $this->adapter->MessorLib->getSetting();
+        $systemSetting = $this->adapter->MessorLib->getSystemSetting();
         $http = new HttpRequest();
 
+        
         if ($systemSetting['cloudflare'] == 1) {
-            $ip = $http->server('HTTP_CF_CONNECTING_IP');
-            if (!$ip) {
-                $ip = $http->server('REMOTE_ADDR');
-            }
-        } else {
-            $ip = $http->server('REMOTE_ADDR');
+            $ip = $this->adapter->MessorLib->getIP(true);
+        } else  {
+            $ip = $this->adapter->MessorLib->getIP(false);
         }
-        if ($setting['lock'] == "js_unlock") {
-            $http = new HttpRequest();
-            if (!file_exists(PATH::IPHASH . $ip)) {
-                $string = '';
-                $string .= $ip . $setting['js_salt'];
-                $hash = hash('sha256', $string);
-                File::write(PATH::IPHASH . $ip, $hash);
+
+         if ($setting['lock'] == "js_unlock") {
+            if (!$this->adapter->MessorLib->existHashIP($ip)) {
+                $this->adapter->MessorLib->addHashIP($ip, $setting['js_salt']);
             }
         }
 
-        if ($this->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
-            $files = scandir(PATH::IPHASH);
-            foreach ($files as $file) {
-                if (!is_dir($file)) {
-                    unlink(PATH::IPHASH . $file);
-                }
-            }
-            $this->MessorLib->deleteScoresDetect();
-            Client::init();
-            Client::update();
+        if ($this->adapter->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
+            $this->adapter->MessorLib->deleteAllHashIP();
+            $this->adapter->MessorLib->deleteScoresDetect();
+            $this->adapter->MessorLib->updateClient();
             File::clear(PATH::DAY);
         }
 
         if (isset($this->request->get['status']) && $this->request->get['status'] == 'redirect') {
             return;
         }
-        $url = $this->url->link('extension/module/messor/hashJs');
-        if (isset($this->request->get['route'])) {
-            $route = 'default_route=' . $this->request->get['route'];
-        } else {
-            $route = 'default_route=common/home';
-        }
-        if (isset($this->request->get['path'])) {
-            $route .= '&path=' . $this->request->get['path'];
-        }
-        if (isset($this->request->get['product_id'])) {
-            $route .= '&product_id=' . $this->request->get['product_id'];
-        }
-        if (isset($this->request->get['_route_'])) {
-            $check = pathinfo($this->request->get['_route_']);
-            $list = array('svg', 'jpg', 'jpeg', 'png', 'webp', 'gif', 'woff', 'ttf', 'eot', 'woff2', 'css', 'js');
-            if (isset($check['extension']) && in_array(strtolower($check['extension']), $list)) {
-                return;
-            }
-        }
-        if (isset($this->request->get['route'])) {
-            $check = pathinfo($this->request->get['route']);
-            $list = array('svg', 'jpg', 'jpeg', 'png', 'webp', 'gif', 'woff', 'ttf', 'eot', 'woff2', 'css', 'js');
 
-            if (isset($check['extension']) && in_array(strtolower($check['extension']), $list)) {
-                return;
-            }
-        }
+        $route = $this->getUrlLink('hashJs', null, false);
+        $url = $this->defaultRoute();
+
+        if ($this->isImage) return;
+        
         static $flag = '';
-        if (!(isset($this->request->get['route']) && $this->request->get['route'] == "extension/module/messor/hashJs")) {
+        $resp = $this->getRoute();
+        if (!(isset($resp) && $resp == "extension/module/messor/hashJs")) {
             if (!$flag) {
-                $this->MessorLib->check($ip = null, $disableDetect = array(), $route, $url);
+                $this->adapter->MessorLib->check($ip = null, $disableDetect = array(), $this->notFound(), $route, $url);
                 $flag = true;
             }
         }
@@ -171,27 +115,21 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function requestToPeer()
     {
-        $key = $this->request->get['key'];
-        $this->MessorLib->requestToPeer($key);
+        $key = $this->getRequestGet('key');
+        $this->adapter->MessorLib->requestToPeer($key);
     }
 
     public function hashJs()
     {
-        $route = $this->request->get['default_route'];
-        if ($route == '') $route = "common/home";
-        if (isset($this->request->get['path'])) {
-            $route .= '&path=' . $this->request->get['path'];
-        }
-        if (isset($this->request->get['product_id'])) {
-            $route .= '&product_id=' . $this->request->get['product_id'];
-        }
-        if (isset($this->request->get['key'])) {
-            $key = $this->request->get['key'];
+        $route = $this->getRequestGet('default_route');                                                                                                                                                                                                                                   
+        $route = $this->defaultRoute(false);
+        if ($this->getRequestGet('key') !== null ) {
+            $key = $this->getRequestGet('key');
         } else {
             die;
         }
-        if ($this->MessorLib->hashJs($key)) {
-            $this->response->redirect($this->url->link($route));
-        };
+        if ($this->adapter->MessorLib->hashJs($key)) {
+            $this->redirect($route);
+        }
     }
 }

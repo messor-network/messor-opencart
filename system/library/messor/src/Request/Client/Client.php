@@ -12,6 +12,10 @@ use src\Exception\ServerException;
 use src\Request\Client\Server;
 use src\Utils\Parser;
 
+/**
+ * Класс синхронизирует инфромацию между
+ * клиентом и сервером
+ */
 class Client
 {
     private $version;
@@ -22,7 +26,13 @@ class Client
     private static $peer;
     private static $peerToPeer;
     private static $database;
+    private static $res;
 
+    /**
+     * Инициализация 
+     *
+     * @return void
+     */
     public static function init()
     {
         self::$log = '';
@@ -32,32 +42,51 @@ class Client
     }
 
     /**
-     * Запуск клиента
+     * Запуск синхронизации
      *
-     * @return void
+     * @return array
      */
     public static function start()
     {
+        self::$res = false;
         $date = date("d.m.y H:i", (int) microtime());
         $start = microtime(true);
-        self::$servers->checkServerFile($date);
+        self::$res = self::$servers->checkServerFile($date);
+        if(!self::$res) return false;
         $responseList = self::$servers->checkServerStatus(self::$peer);
+        if(!$responseList) return false;
         self::$servers->displayServerStatus();
         $trustServer = self::$servers->checkTrustServer($responseList);
+        if(!$trustServer) return false;
         self::getPeerInfo($trustServer, self::$peer);
         self::$log .= self::$servers->updateServerList($trustServer, self::$peer);
         self::upgradeClient($trustServer, self::$peer);
         self::synchronization(self::$servers, self::$peer);
         self::$database = new Database($trustServer, self::$servers, self::$peerToPeer, self::$peer, self::$log);
-        self::$log .= self::$database->updateDatabase($start);
+        list(self::$res, $log) = self::$database->updateDatabase($start);
+        self::$log .= $log;
+        return self::$res;
     }
 
+    /**
+     * Запуск синхронизации с записью логов
+     *
+     * @return mixed
+     */
     public static function update()
     {
         self::start();
         File::write(Path::SYNC_LOG, self::$log);
+        return self::$res;
     }
 
+    /**
+     * Изменяет ключ пира для взаимодействия между пирами
+     *
+     * @param array $trustServer
+     * @param toServer $peer
+     * @return void
+     */
     public static function changePeerKey($trustServer, toServer $peer)
     {
         $peer->request->setServer($trustServer['server_url']);
@@ -68,6 +97,13 @@ class Client
         File::write(Path::INFO, Parser::toSettingArray($info));
     }
 
+    /**
+     * Обновление информации о пире
+     *
+     * @param array $trustServer
+     * @param toServer $peer
+     * @return void
+     */
     public static function getPeerInfo($trustServer, toServer $peer)
     {
         $peer->request->setServer($trustServer['server_url']);
@@ -82,7 +118,7 @@ class Client
     /**
      * Проверка версии клиента
      *
-     * @param [array] $trustServer
+     * @param array $trustServer
      * @param toServer $peer
      * @return void
      */
@@ -116,6 +152,8 @@ class Client
      *
      * @param Response $servers
      * @param toServer $peer
+     * @throws ServerException
+     * @throws FileExceprion
      * @return void
      */
     private static function synchronization($servers, toServer $peer)

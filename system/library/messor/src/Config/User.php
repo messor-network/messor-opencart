@@ -6,6 +6,9 @@ use src\Utils\File;
 use src\Utils\Parser;
 use src\Config\Path;
 
+/**
+ * Данные пользователя в сети messor
+ */
 class User
 {
     public static $networkID;
@@ -18,7 +21,7 @@ class User
     public static $userAgent;
 
     /**
-     * Инициализирует данные клиента
+     * Инициализация данных пользователя
      *
      * @return void
      */

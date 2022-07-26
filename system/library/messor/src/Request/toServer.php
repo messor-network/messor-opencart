@@ -11,12 +11,19 @@ use src\Config\User;
 use src\Utils\File;
 use src\Request\HttpRequest;
 
+/**
+ * Отправка запросов к серверу Messor
+ */
 class toServer
 {
-
+    /** @var Request */
     public $request;
+    /** @var HttpRequest */
     private $http;
+    /** @var \src\Crypt\iCrypt */
+    private $cryptEncrypt;
 
+    /** @param string $server */
     public function __construct($server)
     {
         $this->http = new HttpRequest();
@@ -31,7 +38,6 @@ class toServer
     /**
      * Получение статуса пира
      *
-     * 
      * @return Response
      */
     public function status()
@@ -80,12 +86,12 @@ class toServer
     }
 
     /**
-     * Посылка сообщения на сервер, для дебага
+     * Отправка echo сообщения на сервер
      *
-     * @param [string] $message
+     * @param string $message
      * @return Response
      */
-    public function echo($message)
+    public function echoReq($message)
     {
         $header = array(
             'action'           => 'peer_echo',
@@ -155,7 +161,7 @@ class toServer
     /**
      * Верификация пира на сервере
      *
-     * @param [string] $data
+     * @param string $data
      * @return Response
      */
     public function verify($data)
@@ -177,8 +183,8 @@ class toServer
     /**
      * Изменение информации о пире на сервере
      *
-     * @param [string] $key
-     * @param [string] $value
+     * @param string $key
+     * @param string $value
      * @return Response
      */
     public function editData($key, $value)
@@ -210,6 +216,21 @@ class toServer
     {
         $header = array(
             'action'           => 'peer_info',
+            'client_version'   => Path::VERSION,
+            'network_id'       => USER::$networkID,
+            'network_password' => USER::$networkPassword,
+        );
+        $this->request->setHeader($header);
+        $this->request->setCrypt($this->cryptEncrypt);
+        $this->request->formatForSend();
+        $this->response = $this->request->send();
+        return new Response($this->response, $this->request->getCrypt());
+    }
+
+    public function peerOptions()
+    {
+        $header = array(
+            'action'           => 'peer_options',
             'client_version'   => Path::VERSION,
             'network_id'       => USER::$networkID,
             'network_password' => USER::$networkPassword,
@@ -282,7 +303,7 @@ class toServer
     /**
      * Получение листа с пирами
      *
-     * @param [string] $database
+     * @param string $database
      * @return Response
      */
     public function getPeerList($database)
@@ -307,7 +328,7 @@ class toServer
     /**
      * Получение базы ip адресов
      *
-     * @param [string] $database
+     * @param string $database
      * @return Response
      */
     public function getDatabase($database)
@@ -332,7 +353,6 @@ class toServer
     /**
      * отправка ping на сервер
      *
-     * 
      * @return Response
      */
     public function ping()
@@ -351,7 +371,6 @@ class toServer
     /**
      * авторизация на сервере
      *
-     * 
      * @return Response
      */
     public function auth()
@@ -373,6 +392,11 @@ class toServer
         return new Response($this->response, $this->request->getCrypt());
     }
 
+    /**
+     * Получение текущей весрии сигнатур для Malware Cleaner
+     * 
+     * @return Response
+     */
     public function peerSignVersion()
     {
         $header = array(
@@ -388,6 +412,11 @@ class toServer
         return new Response($this->response, $this->request->getCrypt());
     }
 
+    /**
+     * Обновление до последней версии сигнатур Malware Cleaner
+     *
+     * @return Response
+     */
     public function peerSignVersionUpgrade()
     {
         $header = array(
@@ -403,6 +432,11 @@ class toServer
         return new Response($this->response, $this->request->getCrypt());
     }
 
+    /**
+     * Смена ключа пира, используется при межпировом взаимодействии
+     *
+     * @return Response
+     */
     public function peerChangeKey()
     {
         $header = array(

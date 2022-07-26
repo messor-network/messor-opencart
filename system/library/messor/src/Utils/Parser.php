@@ -6,12 +6,15 @@ use src\Exception\FileException;
 use src\Config\Path;
 use src\Utils\File;
 
+/**
+ * Класс парсинга для messor
+ */
 class Parser
 {
     /**
      * Массив в строку
      *
-     * @param [array] $data
+     * @param array $data
      * @return string
      */
     static function toStringURL($data)
@@ -19,16 +22,16 @@ class Parser
         $string = '';
         foreach ($data as $key => $value) {
             $key = trim($key);
-            $value = trim($value);
-            $string .= $key . '=' . urlencode($value) . "\n";
+            $value = isset($value) ? urlencode(trim($value)) : null;
+            $string .= $key . '=' . $value . "\n";
         }
         return $string;
     }
 
     /**
-     *  Разбивает строку на массив по табуляции
+     *  Строку в массив, разделитель "\t"
      *
-     * @param [string|array] $data
+     * @param string|array $data
      * @return array
      */
     static function toArrayTab($data)
@@ -41,6 +44,12 @@ class Parser
         return $dataArray;
     }
 
+    /**
+     * Массив в строку, разделитель "\t"
+     *
+     * @param string|array $data
+     * @return array
+     */
     static function toStringTab($data)
     {
         foreach ($data as &$line) {
@@ -51,9 +60,9 @@ class Parser
     }
 
     /**
-     * Строка в массив по переводу строки
+     * Строка в массив, разделитель "\n"
      *
-     * @param [string] $data
+     * @param string $data
      * @return array
      */
     static function toArray($data)
@@ -62,6 +71,12 @@ class Parser
         return $dataArray;
     }
 
+    /**
+     * Массив в строку, разделитель "\n"
+     *
+     * @param array $data
+     * @return string
+     */
     static function toString($data)
     {
         $string = '';
@@ -75,7 +90,7 @@ class Parser
     /**
      * Строку в массив, разделитель "="
      *
-     * @param [string] $data
+     * @param string $data
      * @return array
      */
     static function toArraySetting($data)
@@ -84,7 +99,8 @@ class Parser
         foreach ($data as $line) {
             $line = explode("=", $line);
             if (!empty($line[0])) {
-                $request[trim($line[0])] = urldecode(trim($line[1]));
+                $line[1] = isset($line[1]) ? urldecode(trim($line[1])) : null;
+                $request[trim($line[0])] = $line[1];
             }
         }
         if (isset($request)) {
@@ -95,8 +111,8 @@ class Parser
     /**
      * Массив в строку, разделитель "="
      *
-     * @param [string] $data
-     * @return array
+     * @param array $data
+     * @return string
      */
     static function toSettingArray($data)
     {
@@ -129,7 +145,6 @@ class Parser
     /**
      * Распаковывает базу данных в дерево с ip адресами
      * 
-     *
      * @param string $database
      * @return void
      */
@@ -137,7 +152,7 @@ class Parser
     {
         try {
             if (file_exists($database)) {
-                $file = file($database);  // с PHP 5.6+ сравнение, не подверженное атаке по времени
+                $file = file($database);
                 /*
                 0 database version and info
                 1 regularExp for block UserAgent (base64)

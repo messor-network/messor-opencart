@@ -8,6 +8,9 @@ use src\Utils\File;
 use src\Config\Path;
 use src\Utils\Parser;
 
+/**
+ * Класс для работы с базой Messor
+ */
 class Database
 {
     private $trustServer;
@@ -16,7 +19,16 @@ class Database
     private $peer;
     private $log;
 
-    public function __construct($trustServer, $servers, toPeer $peerToPeer, toServer $peer, $log)
+    /**
+     * Инициализация
+     *
+     * @param array $trustServer
+     * @param Server $servers
+     * @param toPeer $peerToPeer
+     * @param toServer $peer
+     * @param string $log
+     */
+    public function __construct($trustServer, Server $servers, toPeer $peerToPeer, toServer $peer, $log)
     {
         $this->trustServer = $trustServer;
         $this->servers = $servers;
@@ -28,10 +40,12 @@ class Database
     /**
      * Проверяет версию базы данных и при наличие новой обновляет
      *
-     * @return void
+     * @param string|float $start
+     * @return array
      */
     public function updateDatabase($start)
     {
+        $res = true;
         $validVersion = $this->trustServer['database_version'];
         $serverUrl = $this->trustServer['server_url'];
         $version = File::read(Path::VERSION_BD);
@@ -51,10 +65,11 @@ class Database
             if (File::write($filePathDatabase, $newDatabase['database'])) {
                 $this->log .= " Save database at: $filePathDatabase\n";
             } else {
+                $res = false;
                 $this->log .= "Fatal error - update aborted!\n";
                 $this->log .= "Error: save database at: $filePathDatabase\n";
                 $this->log .= "Check permission on folder " . Path::PATH_DATABASE . "\n";
-                return;
+                return array($res, $this->log);
             }
             if ($this->checkSumHash($validVersion, $filePathDatabase)) {
                 $this->unpackOtherFormat();
@@ -65,6 +80,7 @@ class Database
                 $this->log .= " Update database aborted.\n";
                 $this->log .= " Remove broken database $filePathDatabase\n";
                 unlink($filePathDatabase);
+                return array($res, $this->log);
             }
         } else {
             $this->log .= "You have last version of database: $version\n";
@@ -74,19 +90,20 @@ class Database
         $this->log .=  "[*] End work, worked time " . round($result, 2) . " second\n\n\n";
         File::clear(Path::SYNC_LAST);
         File::write(Path::SYNC_LAST, time());
-        return $this->log;
+        return array($res, $this->log);
     }
 
     /**
-     * Получает пиры у которых есть нужная версия базы
+     * Получает пиров, у которых есть нужная версия базы
      *
-     * @param [string] $validVersion
+     * @param string $validVersion
+     * @param string $serverUrl
      * @return array
      */
     private function getPeerIsDatabase($validVersion, $serverUrl)
     {
         $downloadLinks = array();
-        $this->log .= " Get peer list from: {$serverUrl}\t";
+        $this->log .= "Get peer list from: {$serverUrl}\t";
         $response = $this->peer->getPeerList($validVersion);
         if ($response) {
             if ($response->getStatus() == 'ok') {
@@ -107,15 +124,17 @@ class Database
         shuffle($downloadLinks);
 
         $savedPeerList = Parser::toArray(File::read(Path::PEERS));
+        if (!empty($savedPeerList[0])) {
+            foreach ($savedPeerList as $item) {
+                $peer = substr($item, 0, strpos($item, '/', 8));
+                $newSavePeerList[$peer] = $item;
+            }
+        }
         foreach ($downloadLinks as $item) {
             $peer = substr($item, 0, strpos($item, '/', 8));
             $newDownloadLinks[$peer] = $item;
         }
-        foreach ($savedPeerList as $item) {
-            $peer = substr($item, 0, strpos($item, '/', 8));
-            $newSavePeerList[$peer] = $item;
-        }
-        $mergeList = $newDownloadLinks + $newSavePeerList;
+        $mergeList = isset($newSavePeerList) ? $newDownloadLinks + $newSavePeerList : $newDownloadLinks;
         $savedPeerList = [];
         foreach ($mergeList as $value) {
             $savedPeerList[] = $value;
@@ -137,9 +156,9 @@ class Database
     /**
      * Получение пира или сервера для отправки
      *
-     * @param [array] $downloadLinks
-     * @param [string] $validVersion
-     * @return void
+     * @param array  $downloadLinks
+     * @param string  $validVersion
+     * @return array|null
      */
     private function getPeerForSend($downloadLinks, $validVersion)
     {
@@ -171,8 +190,8 @@ class Database
     /**
      * Проверка чек суммы пришедшей базы и версии хранящейся у пира или сервера
      *
-     * @param [string] $validVersion
-     * @param [string] $filePathDatabase
+     * @param string $validVersion
+     * @param string $filePathDatabase
      * @return bool
      */
     private function checkSumHash($validVersion, $filePathDatabase)
@@ -215,7 +234,7 @@ class Database
     /**
      * Удаление старой базы
      *
-     * @param [string] $version
+     * @param string $version
      * @return void
      */
     private function deleteOldDatabase($version)

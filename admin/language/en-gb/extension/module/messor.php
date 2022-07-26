@@ -4,13 +4,22 @@
 $_['heading_title']                 = 'Messor Security';
 $_['name_left_column']              = 'Security';
 
+
 // window modal
 
+$_['subscription_license']            = 'License';
+$_['subscription_license_accept']           = 'Accept';
+$_['directory_is_not_writable']             = 'Directory is not writable';
+$_['file_clean']                            = 'The file size is more than 3 megabytes, it can slow down the work';
+$_['preloader_text']                        = 'Loading';
 $_['error_save_settings']                   = 'Error, check write permissions';
 $_['save_settings']                         = 'Settings saved';
 $_['system_settings_cloudflare_on']         = 'Warning, Messor has detected that you have CloudFlare enabled. For Collaboration CloudFlare support option included.';
 $_['system_settings_cloudflare_off']        = 'Attention, Messor has determined that you have stopped using CloudFlare. However, you have the compatibility option enabled. If you are not using CloudFlare, disable this option!.';
 $_['system_settings_cloudflare_disabled']   = 'Disable';
+$_['notice_not_all_fields_filled']          = 'Not all fields are filled';
+$_['enter_ip_adress']                       = 'Enter IP address';
+
 
 // Peer Info
 
@@ -38,7 +47,11 @@ $_['mod_trust_sms']            = 'Send confirm SMS';
 $_['mod_trust_phone_call']     = 'Phone call';
 $_['mod_trust_call']           = 'Confirm call';
 $_['mod_trust_about']          = 'Confirm call';
+$_['mod_trust_about_request']  = 'Request verification of documents';
 $_['mod_trust_confirmed']      = 'Confirmed';
+$_['mod_trust_check']          = 'Check';
+$_['mod_trust_wait']           = 'Wait';
+$_['mod_trust_confirm_call']   = 'Request a call back';
 
 // Server list
 
@@ -145,6 +158,10 @@ $_['block_last_detect_time']        = 'Time';
 $_['block_last_detect_path']        = 'Path';
 $_['block_last_detect_remove']      = 'Remove';
 $_['block_last_detect_more']        = 'More';
+$_['block_last_detect_action']      = 'Action';
+$_['block_last_detect_days']        = 'Days';
+$_['block_last_detect_search']      = 'Search IP';
+$_['block_last_detect_adress']      = 'IP address';
 
 // button
 
@@ -221,6 +238,7 @@ $_['mcl_i_error_open']                = 'Files that could not be opened';
 
 // main
 
+$_['fsc_max_detected']                 = 'The maximum number of detections after which a file is considered malicious';
 $_['fsc_prev_make_fs']                 = 'Make snapshot';
 $_['fsc_description']                  = 'Create a snapshot of the file system';
 $_['fsc_make_fs']                      = 'Make FS Shot';
@@ -230,11 +248,13 @@ $_['fsc_setting_exclude_scan_file']    = 'Exclude scan file';
 
 //result 
 
+$_['fsc_one_shot']                     = 'Congratulations! You made the first snapshot';
 $_['fsc_changed_files_found']          = 'Changed files found';
 $_['fsc_changed_files_no_found']       = 'Changed files no found';
 $_['fsc_checked']                      = 'Checked';
 $_['fsc_changed']                      = 'Changed';
 $_['fsc_new']                          = 'New';
+$_['fsc_remove']                       = 'Remove';
 $_['fsc_removed']                      = 'Removed';
 $_['fsc_excluded']                     = 'Exlcuded';
 $_['fsc_date']                         = 'date';
@@ -267,7 +287,7 @@ $_['backup_file_name']                 = 'File name';
 $_['backup_pack']                      = 'Pack';
 $_['backup_settings']                  = 'Backup settings';
 $_['backup_select_table']              = 'Select table';
-$_['backup_i_select_table']            = 'select the database tables to be in the dump';
+$_['backup_i_select_table']            = 'Select the tables whose contents will be dumped';
 $_['backup_select_all']                = 'Select all';
 $_['backup_remove_select']             = 'Remove selection';
 $_['backup_action']                    = 'Action';
@@ -275,6 +295,7 @@ $_['backup_download']                  = 'Download';
 $_['backup_send_of_email']             = 'Send of email';
 $_['backup_send_of_messor']            = 'Send of Messor server';
 $_['backup_save_on_server']            = 'Save on server';
+$_['backup_exclude_directory']         = 'Exclude directories from backup';
 
 /* File system check */
 
@@ -368,6 +389,9 @@ $_['placehold_random']                = 'Enter any symbols to generate keys';
 
 $_['btn_close']                = 'Close';
 $_['btn_save']                 = 'Save';
+$_['btn_send']                 = 'Send';
+$_['btn_delete']               = 'Delete';
+$_['btn_add_ip']               = 'Add IP';
 
 // link 
 

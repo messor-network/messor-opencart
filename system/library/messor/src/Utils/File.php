@@ -2,13 +2,16 @@
 
 namespace src\Utils;
 
+/**
+ * Класс для операций с файлами
+ */
 class File
 {
     /**
      * Запись в файл
      *
-     * @param [string] $name
-     * @param [string] $string
+     * @param string $name
+     * @param string $string
      * @return bool
      */
     static function write($name, $string)
@@ -19,7 +22,7 @@ class File
     /**
      * Создание пустого файла
      *
-     * @param [string] $name
+     * @param string $name
      * @return bool
      */
     static function create($name)
@@ -30,7 +33,7 @@ class File
     /**
      * Очистка файла
      * 
-     * @param [string] $name
+     * @param string $name
      * @return bool
      */
     static function clear($name)
@@ -41,7 +44,7 @@ class File
     /**
      *  Чтение файла в строку
      *
-     * @param [string] $name
+     * @param string $name
      * @return bool
      */
     static function read($name)
@@ -57,7 +60,7 @@ class File
     /**
      * Удаляет файлы в переданной директории
      *
-     * @param [string] $dir
+     * @param string $dir
      * @return void
      */
     static function deleteFilesInDir($dir)

@@ -2,17 +2,22 @@
 
 namespace src\Utils;
 
+/**
+ * Класс для проверки IP адресов 
+ * и размера файлов Messor
+ */
 class Check
 {
-    /**
-     *  поиск ip в подсетях 
-     * @param type $networks - подсеть
-     * @param type $ip - ip для сравнения 
-     * @return boolean - true есть совпадения false - нет совпадений
-     */
-
+    /** @var int Максимальный размер файла в MB */
     const FILESIZE = 5;
 
+    /**
+     * Поиск ip в подсетях 
+     * 
+     * @param array $networks
+     * @param string $ip
+     * @return bool
+     */
     static function ipNetmatch($networks, $ip)
     {
         $ip = trim($ip);
@@ -41,7 +46,7 @@ class Check
     }
 
     /**
-     * Проверяет полученный ip адрес
+     * Проверяет на валидность полученный ip адрес
      * @param string $ip
      * @return bool
      */
@@ -52,6 +57,12 @@ class Check
         return $valid;
     }
 
+    /**
+     * Проверяет на вхождение ip в подсеть
+     *
+     * @param string $ip
+     * @return void
+     */
     static function ipIsNet($ip)
     {
         $v4pattern = '/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/\d*)$/';
@@ -59,6 +70,12 @@ class Check
         return $isNet;
     }
 
+    /**
+     * Проверяет размер файла
+     *
+     * @param string $file
+     * @return bool
+     */
     static function fileSize($file)
     {
         $fileOverSize = false;

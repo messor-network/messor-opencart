@@ -8,12 +8,19 @@ use src\Config\Path;
 use src\Config\User;
 use src\Request\Request;
 
+/**
+ * Отправка запросов peer to peer
+ */
 class toPeer {
 
+    /** @var Request */
     public  $request;
+    /** @var HttpRequest */
     private $response;
+    /** @var \src\Crypt\iCrypt */
     private $cryptPlain;
 
+    /** @param string $server */
     public function __construct($server)
     {
         $this->request = new Request($server);
@@ -80,7 +87,7 @@ class toPeer {
     /**
      * Получение базы ip адресов
      *
-     * @param [string] $database
+     * @param string $database
      * @return Response
      */
     public function getDatabase($database)
