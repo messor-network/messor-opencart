@@ -244,10 +244,14 @@ class Database
         if ($version != $newVersion) {
             $this->log .= " Remove old database $oldDatabase\t";
             if ($version != false) {
-                if (unlink($oldDatabase)) {
-                    $this->log .= "[ok]\n";
+                if (is_file($oldDatabase)) {
+                    if (unlink($oldDatabase)) {
+                        $this->log .= "[ok]\n";
+                    } else {
+                        $this->log .= "[error]\nCheck permission or remove old database manual $oldDatabase\n";
+                    }
                 } else {
-                    $this->log .= "[error]\nCheck permission or remove old database manual $oldDatabase\n";
+                    $this->log .= "[not found]\n";
                 }
             }
         }
