@@ -27,7 +27,7 @@ class User
      */
     public static function init()
     {
-        if (file_exists(Path::USERCONF)) {
+        if (!empty(file_get_contents(Path::USERCONF))) {
             $user = Parser::toArraySetting(File::read(Path::USERCONF));
             self::$networkID = $user['Network_id'];
             self::$networkPassword = $user['Network_password'];

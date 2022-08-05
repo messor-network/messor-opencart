@@ -318,7 +318,7 @@ final class MessorLib
      */
     public function isConfig()
     {
-        return file_exists(Path::USERCONF);
+        return !empty(file_get_contents(Path::USERCONF));
     }
 
     /**
