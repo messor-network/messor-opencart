@@ -152,11 +152,13 @@
   z-index: 2;
 }
 
-.ms-settings-page__media {
-  position: fixed;
-  right: 53px;
-  padding-left: 143px;
-  z-index: 1;
+@media (min-width: 1024px) {
+  .ms-settings-page__media {
+    position: fixed;
+    right: 53px;
+    padding-left: 143px;
+    z-index: 1;
+  }
 }
 
 .ms-page-col {
