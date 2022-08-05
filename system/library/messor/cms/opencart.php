@@ -92,7 +92,7 @@ trait Opencart
                 $this->model_setting_extension->deleteExtensionInstall($result['extension_install_id']);
                 $this->model_extension_module_messor->deleteExtensionPathOfInstall($result['extension_install_id']);
             }
-            // $this->model_setting_extension->uninstall('module', 'messor');
+            //$this->model_setting_extension->uninstall('module', 'messor');
             $settings['module_messor_status'] = 1;
             $this->model_setting_extension->install('module', 'messor');
 
@@ -296,6 +296,7 @@ trait Opencart
 
     public function defaultRoute($default = true)
     {
+        $route = '';
         if ($default) {
             if ($this->getRequestGet('route') !== null) {
                 $route = 'default_route=' . $this->getRequestGet('route');
@@ -317,11 +318,9 @@ trait Opencart
         if ($this->getRequestGet('product_id') !== null) {
             $route .= '&product_id=' . $this->getRequestGet('product_id');
         }
-        if (!isset($route)) {
+        if (empty($route)) {
             $route = 'common/home';
         }
-        if (!isset($route)) {
-            $route = 'common/home';
         
         return $route;
     }
