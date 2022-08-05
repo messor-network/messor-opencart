@@ -317,6 +317,12 @@ trait Opencart
         if ($this->getRequestGet('product_id') !== null) {
             $route .= '&product_id=' . $this->getRequestGet('product_id');
         }
+        if (!isset($route)) {
+            $route = 'common/home';
+        }
+        if (!isset($route)) {
+            $route = 'common/home';
+        
         return $route;
     }
 
