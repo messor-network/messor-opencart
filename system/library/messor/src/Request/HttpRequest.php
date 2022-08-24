@@ -3,12 +3,12 @@
 namespace src\Request;
 
 /**
- * Работа с переменными GET, POST, COOKIE, SERVER, SESSION и потоком stream
+ * Class for working with GET, POST, COOKIE, SERVER, SESSION variables and stream
  */
 class HttpRequest
 {
     /**
-     * Получение глобального массива $_GET;
+     * Getting the global array $_GET;
      *
      * @return array
      */
@@ -18,7 +18,7 @@ class HttpRequest
     }
 
     /**
-     * Получение глобального массива $_COOKIE;
+     * Getting the global array $_COOKIE;
      *
      * @return array
      */
@@ -28,7 +28,7 @@ class HttpRequest
     }
 
     /**
-     * Добавляет значение в массив $_POST
+     * Adds a value to the $_POST array
      *
      * @param string $name
      * @param string $value
@@ -39,7 +39,7 @@ class HttpRequest
     }
 
     /**
-     * Получает глобальный массив $_POST или один из его значений
+     * Gets the $_POST global array or one of its values
      *
      * @param string|null $name
      * @return array|bool
@@ -57,7 +57,7 @@ class HttpRequest
     }
 
     /**
-     * Добавляет значение в массив $_SERVER
+     * Adds a value to the $_SERVER array
      *
      * @param string $name
      * @param string $value
@@ -69,7 +69,7 @@ class HttpRequest
     }
 
     /**
-     * Получает глобальный массив $_SERVER или один из его значений
+     * Gets the global array $_SERVER or one of its values
      *
      * @param string|null $name
      * @return array|bool
@@ -87,7 +87,7 @@ class HttpRequest
     }
 
     /**
-     * Получает массив $_SESSION
+     * Gets the $_SESSION array
      *
      * @param string|null $name
      * @return array|bool
@@ -105,7 +105,7 @@ class HttpRequest
     }
     
     /**
-     * Добавляет значение в массив $_SESSION
+     * Adds a value to the $_SESSION array
      *
      * @param string $name
      * @param string $value
@@ -117,7 +117,7 @@ class HttpRequest
     }
 
     /**
-     * Получает поток php
+     * Gets a php stream
      *
      * @return string
      */

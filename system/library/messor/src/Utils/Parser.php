@@ -7,12 +7,12 @@ use src\Config\Path;
 use src\Utils\File;
 
 /**
- * Класс парсинга для messor
+ * Parsing class for messor
  */
 class Parser
 {
     /**
-     * Массив в строку
+     * array to string
      *
      * @param array $data
      * @return string
@@ -29,7 +29,7 @@ class Parser
     }
 
     /**
-     *  Строку в массив, разделитель "\t"
+     *  String to array, delimiter "\t"
      *
      * @param string|array $data
      * @return array
@@ -45,7 +45,7 @@ class Parser
     }
 
     /**
-     * Массив в строку, разделитель "\t"
+     * Array to string, delimiter "\t"
      *
      * @param string|array $data
      * @return array
@@ -60,7 +60,7 @@ class Parser
     }
 
     /**
-     * Строка в массив, разделитель "\n"
+     * String to array, delimiter "\n"
      *
      * @param string $data
      * @return array
@@ -72,7 +72,7 @@ class Parser
     }
 
     /**
-     * Массив в строку, разделитель "\n"
+     * Array to string, delimiter "\n"
      *
      * @param array $data
      * @return string
@@ -88,7 +88,7 @@ class Parser
     }
 
     /**
-     * Строку в массив, разделитель "="
+     * String to array, delimiter "="
      *
      * @param string $data
      * @return array
@@ -109,7 +109,7 @@ class Parser
     }
 
     /**
-     * Массив в строку, разделитель "="
+     * Array to string, delimiter "="
      *
      * @param array $data
      * @return string
@@ -124,7 +124,7 @@ class Parser
     }
 
     /**
-     * Получение версии базы данных
+     * Get the database version
      *
      * @param string $string
      * @return string
@@ -143,7 +143,7 @@ class Parser
     }
 
     /**
-     * Распаковывает базу данных в дерево с ip адресами
+     * Unpacks the database into a tree with ip addresses
      * 
      * @param string $database
      * @return void
@@ -186,8 +186,8 @@ class Parser
                 }
                 File::deleteFilesInDir(Path::DB_TREE);
                 for ($i = 0; $i < count($ip['ip']); $i++) {
-                    if (self::ipFile($ip['ip'][$i])) {
-                        File::write(Path::DB_TREE . self::ipFile($ip['ip'][$i]), $ip['ip'][$i] . "\n");
+                    if (self::ipv4File($ip['ip'][$i])) {
+                        File::write(Path::DB_TREE . self::ipv4File($ip['ip'][$i]), $ip['ip'][$i] . "\n");
                     }
                 }
                 return $ip;
@@ -200,13 +200,26 @@ class Parser
     }
 
     /**
-     * Получает первые 3 цифры ip адреса
+     * Gets the first 3 digits of an ip address
+     * 
      *
      * @param string $string
      * @return string
      */
-    static function ipFile($string)
+    static function ipv4File($string)
     {
         return substr($string, 0, strpos($string, '.'));
+    }
+
+
+    /**
+     * Gets the first 4 digits of an ip address
+     *
+     * @param string $string
+     * @return string
+     */
+    static function ipv6File($string)
+    {
+        return substr($string, 0, strpos($string, ':'));
     }
 }

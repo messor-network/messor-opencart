@@ -10,12 +10,12 @@ use src\Config\Path;
 use src\Utils\File;
 
 /**
- * Класс блокировок
+ * Lock class
  */
 class PageBlocked
 {
     /**
-     * Кодирует скрипт
+     * Encodes the script
      *
      * @param string $key
      * @return string
@@ -40,8 +40,7 @@ class PageBlocked
     }
 
     /**
-     * Упаковывает Url, Hash, Route в JavaScript ссылку
-     * и запускает на странице userblocked
+     * Packs Url, Hash, Route into JavaScript link and runs on userblocked page
      *
      * @param string $url
      * @param string $route
@@ -49,6 +48,7 @@ class PageBlocked
      */
     public static function viewPageUser($url, $route)
     {
+        $url = urlencode($url);
         $http = new HttpRequest();
         $ip = $http->server('HTTP_CF_CONNECTING_IP');
         if (!$ip) {
@@ -74,7 +74,7 @@ class PageBlocked
     }
 
     /**
-     * Отображает html страницу с информацией телефон, email, сообщение
+     * Displays html page with information phone, email, message
      *
      * @param string $phone
      * @param string $email
@@ -87,7 +87,7 @@ class PageBlocked
     }
 
     /**
-     * переадресовывает страницу на указанный url
+     * Redirects the page to the specified url
      *
      * @param string $redirect
      * @return void
@@ -98,7 +98,7 @@ class PageBlocked
     }
 
     /**
-     * переадресовывает на страницу 404
+     * Redirects to a 404 page
      *
      * @return void
      */

@@ -7,7 +7,7 @@ $_['name_left_column']              = 'Security';
 
 // window modal
 
-$_['subscription_license']            = 'License';
+$_['subscription_license']                  = 'License';
 $_['subscription_license_accept']           = 'Accept';
 $_['directory_is_not_writable']             = 'Directory is not writable';
 $_['file_clean']                            = 'The file size is more than 3 megabytes, it can slow down the work';

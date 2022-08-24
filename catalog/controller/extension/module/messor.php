@@ -57,7 +57,7 @@ class ControllerExtensionModuleMessor extends Controller
         }
 
         $route = $this->getUrlLink('hashJs', null, false);
-        $url = $this->defaultRoute();
+        $url = $this->getUrl();
         static $flag = '';
         $resp = $this->getRoute();
         if (!(isset($resp) && $resp == "extension/module/messor/hashJs")) {
@@ -99,7 +99,7 @@ class ControllerExtensionModuleMessor extends Controller
         }
 
         $route = $this->getUrlLink('hashJs', null, false);
-        $url = $this->defaultRoute();
+        $url = $this->getUrl();
 
         if ($this->isImage) return;
         
@@ -121,15 +121,14 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function hashJs()
     {
-        $route = $this->getRequestGet('default_route');                                                                                                                                                                                                                                   
-        $route = $this->defaultRoute(false);
+        $route = $this->getRequestGet('url');
         if ($this->getRequestGet('key') !== null ) {
             $key = $this->getRequestGet('key');
         } else {
             die;
         }
         if ($this->adapter->MessorLib->hashJs($key)) {
-            $this->redirect($route);
+            $this->redirectWithoutUrl($route);
         }
     }
 }

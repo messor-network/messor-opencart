@@ -8,7 +8,7 @@ use src\Utils\Parser;
 use src\Crypt\iCrypt;
 
 /**
- * Формирует запрос к серверу для отправки данных
+ * Generates a request to the server to send data
  */
 class Request
 {
@@ -27,7 +27,7 @@ class Request
     }
 
     /**
-     * Отправка данные одним из методов
+     * Sending data using one of the methods
      *
      * @return mixed
      */
@@ -41,7 +41,7 @@ class Request
     }
 
     /**
-     * Установка данных для передачи на сервер *data*
+     * Setting the data to send to the server *data*
      *
      * @param string $data
      * @return void
@@ -52,7 +52,7 @@ class Request
     }
 
     /**
-     * Установка данных header для отправки на сервер
+     * Setting the header data to send to the server
      *
      * @param string $header
      * @return void
@@ -63,7 +63,7 @@ class Request
     }
 
     /**
-     * Формирование строки данных для отправки на сервер
+     * Forming a data string to be sent to the server
      *
      * @return void
      */
@@ -77,7 +77,7 @@ class Request
     }
 
     /**
-     * Установка сервера на который будут переданы данные
+     * Setting the server to which the data will be transferred
      *
      * @param string $server
      * @return void
@@ -88,7 +88,7 @@ class Request
     }
 
     /**
-     * Устанавливает тип шифрования
+     * Sets the encryption type
      *
      * @param iCrypt $crypt
      * @return void
@@ -99,7 +99,7 @@ class Request
     }
 
     /**
-     * Получает тип шифрования
+     * Gets the encryption type
      *
      * @return iCrypt
      */
@@ -109,7 +109,7 @@ class Request
     }
 
     /**
-     * Отправка с помощью Curl
+     * Sending with Curl
      *
      * @return string|bool
      */
@@ -134,7 +134,7 @@ class Request
         }
     }
     /**
-     * Отправка через file_get_contents
+     * Sending via file_get_contents
      *
      * @return string
      */

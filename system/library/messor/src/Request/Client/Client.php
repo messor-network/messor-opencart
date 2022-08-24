@@ -13,8 +13,7 @@ use src\Request\Client\Server;
 use src\Utils\Parser;
 
 /**
- * Класс синхронизирует инфромацию между
- * клиентом и сервером
+ * Class that synchronizes information between client and server
  */
 class Client
 {
@@ -29,8 +28,8 @@ class Client
     private static $res;
 
     /**
-     * Инициализация 
-     *
+     * Initialization 
+     * 
      * @return void
      */
     public static function init()
@@ -42,7 +41,7 @@ class Client
     }
 
     /**
-     * Запуск синхронизации
+     * Start Sync
      *
      * @return array
      */
@@ -69,7 +68,7 @@ class Client
     }
 
     /**
-     * Запуск синхронизации с записью логов
+     * Starting synchronization with logging
      *
      * @return mixed
      */
@@ -81,8 +80,8 @@ class Client
     }
 
     /**
-     * Изменяет ключ пира для взаимодействия между пирами
-     *
+     * Changes the peer key for communication between peers
+     * 
      * @param array $trustServer
      * @param toServer $peer
      * @return void
@@ -98,7 +97,7 @@ class Client
     }
 
     /**
-     * Обновление информации о пире
+     * Updating peer information
      *
      * @param array $trustServer
      * @param toServer $peer
@@ -116,7 +115,7 @@ class Client
     }
 
     /**
-     * Проверка версии клиента
+     * Checking the client version
      *
      * @param array $trustServer
      * @param toServer $peer
@@ -148,7 +147,7 @@ class Client
     }
 
     /**
-     * Синхронизируюет файл аттак с сервером
+     * Synchronizes the attack file with the server
      *
      * @param Response $servers
      * @param toServer $peer

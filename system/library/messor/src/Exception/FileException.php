@@ -7,7 +7,7 @@ use src\Utils\File;
 use src\Config\Path;
 
 /**
- * Класс исключений при работе с файлами
+ * File handling exception class
  */
 class FileException extends \Exception {
 
@@ -22,7 +22,7 @@ class FileException extends \Exception {
     }
 
     /**
-     * Исключение чтение файла 
+     * Exception while reading file
      *
      * @param string $string
      * @return void
@@ -34,7 +34,7 @@ class FileException extends \Exception {
     }
 
     /**
-     * Ошибка записи в файл
+     * Error writing to file
      *
      * @param string $string
      * @return void

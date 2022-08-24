@@ -3,8 +3,8 @@
 namespace messor\cms;
 
 /**
- * Трейт для взаимодействия Messor c Opencart CMS
- * интерфейсно-независимым способом
+ * Trait for interacting Messor with Opencart CMS
+ * in an interface-independent way
  */
 trait Opencart
 {
@@ -74,7 +74,7 @@ trait Opencart
         );
     }
 
-    /* Хуки, записывают в базу настройки */
+    /* Hooks that write settings to the database */
     public function install()
     {
         $this->load->model('extension/module/messor');
@@ -92,7 +92,7 @@ trait Opencart
                 $this->model_setting_extension->deleteExtensionInstall($result['extension_install_id']);
                 $this->model_extension_module_messor->deleteExtensionPathOfInstall($result['extension_install_id']);
             }
-            //$this->model_setting_extension->uninstall('module', 'messor');
+            // $this->model_setting_extension->uninstall('module', 'messor');
             $settings['module_messor_status'] = 1;
             $this->model_setting_extension->install('module', 'messor');
 
@@ -294,37 +294,6 @@ trait Opencart
         }
     }
 
-    public function defaultRoute($default = true)
-    {
-        $route = '';
-        if ($default) {
-            if ($this->getRequestGet('route') !== null) {
-                $route = 'default_route=' . $this->getRequestGet('route');
-            } else {
-                $route = 'default_route=common/home';
-            }
-        } else {
-            if ($default) {
-                if ($this->getRequestGet('route') !== null) {
-                    $route = 'route=' . $this->getRequestGet('route');
-                } else {
-                    $route = 'route=common/home';
-                }
-            }
-        }
-        if ($this->getRequestGet('path') !== null) {
-            $route .= '&path=' . $this->getRequestGet('path');
-        }
-        if ($this->getRequestGet('product_id') !== null) {
-            $route .= '&product_id=' . $this->getRequestGet('product_id');
-        }
-        if (empty($route)) {
-            $route = 'common/home';
-        }
-        
-        return $route;
-    }
-
     public function isImage()
     {
         if ($this->getRequestGet('_route_') !== null) {
@@ -381,6 +350,11 @@ trait Opencart
         $this->response->redirect($this->url->link($route));
     }
 
+    public function redirectWithoutUrl($route)
+    {
+        $this->response->redirect($route);
+    }
+
     public function getRequestGet($item)
     {   
         if (isset($this->request->get[$item])) {
@@ -416,6 +390,11 @@ trait Opencart
         if ($this->getRequestGet('route') !== null) {
             return $this->getRequestGet('route');
         }
+    }
+
+    public function getUrl()
+    {
+        return ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 
     public function getUserToken()

@@ -3,7 +3,7 @@
 namespace src\Config;
 
 /**
- * Константы messor
+ * Messor constants
  */
 class Path
 {

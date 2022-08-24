@@ -24,7 +24,7 @@ use modules\fscheck\FSCheck;
 use modules\securitysettings\SecuritySettings;
 
 /**
- * Библиотека для взимодействия CMS с ядром Messor
+ * Library for CMS interaction with Messor core
  */
 final class MessorLib
 {
@@ -53,7 +53,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает список серверов
+     * Returns a list of servers
      *
      * @return array
      */
@@ -63,7 +63,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает Error логи
+     * Returns Error logs
      *
      * @return array|null
      */
@@ -73,7 +73,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает логи межпирового взаимодействия
+     * Returns logs of peer-to-peer interaction
      *
      * @return array|null
      */
@@ -83,7 +83,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает информацию о пире из файла
+     * Returns information about a peer from a file
      *
      * @return array
      */
@@ -93,8 +93,7 @@ final class MessorLib
     }
 
     /**
-     * Возврвщает информацию о пире из сервера
-     * и записывает в файл
+     * Returns information about a peer from the server and writes to a file
      *
      * @return array
      */
@@ -115,7 +114,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает список доступных пиров
+     * Returns a list of available peers
      *
      * @return array
      */
@@ -125,7 +124,7 @@ final class MessorLib
     }
 
     /**
-     * Возврвщает время последней синхронизации
+     * Returns the last sync time
      *
      * @return string
      */
@@ -145,7 +144,7 @@ final class MessorLib
     }
 
     /**
-     * Очищает переданный файл
+     * Clears the transferred file
      *
      * @param string $file
      * @return bool
@@ -167,7 +166,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает файл для отображения
+     * Returns a file to display
      *
      * @param string $file
      * @return string|bool
@@ -196,7 +195,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает список IP из базы Messor
+     * Returns a list of IPs from the Messor database
      *
      * @return array
      */
@@ -206,7 +205,7 @@ final class MessorLib
     }
 
     /**
-     * Возврващает хеш файла со списком серверов
+     * Returns the hash of a file with a list of servers
      *
      * @return string
      */
@@ -216,8 +215,7 @@ final class MessorLib
     }
 
     /**
-     * Возврващает список IP адресов с данными
-     * которые пытались атаковать сервер
+     * Returns a list of IP addresses with data that tried to attack the server
      *
      * @param bool $tab
      * @return array|null
@@ -232,9 +230,8 @@ final class MessorLib
     }
 
     /**
-     * Возврващает список IP адресов с данными
-     * которые пытались атаковать сервер
-     * и были перенесены в архив
+     * Returns a list of IP addresses with data that tried to attack the server
+     * and was transferred to the archive
      * 
      * @param boolean $tab
      * @return array
@@ -249,7 +246,7 @@ final class MessorLib
     }
 
     /**
-     * Получает список настроек
+     * Gets a list of settings
      *
      * @return array
      */
@@ -259,7 +256,7 @@ final class MessorLib
     }
 
     /**
-     * Получает список системных настроек
+     * Gets a list of system settings
      *
      * @return array
      */
@@ -269,8 +266,7 @@ final class MessorLib
     }
 
     /**
-     * Получает список правил по которым
-     * IP детектируется как опасный
+     * Gets a list of rules by which an IP is detected as dangerous
      *
      * @return array
      */
@@ -282,7 +278,7 @@ final class MessorLib
     }
 
     /**
-     * Сохраняет настройки
+     * Saves settings
      *
      * @param array $setting
      * @return bool
@@ -311,8 +307,8 @@ final class MessorLib
     }
 
     /**
-     * Проверка на существования конфига пользователя
-     * для взаимодейсвия с сервером Messor
+     * Checking for the existence of a user config
+     * for interacting with the Messor server
      *
      * @return bool
      */
@@ -322,7 +318,7 @@ final class MessorLib
     }
 
     /**
-     * Проверка на существование базы Messor
+     * Checking for the existence of the Messor base
      *
      * @return bool
      */
@@ -336,7 +332,7 @@ final class MessorLib
     }
 
     /**
-     * Проверка новой версии клиента Messor
+     * Checking for a new version of the Messor client
      *
      * @return boolean
      */
@@ -366,7 +362,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает версию клиента Messor
+     * Returns the messor client version
      *
      * @return void
      */
@@ -376,8 +372,8 @@ final class MessorLib
     }
 
     /**
-     * Получает текст для вывода на клиент
-     * Messor о новой версии клиента
+     * Gets the text to output to the Messor client about the new version
+     * of the client
      *
      * @return string
      */
@@ -400,10 +396,9 @@ final class MessorLib
     // }
 
     /**
-     * Проверяет включен ли CloudFlare на сервере
-     * в случае положительного результата включает
-     * обработку IP адреса совместимую
-     * с CloudFlare для Messor
+     * Checks if CloudFlare is enabled on the server.
+     * If successful, enables CloudFlare compatible IP address
+     * processing for Messor
      *
      * @return bool
      */
@@ -422,10 +417,9 @@ final class MessorLib
     }
 
     /**
-     * Проверяет включен ли CloudFlare на сервере
-     * в случает отрицательного результата и
-     * включенной совместимости CloudFlare c Messor
-     * возвращает true иначе false
+     * Checks if CloudFlare is enabled on the server.
+     * In case of a negative result and CloudFlare c Messor compatibility
+     * is enabled, returns true otherwise false
      *
      * @return bool
      */
@@ -445,8 +439,7 @@ final class MessorLib
     }
 
     /**
-     * Отключает совместимость CloudFlare c Messor
-     * в системных настройках
+     * Disables CloudFlare compatibility with Messor in system settings
      *
      * @return bool
      */
@@ -464,8 +457,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает список файлов для которых
-     * возможно получить логи
+     * Returns a list of files for which it is possible to get logs
      *
      * @return array
      */
@@ -482,8 +474,7 @@ final class MessorLib
     }
 
     /**
-     * Список файлов базы данных в разных
-     * форматах
+     * List of database files in different formats
      *
      * @return array
      */
@@ -497,7 +488,7 @@ final class MessorLib
     }
 
     /**
-     * Список доступных файлов для просмотра
+     * List of available files for viewing
      *
      * @return array
      */
@@ -517,9 +508,7 @@ final class MessorLib
     }
 
     /**
-     * Добавляет поле id в список
-     * для возможности удаления 
-     * элемента по его id
+     * Adds an id field to the list so that an element can be removed by its id
      *
      * @param array $list
      * @return array
@@ -537,8 +526,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет элемент из списка
-     * по его id
+     * Removes an element from the list by its id
      *
      * @param array $list
      * @return array
@@ -557,9 +545,7 @@ final class MessorLib
     }
 
     /**
-     * Добавляет поле id в список
-     * для возможности удаления 
-     * элемента по его id
+     * Adds an id field to the list so that an element can be removed by its id
      *
      * @param array $list
      * @return array
@@ -575,8 +561,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет элемент из списка
-     * по его id
+     * Removes an element from the list by its id
      *
      * @param array $list
      * @return array
@@ -590,8 +575,7 @@ final class MessorLib
     }
 
     /**
-     * Декодирует элементы массива
-     * по ключам в переменной $keys
+     * Decodes array elements by keys in $keys variable
      *
      * @param array $list
      * @param array $keys
@@ -611,10 +595,9 @@ final class MessorLib
     }
 
     /**
-     * Получает IP адрес, если CloudFlare
-     * включен, пробует получить HTTP_CF_CONNECTING_IP
-     * после проверяет полученный IP, если пустой
-     * получает REMOTE_ADDR
+     * Gets IP address if CloudFlare is enabled
+     * tries to get HTTP_CF_CONNECTING_IP then checks received IP
+     * if empty gets REMOTE_ADDR
      *
      * @param bool $cf
      * @return string
@@ -628,7 +611,7 @@ final class MessorLib
     }
 
     /**
-     * Устанавливает сервер для запросов
+     * Sets the server for requests
      *
      * @return string
      */
@@ -646,9 +629,8 @@ final class MessorLib
     }
 
     /**
-     * Проверка ключа переданного пиром
-     * если ключ валидный то пир может принять
-     * запрос
+     * Checking the key transmitted by the peer if the key is valid then
+     * the peer can accept the request
      *
      * @param string $key
      * @return void
@@ -662,8 +644,8 @@ final class MessorLib
     }
 
     /**
-     * Сверяет ключ с хешем из файла, если
-     * ключи совпадают то проходит разблокировка
+     * Checks the key with the hash from the file, if the keys match,
+     * then unlocking takes place
      *
      * @param string $key
      * @return bool
@@ -702,9 +684,7 @@ final class MessorLib
     }
 
     /**
-     * Проверяет существования файла с хешем
-     * для переданного IP адреса
-     *
+     * Checks for the existence of a hash file for the given IP address
      * @param string $ip
      * @return bool
      */
@@ -714,7 +694,7 @@ final class MessorLib
     }
 
     /**
-     * Добавляет хеш для IP адреса в файл
+     * Adds a hash for an IP address to a file
      *
      * @param string $ip
      * @param string $js_salt
@@ -729,7 +709,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет все файлы с хешами для IP
+     * Deletes all files with hashes for IP
      *
      * @return void
      */
@@ -744,7 +724,7 @@ final class MessorLib
     }
 
     /**
-     * Проверка серверов online|offline
+     * Checking servers online|offline
      *
      * @param array $list
      * @param string $key
@@ -778,7 +758,7 @@ final class MessorLib
     }
 
     /**
-     * Устанваливает Salt
+     * Installs Salt
      *
      * @return string
      */
@@ -797,9 +777,8 @@ final class MessorLib
     }
 
     /**
-     * Проверяет размеры файлов с логами
-     * при привышение размера возвращает
-     * название файла
+     * Checks the size of files with logs; if the size is exceeded,
+     * returns the file name
      *
      * @return array
      */
@@ -825,9 +804,7 @@ final class MessorLib
     }
 
     /**
-     * Проверяет IP адрес на валидность
-     * или что IP адрес является валидной
-     * подсетью
+     * Checks if the IP address is valid or if the IP address is a valid subnet
      *
      * @param string $item
      * @return bool
@@ -842,8 +819,7 @@ final class MessorLib
     }
 
     /**
-     * Получает конфиг пользователя сети Messor
-     *
+     * Gets the Messor network user config
      * @return array
      */
     public function getConfigUser()
@@ -855,8 +831,8 @@ final class MessorLib
     }
 
     /**
-     * Передаёт массив с атаками в сортировку
-     * согласно переданному параметру $name
+     * Passes an array with attacks to be sorted according
+     * to the passed $name parameter
      *
      * @param string $name
      * @param array $list
@@ -895,7 +871,7 @@ final class MessorLib
     }
 
     /**
-     * Переводит Unix time время в дату
+     * Convert Unix time time to date
      *
      * @param array $list
      * @param int $key
@@ -913,7 +889,7 @@ final class MessorLib
     }
 
     /**
-     * Сортирует массив
+     * Sorts an array
      *
      * @param array $list
      * @param string $sortDirection
@@ -937,7 +913,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает данные для пагинации
+     * Returns data for pagination
      *
      * @param int $total
      * @param int $limit
@@ -982,8 +958,7 @@ final class MessorLib
     }
 
     /**
-     * Добавляет IP адрес в allow
-     * или detect список
+     * Adds an IP address to the allow or detect list
      *
      * @param string $type
      * @param array $newlist
@@ -997,8 +972,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет IP адрес allow
-     * или detect списка
+     * Removes the IP address of the allow or detect list
      *
      * @param string $type
      * @param array $list
@@ -1015,9 +989,8 @@ final class MessorLib
         return $this->setListIP($type, $list);
     }
 
-     /**
-     * поиск IP адрес allow
-     * или detect списка
+    /**
+     * Search IP address allow or detect list
      *
      * @param string $type
      * @param array $list
@@ -1037,8 +1010,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает список IP адресов из allow
-     * или detect списка
+     * Returns a list of IP addresses from the allow or detect list
      *
      * @param string $type
      * @return array
@@ -1058,8 +1030,8 @@ final class MessorLib
     }
 
     /**
-     * Перезаписывает файл с IP адресами
-     *
+     * Overwrites a file with IP addresses
+     * 
      * @param string $type
      * @param array $list
      * @return bool
@@ -1076,7 +1048,7 @@ final class MessorLib
     }
 
     /**
-     * Перезаписывает файл с аттаками
+     * Overwrites file with attacks
      *
      * @param array $list
      * @return bool
@@ -1088,7 +1060,7 @@ final class MessorLib
     }
 
     /**
-     * Перезаписывает файл с аттаками
+     * Overwrites file with attacks
      *
      * @param array $list
      * @return bool
@@ -1100,7 +1072,7 @@ final class MessorLib
     }
 
     /**
-     * Перезаписывает файл с аттаками в архиве
+     * Overwrites the file with attacks in the archive
      *
      * @param array $list
      * @return bool
@@ -1112,7 +1084,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет атаку из списка с атаками
+     * Removes an attack from the list of attacks
      *
      * @param int $id
      * @return bool
@@ -1132,7 +1104,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет атаку из списка с атаками из архива
+     * Removes an attack from the list with attacks from the archive
      *
      * @param int $id
      * @return bool
@@ -1152,7 +1124,7 @@ final class MessorLib
     }
 
     /**
-     * Удаляет атаку из списка с атаками
+     * Removes an attack from the list of attacks
      *
      * @param int $id
      * @return bool
@@ -1172,7 +1144,7 @@ final class MessorLib
     }
 
     /**
-     * Генерирует логин для Messor
+     * Generates a login for Messor
      *
      * @return string
      */
@@ -1182,7 +1154,7 @@ final class MessorLib
     }
 
     /**
-     * Генерирует пароль для Messor
+     * Generates a password for Messor
      *
      * @return string
      */
@@ -1192,7 +1164,7 @@ final class MessorLib
     }
 
     /**
-     * Возвращает список стран для регистрации
+     * Returns a list of countries to register
      *
      * @return array
      */
@@ -1202,7 +1174,7 @@ final class MessorLib
     }
 
     /**
-     * Проверяет время создания файла
+     * Checks file creation time
      *
      * @param int $hour
      * @param string $file
@@ -1218,9 +1190,9 @@ final class MessorLib
     }
 
     /**
-     * Удаляет 1 единицу из файла с детектами
-     * для IP адреса, когда IP будет равным 0, адрес
-     * удалится из детект списка
+     * Removes 1 unit from the detection file for the IP address,
+     * when IP is equal to 0,
+     * the address will be removed from the detection list
      *
      * @return void
      */
@@ -1244,7 +1216,7 @@ final class MessorLib
     }
 
     /**
-     * Проверяет и возвращает текст на обновление Messor
+     * Validates and returns text on Messor update
      *
      * @return string
      */
@@ -1259,7 +1231,7 @@ final class MessorLib
     }
 
     /**
-     * Регистрация пользователя в сети Messor
+     * User registration in the Messor network
      *
      * @param array $data
      * @return array
@@ -1378,7 +1350,7 @@ final class MessorLib
     }
 
     /**
-     * Проверка обновлений сигнатур Malware Cleaner
+     * Checking for Malware Cleaner Signature Updates
      *
      * @param MCleaner $MCleaner
      * @return bool
@@ -1393,7 +1365,7 @@ final class MessorLib
     }
 
     /**
-     * Обновление версии сигнатур Malware Cleaner
+     * Updating the signature version of Malware Cleaner
      *
      * @param MCleaner $MCleaner
      * @return void

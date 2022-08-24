@@ -3,7 +3,7 @@
 namespace src\Crypt;
 
 /**
- * base64 без шифрования
+ * Class for forming a base64 string without encryption
  */
 class CryptPlain implements iCrypt
 {

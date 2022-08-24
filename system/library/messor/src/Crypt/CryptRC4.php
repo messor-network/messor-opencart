@@ -5,7 +5,7 @@ namespace src\Crypt;
 use src\Config\User;
 
 /**
- * Шифрование алгоритмом RC4
+ * Encryption class by RC4 algorithm
  */
 class CryptRC4 implements iCrypt
 {   

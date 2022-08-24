@@ -3,13 +3,13 @@
 namespace src\Crypt;
 
 /**
- * Интерфейс для реализации методов шифрования и дешифрования
+ * Interface for implementing encryption and decryption methods
  * 
  */
 interface iCrypt 
 {
     /**
-     * Шифрование переданной строки
+     * Encryption of the transmitted string
      *
      * @param string $data
      * @return string
@@ -17,7 +17,7 @@ interface iCrypt
     public function Encrypt($data);
 
     /**
-     * Дешифрует переданную строку
+     * Decrypts the given string
      *
      * @param string $data
      * @return string

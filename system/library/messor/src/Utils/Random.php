@@ -3,12 +3,12 @@
 namespace src\Utils;
 
 /**
- * Класс создания рандомных данных
+ * Random Data Creation Class
  */
 class Random 
 {
     /**
-     * Создание рандомной строки
+     * Creating a random string
      *
      * @param int $min
      * @param int $max

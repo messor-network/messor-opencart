@@ -3,14 +3,14 @@
 namespace src\Request;
 
 /**
- * Класс получения типа верификации, запрошенного пользователем,
- * используется для повышения trust peer
+ * The receiving class of the verification type requested by the user.
+ * Used to increase trust peer
  * @see toServer::verify()
  */
 class Verify 
 {
     /**
-     * email верификация, запрос кода подтверждения
+     * email verification, verification code request
      *
      * @return array
      */
@@ -20,7 +20,7 @@ class Verify
     }
 
     /**
-     * Подтверждение email отправкой кода
+     * Email confirmation by sending a code
      *
      * @param string $data
      * @return array
@@ -31,7 +31,7 @@ class Verify
     }
 
     /**
-     * sms верификация, запрос кода подтверждения
+     * sms verification, confirmation code request
      *
      * @return array
      */
@@ -41,7 +41,7 @@ class Verify
     }
 
     /**
-     * Подтверждение sms отправкой кода
+     * SMS confirmation by sending a code
      *
      * @param sting $data
      * @return array
@@ -52,7 +52,7 @@ class Verify
     }
 
     /**
-     * phone верификация, запрос звонка на телефон
+     * phone verification, phone call request
      *
      * @return array
      */
@@ -62,7 +62,7 @@ class Verify
     }
 
     /**
-     * Подтверждение кода из телефонного вызова
+     * Code confirmation from a phone call
      *
      * @param string $data
      * @return array
@@ -73,7 +73,7 @@ class Verify
     }
 
     /**
-     * DNS верификация, запрос кода подтверждения
+     * DNS verification, verification code request
      *
      * @return array
      */
@@ -83,7 +83,7 @@ class Verify
     }
 
     /**
-     * Запрос проверки подтверждения DNS
+     * DNS Validation Query
      *
      * @return void
      */

@@ -6,14 +6,14 @@ use src\Config\User;
 use src\Exception\CryptException;
 
 /**
- *  Шифрование с использованием алгоритмов библиотеки OpenSSL
+ *  Encryption class using OpenSSL library algorithms
  */
 class CryptOpenSSL implements iCrypt
 {
-    /** @var string Тип шифрования */
+    /** @var string Encryption type */
     private $typeCrypt;
 
-    /** @var string Ключ шифрования */
+    /** @var string Encryption key */
     private $encryptionKey;
 
     function __construct()
@@ -58,7 +58,7 @@ class CryptOpenSSL implements iCrypt
     }
 
     /**
-     * Получить алгоритм шифрования доступный в OpenSSL
+     * Getting Encryption Algorithms Available in OpenSSL
      * 
      * @return string
      */

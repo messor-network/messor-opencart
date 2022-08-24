@@ -9,7 +9,7 @@ use src\Config\Path;
 use src\Utils\Parser;
 
 /**
- * Класс для работы с базой Messor
+ * Class for working with the Messor base
  */
 class Database
 {
@@ -20,7 +20,7 @@ class Database
     private $log;
 
     /**
-     * Инициализация
+     * Initialization
      *
      * @param array $trustServer
      * @param Server $servers
@@ -38,7 +38,7 @@ class Database
     }
 
     /**
-     * Проверяет версию базы данных и при наличие новой обновляет
+     * Checks the version of the database and updates it if there is a new one
      *
      * @param string|float $start
      * @return array
@@ -94,7 +94,7 @@ class Database
     }
 
     /**
-     * Получает пиров, у которых есть нужная версия базы
+     * Gets a list of peers that have the desired database version
      *
      * @param string $validVersion
      * @param string $serverUrl
@@ -154,7 +154,7 @@ class Database
     }
 
     /**
-     * Получение пира или сервера для отправки
+     * Getting a peer or server to send
      *
      * @param array  $downloadLinks
      * @param string  $validVersion
@@ -188,7 +188,7 @@ class Database
     }
 
     /**
-     * Проверка чек суммы пришедшей базы и версии хранящейся у пира или сервера
+     * Checking the check amount of the incoming database and the version stored by the peer or server
      *
      * @param string $validVersion
      * @param string $filePathDatabase
@@ -212,7 +212,7 @@ class Database
     }
 
     /**
-     * Распаковка базы в другие форматы
+     * Unpacking the database into other formats
      *
      * @return void
      */
@@ -232,7 +232,7 @@ class Database
     }
 
     /**
-     * Удаление старой базы
+     * Removing the old database
      *
      * @param string $version
      * @return void

@@ -3,7 +3,7 @@
 namespace src\Response;
 
 /**
- * Класс ответа от сервера
+ * Server response class
  */
 class Response
 {
@@ -15,7 +15,7 @@ class Response
     private $responseData;
 
     /**
-     * Инициализация
+     * Initialization
      *
      * @param string $rawResponse
      * @param \src\Crypt\iCrypt $crypt
@@ -27,7 +27,7 @@ class Response
     }
 
     /**
-     * Распарсивает строку ответа
+     * Parses the response string
      *
      * @param string $rawResponse
      * @return string
@@ -68,7 +68,7 @@ class Response
     }
 
     /**
-     * Устанавливает в переменную статус ошибку
+     * Sets the error to the status variable
      *
      * @return void
      */
@@ -78,7 +78,7 @@ class Response
     }
 
     /**
-     * Получает статус ответа сервера
+     * Gets the status of the server's response
      *
      * @return string
      */
@@ -88,7 +88,7 @@ class Response
     }
 
     /**  
-     * Устанавливает статус ответа
+     * Sets the response status
      * 
      * @param string $status
      * @return void
@@ -99,7 +99,7 @@ class Response
     }
 
     /**
-     * Получает версию сервера
+     * Gets the version of the server
      *
      * @return string
      */
@@ -109,8 +109,7 @@ class Response
     }
     
     /**
-     * Распарсирование данных в *data* пришедшие
-     * с сервера
+     * Parsing data into *data* coming from the server
      *
      * @return void
      */
@@ -132,7 +131,7 @@ class Response
     }
 
     /**
-     * Получение распарсиваемых данных после *data*
+     * Getting parsed data after *data*
      *
      * @param string|null $data
      * @return string|array

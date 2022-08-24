@@ -7,7 +7,7 @@ use src\Utils\File;
 use src\Config\Path;
 
 /**
- * Класс исключений шифрования
+ * Encryption exception class
  */
 class CryptException extends \Exception {
 
@@ -22,8 +22,8 @@ class CryptException extends \Exception {
     }
 
     /**
-     * Перехватывает исключение при невозможности дешифровать 
-     * полученные данные, записает в лог.
+     * Intercepts an exception when it is impossible to decrypt the received data,
+     * writes it to the log.
      *
      * @param [string] $string
      * @return void

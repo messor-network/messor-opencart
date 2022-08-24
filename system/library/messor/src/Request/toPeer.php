@@ -9,7 +9,7 @@ use src\Config\User;
 use src\Request\Request;
 
 /**
- * Отправка запросов peer to peer
+ * Sending peer to peer requests
  */
 class toPeer {
 
@@ -28,7 +28,7 @@ class toPeer {
     }
 
     /**
-     * Проверка доступности пира
+     * Peer Availability Check
      *
      * @return Response
      */
@@ -47,7 +47,7 @@ class toPeer {
     }
 
     /**
-     * Получение списка серверов
+     * Getting a list of servers
      *
      * @return Response
      */
@@ -66,7 +66,7 @@ class toPeer {
     }
 
     /**
-     * Получения списка пиров
+     * Getting a list of peers
      *
      * @return Response
      */
@@ -85,7 +85,7 @@ class toPeer {
     }
 
     /**
-     * Получение базы ip адресов
+     * Getting a database of ip addresses
      *
      * @param string $database
      * @return Response

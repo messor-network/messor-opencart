@@ -7,7 +7,7 @@ use src\Utils\Parser;
 use src\Config\Path;
 
 /**
- * Данные пользователя в сети messor
+ * User class in messor network
  */
 class User
 {
@@ -21,7 +21,7 @@ class User
     public static $userAgent;
 
     /**
-     * Инициализация данных пользователя
+     * User data initialization
      *
      * @return void
      */

@@ -12,7 +12,7 @@ use src\Utils\File;
 use src\Request\HttpRequest;
 
 /**
- * Отправка запросов к серверу Messor
+ * Sending requests to the Messor server
  */
 class toServer
 {
@@ -36,7 +36,7 @@ class toServer
         }
     }
     /**
-     * Получение статуса пира
+     * Getting peer status
      *
      * @return Response
      */
@@ -61,7 +61,7 @@ class toServer
         return new Response($this->response, $this->request->getCrypt());
     }
     /**
-     * Синхронизация аттак с сервером
+     * Synchronization of attacks with the server
      *
      * @return Response
      */
@@ -86,7 +86,7 @@ class toServer
     }
 
     /**
-     * Отправка echo сообщения на сервер
+     * Sending an echo message to the server
      *
      * @param string $message
      * @return Response
@@ -111,7 +111,7 @@ class toServer
     }
 
     /**
-     * Регистрация пира на сервере
+     * Registering a peer on a server
      *
      * @return Response
      */
@@ -159,7 +159,7 @@ class toServer
         return new Response($this->response, $this->request->getCrypt());
     }
     /**
-     * Верификация пира на сервере
+     * Peer verification on the server
      *
      * @param string $data
      * @return Response
@@ -181,7 +181,7 @@ class toServer
     }
 
     /**
-     * Изменение информации о пире на сервере
+     * Changing peer information on the server
      *
      * @param string $key
      * @param string $value
@@ -208,7 +208,7 @@ class toServer
     }
 
     /**
-     * Получерние информации о пире
+     * Getting information about a peer
      *
      * @return Response
      */
@@ -243,7 +243,7 @@ class toServer
     }
 
     /**
-     * Обновление клиента пира
+     * Peer client update
      *
      * @return Response
      */
@@ -263,7 +263,7 @@ class toServer
     }
 
     /**
-     * Сброс пароля пира
+     * Resetting a peer's password
      *
      * @return Response
      */
@@ -281,7 +281,7 @@ class toServer
     }
 
     /**
-     * Получения серверного листа
+     * Getting a server list
      *
      * @return Response
      */
@@ -301,7 +301,7 @@ class toServer
     }
 
     /**
-     * Получение листа с пирами
+     * Getting a peer list
      *
      * @param string $database
      * @return Response
@@ -326,7 +326,7 @@ class toServer
     }
 
     /**
-     * Получение базы ip адресов
+     * Getting a database of ip addresses
      *
      * @param string $database
      * @return Response
@@ -351,7 +351,7 @@ class toServer
     }
 
     /**
-     * отправка ping на сервер
+     * Sending a ping to the server
      *
      * @return Response
      */
@@ -369,7 +369,7 @@ class toServer
     }
 
     /**
-     * авторизация на сервере
+     * Authorization on the server
      *
      * @return Response
      */
@@ -393,7 +393,7 @@ class toServer
     }
 
     /**
-     * Получение текущей весрии сигнатур для Malware Cleaner
+     * Obtaining the current version of signatures for Malware Cleaner
      * 
      * @return Response
      */
@@ -413,7 +413,7 @@ class toServer
     }
 
     /**
-     * Обновление до последней версии сигнатур Malware Cleaner
+     * Update to the latest Malware Cleaner signatures
      *
      * @return Response
      */
@@ -433,7 +433,7 @@ class toServer
     }
 
     /**
-     * Смена ключа пира, используется при межпировом взаимодействии
+     * Peer key change, used in peer-to-peer interaction
      *
      * @return Response
      */

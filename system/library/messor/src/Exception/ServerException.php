@@ -7,7 +7,7 @@ use src\Utils\File;
 use src\Config\Path;
 
 /**
- * Класс исключений при работе с сервером
+ * Server exception class
  */
 class ServerException extends \Exception {
 
@@ -22,7 +22,7 @@ class ServerException extends \Exception {
     }
 
     /**
-     * Исключение запросов к серверу
+     * Server request exception
      *
      * @param string $string
      * @return void

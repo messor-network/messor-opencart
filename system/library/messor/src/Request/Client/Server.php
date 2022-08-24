@@ -8,7 +8,7 @@ use src\Config\Path;
 use src\Utils\Parser;
 
 /**
- * Класс для работы с серверами Messor
+ * Class for working with Messor servers
  */
 class Server
 {
@@ -21,7 +21,7 @@ class Server
     private $statusCount = 0;
 
     /**
-     * Инициализация
+     * Initialization
      *
      * @param string $fileServer
      * @param string $log
@@ -35,7 +35,7 @@ class Server
     }
 
     /**
-     * Проверка файла со списком серверов
+     * Checking a file with a list of servers
      *
      * @param string $date
      * @return bool
@@ -55,7 +55,7 @@ class Server
     }
 
     /**
-     * Проверка статуса серверов
+     * Checking the status of servers
      *
      * @param toServer $peer
      * @return array
@@ -89,7 +89,7 @@ class Server
     }
 
     /**
-     * Вывод ошибки все сервера оффлайн
+     * Error output all servers are offline
      *
      * @return void
      */
@@ -104,7 +104,7 @@ class Server
     }
 
     /**
-     * Вывод статуса серверов
+     * Displaying server status
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class Server
     }
 
     /**
-     * Проверка трастовости сервера
+     * Server trust check
      *
      * @param array $responseList
      * @return array|bool
@@ -161,7 +161,7 @@ class Server
     }
 
     /**
-     * Обновления списка серверов
+     * Server list updates
      *
      * @param array $trustServer
      * @param toServer $peer
@@ -198,7 +198,7 @@ class Server
     }
 
     /**
-     * Получение списка с серверами
+     * Getting a list of servers
      *
      * @return array
      */
@@ -208,7 +208,7 @@ class Server
     }
 
     /**
-     * Бэкап старого файла со списком серверов
+     * Backup of an old file with a list of servers
      *
      * @param \src\Response\Response $serverList
      * @return void

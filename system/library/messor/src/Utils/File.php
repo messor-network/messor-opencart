@@ -3,12 +3,12 @@
 namespace src\Utils;
 
 /**
- * Класс для операций с файлами
+ * Class for file operations
  */
 class File
 {
     /**
-     * Запись в файл
+     * Write to file
      *
      * @param string $name
      * @param string $string
@@ -20,7 +20,7 @@ class File
     }
 
     /**
-     * Создание пустого файла
+     * Creating an empty file
      *
      * @param string $name
      * @return bool
@@ -31,7 +31,7 @@ class File
     }
 
     /**
-     * Очистка файла
+     * Cleaning up a file
      * 
      * @param string $name
      * @return bool
@@ -42,7 +42,7 @@ class File
     }
 
     /**
-     *  Чтение файла в строку
+     *  Reading a file into a string
      *
      * @param string $name
      * @return bool
@@ -58,7 +58,7 @@ class File
     }
 
     /**
-     * Удаляет файлы в переданной директории
+     * Deletes files in the given directory
      *
      * @param string $dir
      * @return void

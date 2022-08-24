@@ -15,7 +15,7 @@ use src\Crypt\CryptPlain;
 use src\PageBlocked;
 
 /**
- * Обнаружение злонамеренных атак
+ * Malicious attack detection
  */
 class Messor
 {
@@ -35,7 +35,7 @@ class Messor
     private static $pageNotFound;
 
     /**
-     * Инициализация
+     * Initialization
      *
      * @return void
      */
@@ -57,8 +57,8 @@ class Messor
     }
 
     /**
-     * Проверка IP адреса на аттаку, проверка осуществляется согласно
-     * включенных настроек в файле setting.txt
+     * Checking the IP address for an attack, the check is carried out according
+     * to the included settings in the setting.txt file
      *
      * @param string $ip
      * @param array  $disableDetect
@@ -73,7 +73,7 @@ class Messor
         self::$url = $url;
         if (is_null($ip)) {
             if (self::$systemSettings['cloudflare'] == 1) {
-                self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP'); 
+                self::$remoteIp = self::$http->server('HTTP_CF_CONNECTING_IP');
                 if (!self::$remoteIp) {
                     self::$remoteIp = self::$http->server('REMOTE_ADDR');
                 }
@@ -124,8 +124,12 @@ class Messor
         }
 
 
-        if (file_exists(Path::DB_TREE . Parser::ipFile(self::$remoteIp))) {
-            self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipFile(self::$remoteIp)));
+        if (file_exists(Path::DB_TREE . Parser::ipv4File(self::$remoteIp))) {
+            self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv4File(self::$remoteIp)));
+        }
+
+        if (file_exists(Path::DB_TREE . Parser::ipv6File(self::$remoteIp))) {
+            self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv6File(self::$remoteIp)));
         }
 
         if (self::$settings['block_ip'] == 1) {
@@ -140,39 +144,39 @@ class Messor
     }
 
     /**
-     * проверяет ip адрес и user-agent если
-     * принадлежит поисковому движку то пропускает
+     * Checks ip address and user-agent if it belongs to a search engine
+     * then skips
      *
      * @return bool
      */
     public static function noBlockSearchEngine()
     {
         $se_list = array(
-            'google'       => '\.(google|googlebot)\.com$',  
-            'yahoo'        => '\.yahoo\.',                   
-            'msn'          => '\.msn\.com$',                
-            'bing'         => '\.msn\.com$',                  
-            'yandex'       => '\.(yandex|yndx)\.(com|net)$', 
-            'baidu|bdbrow' => '\.baidu\.(com|jp)$',          
-            'mail.ru'      => '\.mail\.ru$'                  
-            );
-            $agent = strtolower(self::$http->server('HTTP_USER_AGENT'));
-            foreach($se_list as $sengin=>$regexp) {
-                if(preg_match('#' . $sengin . '#', $agent)) {
-                    if($host = gethostbyaddr(self::$remoteIp)) {
-                        $host = strtolower($host);
-                        if(preg_match('#' . $regexp . '#', $host)) {
-                            return true;
-                        }
-                    } 
+            'google'       => '\.(google|googlebot)\.com$',
+            'yahoo'        => '\.yahoo\.',
+            'msn'          => '\.msn\.com$',
+            'bing'         => '\.msn\.com$',
+            'yandex'       => '\.(yandex|yndx)\.(com|net)$',
+            'baidu|bdbrow' => '\.baidu\.(com|jp)$',
+            'mail.ru'      => '\.mail\.ru$'
+        );
+        $agent = strtolower(self::$http->server('HTTP_USER_AGENT'));
+        foreach ($se_list as $sengin => $regexp) {
+            if (preg_match('#' . $sengin . '#', $agent)) {
+                if ($host = gethostbyaddr(self::$remoteIp)) {
+                    $host = strtolower($host);
+                    if (preg_match('#' . $regexp . '#', $host)) {
+                        return true;
+                    }
                 }
             }
-            return false;
+        }
+        return false;
     }
 
 
     /**
-     * Проверяет пришедший запрос на валидный user-agent
+     * Checks the incoming request for a valid user-agent
      *
      * @param string $type
      * @param string $string
@@ -197,8 +201,7 @@ class Messor
     }
 
     /**
-     * Проверка IP адреса 
-     * на нахождение его в detect листе
+     * Checking the IP address for finding it in the detect list
      * 
      * @param string $string
      * @return bool
@@ -217,11 +220,18 @@ class Messor
                     return true;
                 }
             }
+            foreach (self::$detectList as $subnet) {
+                if (Check::ipIsNet($subnet)) {
+                    if (Check::ipInSubnet($subnet, self::$remoteIp)) {
+                        self::block();
+                    }
+                }
+            }
         }
     }
 
     /**
-     * Ip aдреса из белого листа которые не должны блокироватся
+     * IP addresses from the whitelist that should not be blocked
      *
      * @return bool
      */
@@ -234,11 +244,21 @@ class Messor
                     return true;
                 }
             }
+            foreach (self::$white as $subnet) {
+                if (Check::ipIsNet($subnet)) {
+                    if (Check::ipInSubnet($subnet, self::$remoteIp)) {
+                        self::$isWhite = true;
+                        if (self::$white[$subnet] == "forever") {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
     }
 
     /** 
-     * Разблокированные IP адреса при включенной опции DDOS
+     * Unblocked IP addresses with DDOS enabled
      * 
      * @return bool
      */
@@ -254,8 +274,8 @@ class Messor
     }
 
     /**
-     * Проверка Ip адреса на содержание его в базе или в блэк листе,
-     * в случае нахождения блокировка
+     * Checking the IP address for its content in the database
+     * or in the black list, in case of blocking
      *
      * @param array $ipList
      * @param string $string
@@ -289,7 +309,7 @@ class Messor
     }
 
     /**
-     * Блокировка по совпадению частей запроса
+     * Blocking on Matching Query Parts
      *
      * @param array $type
      * @param string $string
@@ -314,9 +334,9 @@ class Messor
         }
     }
 
-   
+
     /**
-     * Проверка URI на совпадение с запросом
+     * Checking if the URI matches the request
      *
      * @param string $string
      * @param array $disableDetect
@@ -341,8 +361,7 @@ class Messor
     }
 
     /**
-     * Проверка на IP адреса в списке
-     * разрешённых адресов
+     * Checking for IP addresses in the list of allowed addresses
      *
      * @return bool
      */
@@ -362,11 +381,28 @@ class Messor
                 File::write(Path::WHITE_LIST, Parser::toSettingArray(self::$white));
                 return $response;
             }
+            foreach (self::$white as $subnet) {
+                if (Check::ipIsNet($subnet) && (self::$white[self::$remoteIp] != 'ddos')) {
+                    if (Check::ipInSubnet($subnet, self::$remoteIp)) {
+                        self::$white[self::$remoteIp] -= 1;
+                        if (self::$white[self::$remoteIp] < 1) {
+                            unset(self::$white[self::$remoteIp]);
+                            $response = false;
+                        } else {
+                            $response = true;
+                        }
+                        File::clear(Path::WHITE_LIST);
+                        File::write(Path::WHITE_LIST, Parser::toSettingArray(self::$white));
+                        return $response;
+                        self::block();
+                    }
+                }
+            }
         }
     }
 
     /**
-     * Выбор действия при блокировке
+     * Selecting an action when blocked
      *
      * @return bool|void
      */
@@ -401,23 +437,33 @@ class Messor
         }
         return true;
     }
-    
+
     /**
-     * Подсчёт попадания адреса в detect лист, при
-     * количестве детектов больше указаного в settings.txt
-     * IP адрес блокируется
+     * Counting the hit of an address in the detect list,
+     * if the number of detections is greater than specified in settings.txt,
+     * the IP address is blocked
      *
      * @throws FileException
      * @return void
      */
     public static function detectCount()
     {
+        $find = false;
         if (!is_null(self::$detectList)) {
             if (array_key_exists(self::$remoteIp, self::$detectList)) {
                 self::$detectList[self::$remoteIp] += 1;
-            } else {
-                self::$detectList[self::$remoteIp] = 1;
+                $find = true;
             }
+            foreach (self::$detectList as $subnet) {
+                if (Check::ipIsNet($subnet)) {
+                    if (Check::ipInSubnet($subnet, self::$remoteIp)) {
+                        self::$detectList[$subnet] += 1;
+                        $find = true;
+                        break;
+                    }
+                }
+            }
+            if (!$find) self::$detectList[self::$remoteIp] = 1;
         } else {
             self::$detectList[self::$remoteIp] = 1;
         }
@@ -434,7 +480,7 @@ class Messor
     }
 
     /**
-     * Логирование атак
+     * Attack logging
      *
      * @param string $type
      * @param string $file

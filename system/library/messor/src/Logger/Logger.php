@@ -6,13 +6,13 @@ use src\Request\HttpRequest;
 use src\Crypt\CryptPlain;
 
 /**
- * Класс логированния
+ * Logging class
  */
 class Logger 
 {
     /**
-     * Возвращает текущее время
-     *
+     * Returns the current time
+     * 
      * @return string
      */
     public static function addTime() 
@@ -21,8 +21,8 @@ class Logger
     }
     
     /**
-     * Возвращает IP адрес
-     *
+     * Returns the IP address
+     * 
      * @param string $ip
      * @return string
      */
@@ -36,7 +36,7 @@ class Logger
     }
 
     /**
-     * Возвращает закодированную Uri строку по которой пришёл запрос
+     * Returns the Uri encoded string for which the request came
      *
      * @param string|null $requestUri
      * @return string
@@ -52,7 +52,7 @@ class Logger
     }
     
     /**
-     * Возвращает закодированный User-Agent
+     * Returns the encoded User-Agent
      *
      * @param string|null $userAgent
      * @return string
@@ -68,7 +68,7 @@ class Logger
     }
 
     /**
-     * Возвращает закодированные post данные
+     * Returns encoded post data
      *
      * @param string|null $post
      * @return string
@@ -84,7 +84,7 @@ class Logger
     }
     
     /**
-     *  Возвращает закодированные cookie данные
+     * Returns cookie encoded data
      *
      * @param string|null $cookie
      * @return string
@@ -100,8 +100,8 @@ class Logger
     }
 
     /**
-     * Возвращает закодированные get данные
-     *
+     * Returns get encoded data
+     * 
      * @param string|null $get
      * @return string
      */

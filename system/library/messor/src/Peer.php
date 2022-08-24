@@ -68,7 +68,7 @@ class Peer
     }
 
     /**
-     * Проверка на пришедший action
+     * Checking for incoming action
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class Peer
     }
 
     /**
-     * Получение action
+     * Getting action
      *
      * @return void
      */
@@ -109,7 +109,7 @@ class Peer
     }
 
     /**
-     * Отправка ошибки пиру
+     * Sending an error to a peer
      *
      * @param [string] $status
      * @param [string] $message
@@ -129,7 +129,7 @@ class Peer
     }
 
     /**
-     * Парсинг пришедшего запроса от пира
+     * Parsing an incoming request from a peer
      *
      * @return void
      */
@@ -174,7 +174,7 @@ class Peer
     }
 
     /**
-     * Проверка пришедшего запроса
+     * Checking an incoming request
      *
      * @return void
      */
@@ -207,7 +207,7 @@ class Peer
     }
 
     /**
-     * Выбор действия соотвествующие пришедшемо action
+     * Selecting the action corresponding to the incoming action
      *
      * @return void
      */
@@ -271,7 +271,7 @@ class Peer
     }
 
     /**
-     * Отправка ответа
+     * Sending a response
      *
      * @return void
      */

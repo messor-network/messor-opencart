@@ -6,8 +6,7 @@ use main\MessorLib;
 use messor\cms\Opencart;
 
 /**
- * Адаптер для взаимодействия ядра
- * с web версией Messor
+ * Adapter for interaction of the kernel with the web version of Messor
  */
 class Adapter
 {
@@ -23,14 +22,14 @@ class Adapter
     private $error = array();
     private $free;
 
-    /** Инициализация */
+    /** Initialization */
     public function __construct()
     {
         $this->MessorLib = new MessorLib();
     }
 
     /**
-     * Данные для главной страницы Messor Web
+     * Data for the main page of Messor Web
      *
      * @return array
      */
@@ -101,7 +100,7 @@ class Adapter
     }
 
     /**
-     * Данные для страниц с атаками 
+     * Data for pages with attacks
      * Archive, Sync
      *
      * @param array $post
@@ -148,8 +147,7 @@ class Adapter
     }
 
     /**
-     * Данные для страниц c detect и allow
-     * спиксками
+     * Data for pages with detect and allow lists
      *
      * @param array $post
      * @return array
@@ -215,7 +213,7 @@ class Adapter
     }
 
     /**
-     * Синхронизация клиента Messor с сервером
+     * Synchronizing the Messor client with the server
      *
      * @return void
      */
@@ -228,7 +226,7 @@ class Adapter
     }
 
     /**
-     * Получение настроек по умолчанию
+     * Getting default settings
      *
      * @return array
      */
@@ -259,7 +257,7 @@ class Adapter
     }
 
     /**
-     * Сохранение настроек
+     * Saving settings
      *
      * @param array $data
      * @return string
@@ -279,7 +277,7 @@ class Adapter
     }
 
     /**
-     * Верификация пира в сети Messor
+     * Peer verification in the Messor network
      *
      * @param array $data
      * @return array
@@ -302,7 +300,7 @@ class Adapter
     }
 
     /**
-     * Скачивание файлов из админки Messor
+     * Downloading files from the Messor admin panel
      *
      * @param string $file
      * @return void
@@ -339,12 +337,12 @@ class Adapter
 }
 
 /**
- * Регистрация нового пира в сети Messor
+ * Registering a new peer on the Messor network
  */
 trait Registration
 {
     /**
-     * Получение настроек для вывода на страницу регистрации
+     * Getting settings for displaying on the registration page
      *
      * @return array
      */
@@ -383,7 +381,7 @@ trait Registration
 trait FileSystemCheck
 {
     /**
-     * Запрос к File System Check для получения результата проверки
+     * Request to File System Check to get the result of the check
      *
      * @param array $post
      * @return void
@@ -432,7 +430,7 @@ trait FileSystemCheck
 trait FileSystemControl
 {
     /**
-     * Получение результатов проверки File System Control
+     * Retrieving File System Control Check Results
      *
      * @param array $post
      * @return array
@@ -475,7 +473,7 @@ trait FileSystemControl
     }
 
     /**
-     * Исключить файлы из проверки
+     * Exclude files from scanning
      *
      * @param array $post
      * @return bool
@@ -487,7 +485,7 @@ trait FileSystemControl
     }
 
     /**
-     * Удалить файлы из списка исключенных для проверки
+     * Delete files from the list excluded for scanning
      *
      * @param array $post
      * @return void
@@ -517,7 +515,7 @@ trait FileSystemControl
 trait FileDatabaseBackup
 {
     /**
-     * Получение информации для вывода на главной странице плагина
+     * Getting information to display on the main page of the plugin
      *
      * @param array $database
      * @return array
@@ -534,9 +532,8 @@ trait FileDatabaseBackup
     }
 
     /**
-     * Метод, cоздаёт бекап выполняет одно из 
-     * действий: отправка на почту, сохранение на сервере
-     * скачивание
+     * The method creates a backup and performs one of the following actions: 
+     * sending it to the mail, saving it on the server, downloading
      *
      * @param array $post
      * @param array $database
@@ -617,7 +614,7 @@ trait FileDatabaseBackup
 trait MalwareClean
 {
     /**
-     * Получение первоначальных настроке Malware Clean
+     * Getting Initial Malware Clean Settings
      *
      * @return array
      */
@@ -630,7 +627,7 @@ trait MalwareClean
 
     /**
      *
-     * Получение резубтата провеки Malware Clean
+     * Getting the result of the Malware Clean scan
      * @param array $post
      * @return array
      */
@@ -672,7 +669,7 @@ trait MalwareClean
     }
 
     /**
-     * Удаление вредонсосного файла с сервера
+     * Removing a malicious file from the server
      *
      * @param array $post
      * @return bool
@@ -687,7 +684,7 @@ trait MalwareClean
     }
 
     /**
-     * Исключение файла из проверки
+     * Excluding a file from scanning
      *
      * @param array $post
      * @return bool
@@ -729,7 +726,7 @@ trait MalwareClean
 trait SecuritySettings
 {
     /**
-     * Возвращает результат проверки Security Settings
+     * Returns the result of the Security Settings check
      *
      * @param array $post
      * @return array
