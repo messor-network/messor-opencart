@@ -45,7 +45,7 @@ class ControllerExtensionModuleMessor extends Controller
             }
         }
 
-        if ($this->adapter->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
+        if ($this->adapter->MessorLib->checkUpdateDay($hour = 24, PATH::DAY)) {
             $this->adapter->MessorLib->deleteAllHashIP();
             $this->adapter->MessorLib->deleteScoresDetect();
             $this->adapter->MessorLib->updateClient();

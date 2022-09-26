@@ -65,7 +65,7 @@ class Check
         $mask = str_repeat(chr(0xff), $maskParts[1]);
         $mask .= str_repeat(chr(0x00), $maskParts[0]);
         $ip = $ip & $mask;
-        $ip = inet_ntop($ip);
+        $ipNet[0] = inet_pton($ipNet[0]);
         if ($ip === $ipNet[0]) {
             return true;
         } else {
@@ -130,9 +130,13 @@ class Check
     static function ip6IsNet($ip)
     {
         try {
-            $isNet = inet_pton($ip);
+            $isNet = strpos($ip, '/');
             if ($isNet !== false) {
-                return true;
+                $ip = substr($ip, 0, $isNet);
+                $subnet = inet_pton($ip);
+                if ($subnet !== false) {
+                    return true;
+                }
             } else {
                 return false;
             }

@@ -451,4 +451,25 @@ class toServer
         $this->response = $this->request->send();
         return new Response($this->response, $this->request->getCrypt());
     }
+
+    public function peerNotify($type, $level, $dataNotify)
+    {
+        $header = array(
+            'action'           => 'peer_notify',
+            'client_version'   => Path::VERSION,
+            'network_id'       => USER::$networkID,
+            'network_password' => USER::$networkPassword,
+        );
+        $data = array(
+            'type'             => $type,
+            'level'            => $level,
+            $type              => $dataNotify,
+        );
+        $this->request->setHeader($header);
+        $this->request->setData($data);
+        $this->request->setCrypt($this->cryptEncrypt);
+        $this->request->formatForSend();
+        $this->response = $this->request->send();
+        return new Response($this->response, $this->request->getCrypt());
+    }
 }

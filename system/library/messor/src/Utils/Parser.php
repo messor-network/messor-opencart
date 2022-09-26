@@ -123,6 +123,40 @@ class Parser
         return $request;
     }
 
+    static function toArraySettingTab($data)
+    {
+        $data = explode("\n", $data);
+        foreach ($data as $keyData => $lineTab) {
+            $line = explode("\t", $lineTab);
+            foreach ($line as $item) {
+                if ($item != false) list($key, $value) = explode("=", $item); 
+                if (!empty($key)) {
+                    $value = isset($value) ? urldecode(trim($value)) : 0;
+                    $request[$keyData][trim($key)] = trim($value);
+                    $key = false;
+                }
+            }
+        }
+        if (isset($request)) {
+            return $request;
+        }
+    }
+
+    static function toSettingArrayTab($data)
+    {
+        $request = '';
+        foreach ($data as $item) {
+            foreach ($item as $key => $value) {
+                if ($value != end($item)) {
+                    $request .= trim($key) .' = '. trim(urlencode($value)) . "\t";
+                } else {
+                    $request .= trim($key) .' = '. trim(urlencode($value)) . "\n";
+                }
+            }
+        }
+        return $request;
+    }
+
     /**
      * Get the database version
      *
@@ -166,7 +200,13 @@ class Parser
                 $return = array(
                     'version_string' => trim($file[0]),
                     'rules' => array(
-                        'useragent' => array('attack' => $tmp_ua[3], 'tools' => $tmp_ua[0], 'search_engines' => $tmp_ua[1], 'bots' => $tmp_ua[2]),
+                        'useragent' => array(
+                            'attack' => $tmp_ua[3], 
+                            'tools' => $tmp_ua[0], 
+                            'search_engines' => $tmp_ua[1], 
+                            'bots' => $tmp_ua[2],
+                            'social' => $tmp_ua[4],
+                        ),
                         'path'  => explode("\n", base64_decode(trim($file[2]))),
                         'request'  => explode("\n", base64_decode(trim($file[3])))
                     ),

@@ -163,6 +163,9 @@ $_['block_last_detect_adress']      = 'IP адрес';
 // button
 
 $_['button_save']                  = 'Сохранить';
+$_['button_cancel']                = 'Отмена';
+$_['button_ok']                    = 'Ok';
+$_['button_remove']                = 'Удалить';
 $_['button_reset_all_settings']    = 'Сброс настроек';
 $_['button_additional_settings']   = 'Дополнительные настройки';
 
@@ -399,5 +402,18 @@ $_['page_upgrade_text']                = 'Упс... похоже вам нужн
 $_['page_upgrade_link_plan']           = 'ваш план';
 $_['page_upgrade_upgrade']             = 'Обновить';
 
+$_['modal_title_attention'] = 'Внимание';
+$_['block_main_setting_useragent_search_engines'] = 'При активации данной опции ,Ваш сайт будет не доступен для поисковых систем.';
+$_['block_main_setting_useragent_social'] = 'При активации данной опции ,Ваш сайт будет не доступен для социальных сетей.';
+$_['block_settings_signatures'] = 'Сигнатуры';
+$_['block_settings_signatures_subtitle'] = 'Настройка сигнатур';
+$_['signatures_list_append'] = 'Блокировка';
+$_['signatures_list_except'] = 'Исключения';
+$_['signature_will_be_removed'] = 'Сигнатура будет удалена';
+$_['delete_unsaved_data'] = 'Удалить несохраненные данные';
 
-
+$_['block_all_attention'] = 'Внимание при включении этой опции будут блокироваться все роботы/боты включая поисковые системы и социальные сети.
+Ваш сайт не будет индексироваться поисковыми системами.';
+$_['block_main_setting_useragent_firewall_block_social'] = 'Блокировать ботов социальных сетей и мессенджеров';
+$_['block_attempts'] = 'попытки';
+$_['block_days'] = 'дни';

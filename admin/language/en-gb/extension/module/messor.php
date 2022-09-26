@@ -7,7 +7,7 @@ $_['name_left_column']              = 'Security';
 
 // window modal
 
-$_['subscription_license']                  = 'License';
+$_['subscription_license']            = 'License';
 $_['subscription_license_accept']           = 'Accept';
 $_['directory_is_not_writable']             = 'Directory is not writable';
 $_['file_clean']                            = 'The file size is more than 3 megabytes, it can slow down the work';
@@ -166,6 +166,9 @@ $_['block_last_detect_adress']      = 'IP address';
 // button
 
 $_['button_save']                  = 'Save';
+$_['button_cancel']                = 'Cancel';
+$_['button_ok']                    = 'Ok';
+$_['button_remove']                = 'Remove';
 $_['button_reset_all_settings']    = 'Reset all settings';
 $_['button_additional_settings']   = 'Additional settings';
 
@@ -403,47 +406,18 @@ $_['page_upgrade_text']                = 'Oops ... Looks like you need to upgrad
 $_['page_upgrade_link_plan']           = 'your plan';
 $_['page_upgrade_upgrade']             = 'Upgrade';
 
+$_['modal_title_attention'] = 'Attention';
+$_['block_main_setting_useragent_search_engines'] = 'When this option is activated, your site will be unavailable for search engines.';
+$_['block_main_setting_useragent_social'] = 'When this option is activated, your site will be unavailable for social networks.';
+$_['block_settings_signatures'] = 'Signatures';
+$_['block_settings_signatures_subtitle'] = 'Signature settings';
+$_['signatures_list_append'] = 'Blocking';
+$_['signatures_list_except'] = 'Exceptions';
+$_['signature_will_be_removed'] = 'Signature will be removed';
+$_['delete_unsaved_data'] = 'Delete unsaved data';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$_['block_all_attention'] = 'Attention, when this option is enabled, all robots/bots will be blocked, including search engines and social networks.
+Your site will not be indexed by search engines.';
+$_['block_main_setting_useragent_firewall_block_social'] = 'Block social network and messenger bots';
+$_['block_attempts'] = 'attempts';
+$_['block_days'] = 'days';

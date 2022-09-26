@@ -164,6 +164,9 @@ $_['block_last_detect_adress']      = 'IP adresse';
 // button
 
 $_['button_save']                  = 'Sauvegarder';
+$_['button_cancel']                = 'Annuler';
+$_['button_ok']                    = 'Ok';
+$_['button_remove']                = 'Retirer';
 $_['button_reset_all_settings']    = 'Réinitialiser les réglages';
 $_['button_additional_settings']   = 'Réglages supplémenaires';
 
@@ -401,44 +404,18 @@ $_['page_upgrade_text']                = 'Oups ... Il semblerait que vous ayez b
 $_['page_upgrade_link_plan']           = 'votre plan';
 $_['page_upgrade_upgrade']             = 'Promouvoir';
 
+$_['modal_title_attention'] = 'Attention';
+$_['block_main_setting_useragent_search_engines'] = 'Lorsque cette option est activée, votre site sera indisponible pour les moteurs de recherche.';
+$_['block_main_setting_useragent_social'] = 'Lorsque cette option est activée, votre site sera indisponible pour les réseaux sociaux.';
+$_['block_settings_signatures'] = 'Signatures';
+$_['block_settings_signatures_subtitle'] = 'Paramètres des signatures';
+$_['signatures_list_append'] = 'Blocage';
+$_['signatures_list_except'] = 'Exceptions';
+$_['signature_will_be_removed'] = 'La signature sera supprimée';
+$_['delete_unsaved_data'] = 'Supprimer les données non enregistrées';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$_['block_all_attention'] = 'Attention, lorsque cette option est activée, tous les robots/bots seront bloqués, y compris les moteurs de recherche et les réseaux sociaux.
+Votre site ne sera pas indexé par les moteurs de recherche.';
+$_['block_main_setting_useragent_firewall_block_social'] = 'Bloquer les réseaux sociaux et les robots de messagerie';
+$_['block_attempts'] = 'tentatives';
+$_['block_days'] = 'journées';

@@ -69,8 +69,8 @@ class Adapter
         $data['list_archive_count'] = $data['list_archive'][0] != false ? count($data['list_archive']) : 0;
         unset($data['list_archive']);
 
-        $data['oncloudflare'] = $this->MessorLib->onCloudFlare();
-        $data['offcloudflare'] = $this->MessorLib->OffCloudFlare();
+        $data['on_cloudflare'] = $this->MessorLib->onCloudFlare();
+        $data['off_cloudflare'] = $this->MessorLib->OffCloudFlare();
         $data['path'] = $this->MessorLib->getPathDBIP();
         $data['rules'] = $this->MessorLib->getRules();
         $data['settings'] = $this->MessorLib->getSetting();
@@ -185,10 +185,27 @@ class Adapter
                 }
             }
             if (empty($list)) $status = false;
+            if ($type == 'black') {
+                $index = 0;
+                foreach($list as $key => $value) {
+                    $ipList[$index]['ip'] = $key; 
+                    $ipList[$index]['day'] = $value;
+                    $ipList[$index]['count'] = 0;
+                    $index++;
+                }
+                $list = $ipList;
+            }
             $this->MessorLib->addIP($type, $list);
         }
 
         $data['ip_list'] = $this->MessorLib->getListIP($type);
+        if ($type == 'black') {
+            $tmp = array();
+            array_map(function($item) use (&$tmp) {
+                $tmp[$item['ip']] = $item['day'];
+            }, $data['ip_list']);
+            $data['ip_list'] = $tmp;
+        }
 
         if (isset($post['ip_delete']) && $post['ip_delete'] != null) {
             $listIp = $this->MessorLib->getListIP($type);
@@ -202,7 +219,7 @@ class Adapter
 
         if (isset($post['ip_search']) && $post['ip_search'] != null) {
             $listIp = $this->MessorLib->getListIP($type);
-            $data['ip_list'] = $this->MessorLib->searchIP($listIp, $post['ip_search']);
+            $data['ip_list'] = $this->MessorLib->searchIP($listIp, $post['ip_search'], $type);
         }
 
 
@@ -241,9 +258,11 @@ class Adapter
             'block_ip' => 1,
             'block_detect_list' => 1,
             'block_detect_count' => 3,
+            'block_detect_days' => 2,
             'block_agent' => 1,
             'block_agent_attack' => 1,
             'block_agent_search_engines' => 0,
+            'block_agent_social' => 0,
             'block_agent_tools' => 1,
             'block_agent_bots' => 0,
             'block_request' => 1,
@@ -288,7 +307,7 @@ class Adapter
         $toServer = $this->MessorLib->toServer();
         $type = $data['type'];
         if ($type == "email_confirm" || $type == "sms_confirm") {
-            $code = $this->request->post['code'];
+            $code = $data['code'];
             $response = $toServer->verify($verify->$type($code));
         } else {
             $response = $toServer->verify($verify->$type());

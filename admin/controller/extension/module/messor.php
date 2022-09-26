@@ -33,8 +33,9 @@ class ControllerExtensionModuleMessor extends Controller
             $this->registerPage();
             return;
         }
-        $this->addStyle('main.app.css');
-        $this->addScript(array('main.app.js', 'main.chunk-vendors.js'));
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'main.62f38d07b89928d0.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $this->setTitle("Messor security dashboard");
@@ -50,8 +51,9 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function registerPage()
     {
-        $this->addStyle('install.app.css');
-        $this->addScript(array('install.app.js', 'install.chunk-vendors.js'));
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css', 'register.66cb715e8ad6114a.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'register.66cb715e8ad6114a.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('Api');
@@ -164,9 +166,10 @@ class ControllerExtensionModuleMessor extends Controller
                 $status = $status ? 'Ok' : 'Error';
                 $data = $data['ip_list'] ? $data : [];
                 break;
-            case "validation_ip":$data['header'] = $this->getHeader();
-            $data['column_left'] = $this->getColumnLeft();
-            $data['footer'] = $this->getFooter();
+            case "validation_ip":
+                $data['header'] = $this->getHeader();
+                $data['column_left'] = $this->getColumnLeft();
+                $data['footer'] = $this->getFooter();
                 $status = $this->adapter->validationIp($post['ip']) ? 'Ok' : 'Error';
                 $text = $status == 'Ok' ? 'Valid' : 'No valid';
                 $data = array('text' => $text);
@@ -210,6 +213,36 @@ class ControllerExtensionModuleMessor extends Controller
                 $data = $this->adapter->MessorLib->getAboutPeer();
                 $status = 'Ok';
                 break;
+            case "peer_info_of_server":
+                $data = $this->adapter->MessorLib->getAboutPeerOfServer();
+                $status = 'Ok';
+                break;
+            case "add_user_signature":
+                if ($post['signature'] != null) {
+                    $status = $this->adapter->MessorLib->addSignature($post['signature']) ? 'Ok' : 'Error';
+                    $text = $status == 'Ok' ? 'File was save' : 'No save';
+                } else {
+                    $status = "Error";
+                    $text = 'No save';
+                }
+                $data = array('text' => $text);
+                break;
+            case "delete_user_signature":
+                $status = $this->adapter->MessorLib->deleteSignature($post['signature']) ? 'Ok' : 'Error';
+                $text = $status == 'Ok' ? 'File was delete' : 'No delete';
+                $data = array('text' => $text);
+                break;
+            case "get_user_signature":
+                $data = $this->adapter->MessorLib->getSignature();
+                $status = $data ? 'Ok' : 'Empty';
+                $data = $data ?: [];
+                break;
+            case "update_user_signature":
+                $status = $this->adapter->MessorLib->deleteSignature($post['old_signature']) ? 'Ok' : 'Error';
+                $status = $this->adapter->MessorLib->addSignature($post['new_signature']) ? 'Ok' : 'Error';
+                $text = $status == 'Ok' ? 'File was save' : 'No save';
+                $data = array('text' => $text);
+                break;
         }
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(array('status' => $status, 'data' => $data));
@@ -226,8 +259,9 @@ trait FileSystemCheck
         }
 
         $this->setTitle("Messor File System Check");
-        $this->addStyle(array('main.app.css', 'file-system-check.app.css'));
-        $this->addScript(array('file-system-check.app.js'));
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css', 'filesystem-check.e56545e14434b0ef.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'filesystem-check.e56545e14434b0ef.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('FSCheckApi');
@@ -288,14 +322,16 @@ trait FileSystemControl
     {
         $this->setTitle("Messor File System Controll");
 
-        $FSControll = $this->adapter->MessorLib->FSControll($this);
         if (!$this->adapter->MessorLib->isConfig()) {
             $this->registerPage();
             return;
         }
 
-        $this->addStyle(array('main.app.css', 'file-system-control.app.css'));
-        $this->addScript(array('file-system-control.app.js'));
+        $FSControll = $this->adapter->MessorLib->FSControll($this);
+
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css', 'filesystem-control.19331e960ecb6c63.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'filesystem-control.19331e960ecb6c63.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['header'] = $this->getHeader();
@@ -370,7 +406,10 @@ trait FileSystemControl
                 break;
             case "result":
                 $status = 'Ok';
+                $FSControll = $this->adapter->MessorLib->FSControll(null);
                 $data = $this->adapter->FSControlApiResult($post);
+                list($level, $result) = $FSControll->dataForNotify($data);
+                $response = $this->adapter->MessorLib->notifyOnServer('fsc', $level, $result);
                 break;
             case "exclude":
                 $status = $this->adapter->FSControlApiExcludeFile($post) ? 'Ok' : 'Error';
@@ -402,15 +441,16 @@ trait FileDatabaseBackup
 {
     public function FDBBMain()
     {
-        
-        $FDBBackup = $this->adapter->MessorLib->FDBBackup($this);
         if (!$this->adapter->MessorLib->isConfig()) {
             $this->registerPage();
             return;
         }
 
-        $this->addStyle(array('main.app.css', 'file-database-backup.app.css'));
-        $this->addScript(array('file-database-backup.app.js'));
+        $FDBBackup = $this->adapter->MessorLib->FDBBackup($this);
+
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css', 'file-database-backup.ac67678665a67f9f.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'file-database-backup.ac67678665a67f9f.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $this->setTitle('Messor BackUp');
@@ -450,6 +490,9 @@ trait FileDatabaseBackup
                 $post['email'] = $this->getEmail();
                 $database = $this->getDatabaseData();
                 $post['default_path'] = $this->getDefaultPath();
+                $FDBBackup = $this->adapter->MessorLib->FDBBackup(null);
+                list($level, $result) = $FDBBackup->dataForNotify();
+                $response = $this->adapter->MessorLib->notifyOnServer('fdbackup', $level, $result);
                 $status = $this->adapter->FDBBApiResult($post, $database);
                 $status = $status ? "Ok" : "Error";
                 $data = $status ? "Send" : "Error send";
@@ -457,12 +500,20 @@ trait FileDatabaseBackup
             case "download":
                 $post['default_path'] = $this->getDefaultPath();
                 $database = $this->getDatabaseData();
+                $FDBBackup = $this->adapter->MessorLib->FDBBackup(null);
+                list($level, $result) = $FDBBackup->dataForNotify();
+                $response = $this->adapter->MessorLib->notifyOnServer('fdbackup', $level, $result);
                 $status = $this->adapter->FDBBApiResult($post, $database);
                 break;
             case "save":
                 $post['default_path'] = $this->getDefaultPath();
                 $database = $this->getDatabaseData();
+                $FDBBackup = $this->adapter->MessorLib->FDBBackup(null);
+                list($level, $result) = $FDBBackup->dataForNotify();
+                $response = $this->adapter->MessorLib->notifyOnServer('fdbackup', $level, $result);
                 $status = $this->adapter->FDBBApiResult($post, $database);
+                $status = $status ? "Ok" : "Error";
+                $data = $status ? "Save" : "Error save";
                 break;
             case "exclude":
                 $status = $this->adapter->FDBBApiExcludeFile($post) ? 'Ok' : 'Error';
@@ -490,20 +541,22 @@ trait MalwareClean
 {
     public function MCLMain()
     {
-        $MCleaner = $this->adapter->MessorLib->MCleaner($this->getDefaultPath(), $this);
 
         if (!$this->adapter->MessorLib->isConfig()) {
             $this->registerPage();
             return;
         }
 
+        $MCleaner = $this->adapter->MessorLib->MCleaner($this->getDefaultPath(), $this);
+
         $this->setTitle("Messor Malware Сleaner");
         $data['path_api'] = $this->getLinkApi('MCLApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
 
-        $this->addStyle(array('main.app.css', 'malware-cleaner.app.css', 'subscription-alert-styles.css'));
-        $this->addScript('malware-cleaner.app.js');
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css', 'malware-cleaner.27f007c8d493912c.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'malware-cleaner.27f007c8d493912c.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
 
@@ -526,26 +579,6 @@ trait MalwareClean
         $this->responseOutput('MCL/index', $data);
     }
 
-
-    public function MCLResult()
-    {
-        $this->addStyle(array('main.app.css', 'malware-cleaner.app.css'));
-        $this->addScript('malware-cleaner.app.js');
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
-        $this->setTitle("Messor Malware Сleaner ");
-        $data['path_api'] = $this->getLinkApi('MCLApi');
-        $data['language'] = $this->getLanguage();
-        $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-
-        $data['header'] = $this->getHeader();
-        $data['column_left'] = $this->getColumnLeft();
-        $data['footer'] = $this->getFooter();
-        $data['user_token'] = $this->getUserToken();
-
-        $this->responseOutput('MCL/index', $data);
-    }
-
     public function MCLApi()
     {
         $post = json_decode(file_get_contents('php://input'), true);
@@ -563,8 +596,11 @@ trait MalwareClean
                 }
                 break;
             case "result":
+                $MCleaner = $this->adapter->MessorLib->MCleaner(null, null);
                 $status = 'Ok';
                 $data = $this->adapter->MCLApiResult($post);
+                list($level, $result) = $MCleaner->dataForNotify($data);
+                $response = $this->adapter->MessorLib->notifyOnServer('cleaner', $level, $result);
                 break;
             case "remove":
                 $status = $this->adapter->MCLApiDeleteDangerFile($post) ? 'Ok' : 'Error';
@@ -607,8 +643,9 @@ trait SecuritySettings
             return;
         }
 
-        $this->addStyle(array('main.app.css', 'security-settings.app.css'));
-        $this->addScript(array('security-settings.app.js'));
+        $this->addStyle(array('chunk-common.7a35197d828c91ba.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.7a35197d828c91ba.js', 'security-settings.b4741a69033dadb5.js'));
+
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['user_token'] = $this->getUserToken();

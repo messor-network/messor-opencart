@@ -99,6 +99,8 @@ final class MessorLib
      */
     public function getAboutPeerOfServer()
     {
+        $servers = $this->getServers();
+        $this->toServer->request->setServer($servers[0][0]);
         $response = $this->toServer->info();
         File::clear(PATH::INFO);
         File::write(PATH::INFO, Parser::toSettingArray($response->getResponseData()));
@@ -110,6 +112,14 @@ final class MessorLib
         $servers = $this->getServers();
         $server = new toServer($servers[0][0]);
         $response = $server->peerOptions();
+        return $response->getResponseData();
+    }
+
+    public function notifyOnServer($type, $level, $result)
+    {
+        $servers = $this->getServers();
+        $this->toServer->request->setServer($servers[0][0]);
+        $response = $this->toServer->peerNotify($type, $level, $result);
         return $response->getResponseData();
     }
 
@@ -304,6 +314,54 @@ final class MessorLib
         File::clear(Path::SETTINGS);
         $status = File::write(Path::SETTINGS, Parser::toSettingArray($setting));
         return $status;
+    }
+
+    /**
+     * Saves signature
+     *
+     * @param array $signature
+     * @return bool
+     */
+    public function addSignature($signature)
+    {
+        $oldSignature = Parser::toArraySetting(File::read(Path::SIGNATURE));
+        $oldSignature = $oldSignature != null ? $oldSignature : array();
+        $newSignature = array_merge($oldSignature, $signature);
+        File::clear(Path::SIGNATURE);
+        $status = File::write(Path::SIGNATURE, Parser::toSettingArray($newSignature));
+        return $status;
+    }
+
+    /**
+     * Delete signature
+     *
+     * @param array $signature
+     * @return bool
+     */
+    public function deleteSignature($signature)
+    {
+        $oldSignature = Parser::toArraySetting(File::read(Path::SIGNATURE));
+        $oldSignature = $oldSignature != null ? $oldSignature : array();
+        $newSignature = array_diff_key($oldSignature, $signature);
+        File::clear(Path::SIGNATURE);
+        if (count($newSignature)) {
+            $status = File::write(Path::SIGNATURE, Parser::toSettingArray($newSignature));
+        } else {
+            $status = true;
+        }
+        return $status;
+    }
+
+    /**
+     * Get signature
+     *
+     * @param array $signature
+     * @return bool
+     */
+    public function getSignature()
+    {
+        $signature = Parser::toArraySetting(File::read(Path::SIGNATURE));
+        return $signature;
     }
 
     /**
@@ -668,16 +726,18 @@ final class MessorLib
             if ($setting["block_ddos"] == 1) {
                 File::write(Path::WHITE_LIST, $ip . " = " . "ddos" . "\n");
             }
-            $detect_list = Parser::toArraySetting(File::read(Path::DETECT_LIST));
-            if (isset($detect_list[$ip])) {
-                File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
-            } else if ($setting["lock"] == "js_unlock" && $setting["block_ddos"] != 1) {
-                File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
-            }
-            unset($detect_list[$ip]);
-            File::clear((Path::DETECT_LIST));
-            if ($detect_list != null) {
-                File::write(Path::DETECT_LIST, Parser::toSettingArray($detect_list));
+            $detect_list = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
+            foreach ($detect_list as $key => $item) {
+                if ($item['ip'] == $ip) {
+                    File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
+                } else if ($setting["lock"] == "js_unlock" && $setting["block_ddos"] != 1) {
+                    File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
+                }
+                unset($detect_list[$key]);
+                File::clear((Path::DETECT_LIST));
+                if ($detect_list != null) {
+                    File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detect_list));
+                }
             }
         }
         return true;
@@ -967,6 +1027,15 @@ final class MessorLib
     public function addIP($type, $newlist)
     {
         $oldlist = $this->getListIP($type);
+        if ($type == 'black') {
+            array_walk($newlist, function ($item, $key) use ($oldlist, &$newlist) {
+                foreach ($oldlist as $itemOldList) {
+                    if ($item['ip'] == $itemOldList['ip']) {
+                        unset($newlist[$key]);
+                    }
+                }
+            });
+        }
         $list = array_merge($oldlist, $newlist);
         return $this->setListIP($type, $list);
     }
@@ -982,8 +1051,14 @@ final class MessorLib
     public function deleteIP($type, $list, $ip)
     {
         foreach ($list as $key => &$value) {
-            if ($key == $ip) {
-                unset($list[$ip]);
+            if ($type = 'black') {
+                if ($value['ip'] == $ip) {
+                    unset($list[$key]);
+                }
+            } else {
+                if ($key == $ip) {
+                    unset($list[$ip]);
+                }
             }
         }
         return $this->setListIP($type, $list);
@@ -997,12 +1072,19 @@ final class MessorLib
      * @param string $ip
      * @return bool
      */
-    public function searchIP($list, $ip)
+    public function searchIP($list, $ip, $type)
     {
         foreach ($list as $key => $value) {
-            if ($key == $ip) {
-                $list = array($ip => $value);
-                return $list;
+            if ($type = 'black') {
+                if ($value['ip'] == $ip) {
+                    $list = array($value['ip'] => $value['day']);
+                    return $list;
+                }
+            } else {
+                if ($key == $ip) {
+                    $list = array($ip => $value);
+                    return $list;
+                }
             }
         }
         $list = array('null' => null);
@@ -1022,7 +1104,7 @@ final class MessorLib
             if ($result) return $result;
             else return array();
         } else {
-            $result = Parser::toArraySetting(File::read(Path::DETECT_LIST));
+            $result = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
             if ($result)
                 return $result;
             else return array();
@@ -1043,7 +1125,7 @@ final class MessorLib
             return (File::write(Path::WHITE_LIST, Parser::toSettingArray($list)));
         } else {
             File::clear(PATH::DETECT_LIST);
-            return (File::write(Path::DETECT_LIST, Parser::toSettingArray($list)));
+            return (File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($list)));
         }
     }
 
@@ -1198,20 +1280,18 @@ final class MessorLib
      */
     public function deleteScoresDetect()
     {
-        $day = 1;
-        $newDetectList = array();
         if (filesize(PATH::DETECT_LIST)) {
-            $detectList = Parser::toArraySetting(File::read(Path::DETECT_LIST));
+            $detectList = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
             foreach ($detectList as $key => $value) {
-                if ($value != "forever") {
-                    $newDetectList[$key] = $value - ($day * 2);
-                    if ($newDetectList[$key] <= 0) {
-                        unset($newDetectList[$key]);
+                if ($value['day'] != "forever") {
+                    $detectList[$key]['day'] -= 1;
+                    if ($detectList[$key]['day'] <= 0) {
+                        unset($detectList[$key]);
                     }
                 }
             }
             File::clear(Path::DETECT_LIST);
-            File::write(Path::DETECT_LIST, Parser::toSettingArray($newDetectList));
+            File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detectList));
         }
     }
 

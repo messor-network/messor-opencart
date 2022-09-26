@@ -33,6 +33,7 @@ class Messor
     private static $isWhite;
     private static $route;
     private static $pageNotFound;
+    private static $signature;
 
     /**
      * Initialization
@@ -50,9 +51,10 @@ class Messor
         self::$settings = Parser::toArraySetting(File::read(Path::SETTINGS));
         self::$systemSettings = Parser::toArraySetting(File::read(Path::SYSTEM_SETTINGS));
         self::$sync = Parser::toArrayTab(Parser::toArray(File::read(Path::SYNC_LIST)));
-        self::$detectList = Parser::toArraySetting(File::read(Path::DETECT_LIST));
+        self::$detectList = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
         self::$white = Parser::toArraySetting(File::read(Path::WHITE_LIST));
         self::$rules = unserialize(File::read(Path::RULES));
+        self::$signature = Parser::toArray(file::read(Path::SIGNATURE));
         self::$isWhite = false;
     }
 
@@ -109,6 +111,9 @@ class Messor
             }
             if (self::$settings['block_agent_bots'] == 1) {
                 if (self::blockAgent('bots', 'bot')) return;
+            }
+            if (self::$settings['block_agent_social'] == 1) {
+                if (self::blockAgent('social', 'social')) return;
             }
         }
         if (self::$settings['block_request'] == 1) {
@@ -209,21 +214,26 @@ class Messor
     public static function blockDetect($string)
     {
         if (!is_null(self::$detectList)) {
-            if (array_key_exists(self::$remoteIp, self::$detectList)) {
-                if (self::$detectList[self::$remoteIp] == "forever") {
-                    self::block();
+            foreach (self::$detectList as $item) {
+                if (Check::ipIsNet($item['ip'])) {
+                    if (Check::ipInSubnet($item['ip'], self::$remoteIp)) {
+                        if ($item['day'] > 0) {
+                            self::logger($string, Path::ARCHIVE);
+                            if (self::$isWhite == true) return false;
+                            self::block();
+                            return true;
+                        }
+                    }
                 }
-                if (self::$detectList[self::$remoteIp] >= self::$settings['block_detect_count']) {
-                    self::logger($string, Path::ARCHIVE);
-                    if (self::$isWhite == true) return false;
-                    self::block();
-                    return true;
-                }
-            }
-            foreach (self::$detectList as $subnet) {
-                if (Check::ipIsNet($subnet)) {
-                    if (Check::ipInSubnet($subnet, self::$remoteIp)) {
+                if (self::$remoteIp == $item['ip']) {
+                    if ($item['ip'] == "forever") {
                         self::block();
+                    }
+                    if ($item['day'] > 0) {
+                        self::logger($string, Path::ARCHIVE);
+                        if (self::$isWhite == true) return false;
+                        self::block();
+                        return true;
                     }
                 }
             }
@@ -244,7 +254,7 @@ class Messor
                     return true;
                 }
             }
-            foreach (self::$white as $subnet) {
+            foreach (self::$white as $subnet => $day) {
                 if (Check::ipIsNet($subnet)) {
                     if (Check::ipInSubnet($subnet, self::$remoteIp)) {
                         self::$isWhite = true;
@@ -357,6 +367,19 @@ class Messor
                     return false;
                 }
             }
+            if (self::$signature != null) {
+                foreach (self::$signature as $sig => $type) {
+                    $match = preg_match($sig, $url);
+                    if ($match) {
+                        if ($type == 'except') return false;
+                    } else if ($type == 'append') {
+                        self::logger($string, Path::SYNC_LIST);
+                        if (self::isWhite()) return false;
+                        self::detectCount();
+                        return true;
+                    }
+                }
+            }
         }
     }
 
@@ -381,12 +404,12 @@ class Messor
                 File::write(Path::WHITE_LIST, Parser::toSettingArray(self::$white));
                 return $response;
             }
-            foreach (self::$white as $subnet) {
+            foreach (self::$white as $subnet => $day) {
                 if (Check::ipIsNet($subnet) && (self::$white[self::$remoteIp] != 'ddos')) {
                     if (Check::ipInSubnet($subnet, self::$remoteIp)) {
-                        self::$white[self::$remoteIp] -= 1;
-                        if (self::$white[self::$remoteIp] < 1) {
-                            unset(self::$white[self::$remoteIp]);
+                        self::$white[$subnet] -= 1;
+                        if (self::$white[$subnet] < 1) {
+                            unset(self::$white[$subnet]);
                             $response = false;
                         } else {
                             $response = true;
@@ -449,32 +472,44 @@ class Messor
     public static function detectCount()
     {
         $find = false;
+        $day = 0;
         if (!is_null(self::$detectList)) {
-            if (array_key_exists(self::$remoteIp, self::$detectList)) {
-                self::$detectList[self::$remoteIp] += 1;
-                $find = true;
-            }
-            foreach (self::$detectList as $subnet) {
-                if (Check::ipIsNet($subnet)) {
-                    if (Check::ipInSubnet($subnet, self::$remoteIp)) {
-                        self::$detectList[$subnet] += 1;
+            foreach (self::$detectList as $key => $item) {
+                if (Check::ipIsNet($item['ip'])) {
+                    if (Check::ipInSubnet($item['ip'], self::$remoteIp)) {
+                        self::$detectList[$key]['count'] += 1;
+                        if (self::$detectList[$key]['count'] >= self::$settings['block_detect_count']) {
+                            self::$detectList[$key]['day'] = self::$settings['block_detect_day'];
+                        }
                         $find = true;
+                        $day = self::$detectList[$key]['day'];
                         break;
                     }
                 }
+                if (self::$remoteIp == $item['ip']) {
+                    self::$detectList[$key]['count'] += 1;
+                    if (self::$detectList[$key]['count'] >= self::$settings['block_detect_count']) {
+                        self::$detectList[$key]['day'] = self::$settings['block_detect_day'];
+                    }
+                    $find = true;
+                    $day = self::$detectList[$key]['day'];
+                    break;
+                }
             }
-            if (!$find) self::$detectList[self::$remoteIp] = 1;
+            if (!$find) {
+                self::$detectList[] = array('ip' => self::$remoteIp, 'day' => 0, 'count' => 1);
+            }
         } else {
-            self::$detectList[self::$remoteIp] = 1;
+            self::$detectList[] = array('ip' => self::$remoteIp, 'day' => 0, 'count' => 1);
         }
         try {
-            if (!File::clear(Path::DETECT_LIST) && !File::write(Path::DETECT_LIST, Parser::toSettingArray(self::$detectList))) {
+            if (!File::clear(Path::DETECT_LIST) && !File::write(Path::DETECT_LIST, Parser::toSettingArrayTab(self::$detectList))) {
                 throw new FileException();
             }
         } catch (FileException $e) {
             $e->writeError("Error write to file " . Path::DETECT_LIST . " please check your configuration file.");
         }
-        if (self::$detectList[self::$remoteIp] >= self::$settings['block_detect_count']) {
+        if ($day > 0) {
             self::block();
         }
     }

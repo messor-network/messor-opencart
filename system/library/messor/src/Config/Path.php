@@ -8,7 +8,7 @@ namespace src\Config;
 class Path
 {
     const USERCONF = BASE_PATH . "/data/config.txt";
-    const VERSION = "2.0";
+    const VERSION = "2.1";
     const VERSION_BD = BASE_PATH . "/data/version.txt";
     const LICENSE = BASE_PATH . "/data/license.txt";
     const UPDATE  = BASE_PATH . "/data/update.txt";
@@ -36,4 +36,5 @@ class Path
     const RULES = BASE_PATH . "/data/database/rules.txt";
     const DAY = BASE_PATH . "/data/day.txt";
     const IPHASH = BASE_PATH . "/data/ip/";
+    const SIGNATURE = BASE_PATH . "/data/signature.txt";
 }
