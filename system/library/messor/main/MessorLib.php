@@ -730,14 +730,16 @@ final class MessorLib
             foreach ($detect_list as $key => $item) {
                 if ($item['ip'] == $ip) {
                     File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
+                    break;
                 } else if ($setting["lock"] == "js_unlock" && $setting["block_ddos"] != 1) {
                     File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
+                    break;
                 }
-                unset($detect_list[$key]);
-                File::clear((Path::DETECT_LIST));
-                if ($detect_list != null) {
-                    File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detect_list));
-                }
+            }
+            unset($detect_list[$key]);
+            File::clear((Path::DETECT_LIST));
+            if ($detect_list != null) {
+                File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detect_list));
             }
         }
         return true;
