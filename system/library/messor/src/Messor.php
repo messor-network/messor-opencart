@@ -489,7 +489,7 @@ class Messor
                     if (Check::ipInSubnet($item['ip'], self::$remoteIp)) {
                         self::$detectList[$key]['count'] += 1;
                         if (self::$detectList[$key]['count'] >= self::$settings['block_detect_count']) {
-                            self::$detectList[$key]['day'] = self::$settings['block_detect_day'];
+                            self::$detectList[$key]['day'] = self::$settings['block_detect_days'];
                         }
                         $find = true;
                         $day = self::$detectList[$key]['day'];
@@ -499,7 +499,7 @@ class Messor
                 if (self::$remoteIp == $item['ip']) {
                     self::$detectList[$key]['count'] += 1;
                     if (self::$detectList[$key]['count'] >= self::$settings['block_detect_count']) {
-                        self::$detectList[$key]['day'] = self::$settings['block_detect_day'];
+                        self::$detectList[$key]['day'] = self::$settings['block_detect_days'];
                     }
                     $find = true;
                     $day = self::$detectList[$key]['day'];
