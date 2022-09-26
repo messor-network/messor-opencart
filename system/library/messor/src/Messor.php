@@ -54,7 +54,7 @@ class Messor
         self::$detectList = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
         self::$white = Parser::toArraySetting(File::read(Path::WHITE_LIST));
         self::$rules = unserialize(File::read(Path::RULES));
-        self::$signature = Parser::toArray(file::read(Path::SIGNATURE));
+        self::$signature = Parser::toArraySetting(file::read(Path::SIGNATURE));
         self::$isWhite = false;
     }
 
@@ -129,12 +129,18 @@ class Messor
         }
 
 
-        if (file_exists(Path::DB_TREE . Parser::ipv4File(self::$remoteIp))) {
-            self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv4File(self::$remoteIp)));
+        // IPv4
+        if (filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)) {
+            if (file_exists(Path::DB_TREE . Parser::ipv4File(self::$remoteIp))) {
+                self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv4File(self::$remoteIp)));
+            }
         }
-
-        if (file_exists(Path::DB_TREE . Parser::ipv6File(self::$remoteIp))) {
-            self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv6File(self::$remoteIp)));
+        
+        // IPv6
+        if (filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)) {
+            if (file_exists(Path::DB_TREE . Parser::ipv6File(self::$remoteIp))) {
+                self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv6File(self::$remoteIp)));
+            }
         }
 
         if (self::$settings['block_ip'] == 1) {
@@ -355,32 +361,36 @@ class Messor
     public static function blockPath($string, $disableDetect)
     {
         $server = self::$http->server();
-        $result = $server['REQUEST_URI'];
-        foreach (self::$rules['rules']['path'] as $url) {
-            if (stripos($result, trim($url)) !== false) {
+        $check_url = $server['REQUEST_URI'];
+        if (self::isWhite()) return false;
+        foreach (self::$rules['rules']['path'] as $check_path) {
+            if (stripos($check_url, trim($check_path)) !== false) {
                 if (!in_array('path', $disableDetect)) {
                     self::logger($string, Path::SYNC_LIST);
-                    if (self::isWhite()) return false;
+                   // if (self::isWhite()) return false;
                     self::detectCount();
                     return true;
                 } else {
                     return false;
                 }
             }
-            if (self::$signature != null) {
-                foreach (self::$signature as $sig => $type) {
-                    $match = preg_match($sig, $url);
-                    if ($match) {
-                        if ($type == 'except') return false;
-                    } else if ($type == 'append') {
-                        self::logger($string, Path::SYNC_LIST);
-                        if (self::isWhite()) return false;
+            
+        }
+        if (self::$signature != null) {
+            foreach (self::$signature as $sig => $type) {
+                $match = preg_match($sig, $check_url);
+                if ($match) {
+                    if ($type == 'except') return false;
+                    if ($type == 'append') {
+                        self::logger('sign', Path::SYNC_LIST);
+                        //if (self::isWhite()) return false;
                         self::detectCount();
                         return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /**
