@@ -725,21 +725,23 @@ final class MessorLib
         if ($hashKey == $key) {
             if ($setting["block_ddos"] == 1) {
                 File::write(Path::WHITE_LIST, $ip . " = " . "ddos" . "\n");
+            } elseif ($setting["lock"] == "js_unlock") {
+                File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
             }
             $detect_list = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
-            foreach ($detect_list as $key => $item) {
-                if ($item['ip'] == $ip) {
-                    File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
-                    break;
-                } else if ($setting["lock"] == "js_unlock" && $setting["block_ddos"] != 1) {
-                    File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
-                    break;
+            if(is_array($detect_list)) {
+                foreach ($detect_list as $key => $item) {
+                    if ($item['ip'] == $ip) {
+                        //File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
+                        unset($detect_list[$key]);
+                        break;
+                    }
                 }
-            }
-            unset($detect_list[$key]);
-            File::clear((Path::DETECT_LIST));
-            if ($detect_list != null) {
-                File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detect_list));
+                
+                File::clear((Path::DETECT_LIST));
+                if ($detect_list != null) {
+                    File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detect_list));
+                }
             }
         }
         return true;
