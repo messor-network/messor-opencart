@@ -37,7 +37,7 @@ class FSCheck
             }
             $group = posix_getgrgid($item->getGroup());
             $owner = posix_getpwuid($item->getOwner());
-            if ($group['name'] != 'root' || $owner['name'] != 'root') {
+            //if ($group['name'] != 'root' || $owner['name'] != 'root') {
                 if ($item->isDir()) {
                     $perms = substr(sprintf('%o', $item->getPerms()), -4);
                     $path = str_replace($this->path, '', $item->getRealPath());
@@ -63,7 +63,7 @@ class FSCheck
                     }
                 }
             }
-        }
+        //}
         return array('general' => $this->general);
     }
 
