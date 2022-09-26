@@ -1053,7 +1053,7 @@ final class MessorLib
     public function deleteIP($type, $list, $ip)
     {
         foreach ($list as $key => &$value) {
-            if ($type = 'black') {
+            if ($type == 'black') {
                 if ($value['ip'] == $ip) {
                     unset($list[$key]);
                 }
