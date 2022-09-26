@@ -130,14 +130,14 @@ class Messor
 
 
         // IPv4
-        if (filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)) {
+        if (filter_var(self::$remoteIp, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)) {
             if (file_exists(Path::DB_TREE . Parser::ipv4File(self::$remoteIp))) {
                 self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv4File(self::$remoteIp)));
             }
         }
         
         // IPv6
-        if (filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)) {
+        if (filter_var(self::$remoteIp, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)) {
             if (file_exists(Path::DB_TREE . Parser::ipv6File(self::$remoteIp))) {
                 self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv6File(self::$remoteIp)));
             }
