@@ -729,7 +729,7 @@ final class MessorLib
                 File::write(Path::WHITE_LIST, $ip . " = " . "1" . "\n");
             }
             $detect_list = Parser::toArraySettingTab(File::read(Path::DETECT_LIST));
-            if(is_array($detect_list)) {
+            if (is_array($detect_list)) {
                 foreach ($detect_list as $key => $item) {
                     if ($item['ip'] == $ip) {
                         //File::write(Path::WHITE_LIST, $ip . " = " . "3" . "\n");
@@ -737,7 +737,7 @@ final class MessorLib
                         break;
                     }
                 }
-                
+
                 File::clear((Path::DETECT_LIST));
                 if ($detect_list != null) {
                     File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detect_list));
@@ -1296,6 +1296,23 @@ final class MessorLib
             }
             File::clear(Path::DETECT_LIST);
             File::write(Path::DETECT_LIST, Parser::toSettingArrayTab($detectList));
+        }
+    }
+
+    public function deleteScoresAllow()
+    {
+        if (filesize(PATH::WHITE_LIST)) {
+            $allow = Parser::toArraySetting(File::read(Path::WHITE_LIST));
+            foreach ($allow as $cur_ip => $day) {
+                if ($day != "forever" && $day != "ddos") {
+                    $allow[$cur_ip] -= 1;
+                    if ($allow[$cur_ip] <= 0) {
+                        unset($allow[$cur_ip]);
+                    }
+                }
+            }
+            File::clear(Path::WHITE_LIST);
+            File::write(Path::WHITE_LIST, Parser::toSettingArray($allow));
         }
     }
 

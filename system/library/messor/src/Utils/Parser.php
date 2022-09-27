@@ -146,8 +146,11 @@ class Parser
     {
         $request = '';
         foreach ($data as $item) {
+            $size = count($item);
+            $i = 0;
             foreach ($item as $key => $value) {
-                if ($value != end($item)) {
+                $i++;
+                if ($i != $size) {
                     $request .= trim($key) .' = '. trim(urlencode($value)) . "\t";
                 } else {
                     $request .= trim($key) .' = '. trim(urlencode($value)) . "\n";

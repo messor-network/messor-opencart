@@ -48,6 +48,7 @@ class ControllerExtensionModuleMessor extends Controller
         if ($this->adapter->MessorLib->checkUpdateDay($hour = 24, PATH::DAY)) {
             $this->adapter->MessorLib->deleteAllHashIP();
             $this->adapter->MessorLib->deleteScoresDetect();
+            $this->adapter->MessorLib->deleteScoresAllow();
             $this->adapter->MessorLib->updateClient();
             File::clear(PATH::DAY);
         }
@@ -90,6 +91,7 @@ class ControllerExtensionModuleMessor extends Controller
         if ($this->adapter->MessorLib->checkUpdateDay($hour = 26, PATH::DAY)) {
             $this->adapter->MessorLib->deleteAllHashIP();
             $this->adapter->MessorLib->deleteScoresDetect();
+            $this->adapter->MessorLib->deleteScoresAllow();
             $this->adapter->MessorLib->updateClient();
             File::clear(PATH::DAY);
         }
@@ -101,7 +103,7 @@ class ControllerExtensionModuleMessor extends Controller
         $route = $this->getUrlLink('hashJs', null, false);
         $url = $this->getUrl();
 
-        if ($this->isImage) return;
+        if ($this->isImage()) return;
         
         static $flag = '';
         $resp = $this->getRoute();
