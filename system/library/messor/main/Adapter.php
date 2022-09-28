@@ -568,7 +568,7 @@ trait FileDatabaseBackup
         $FDBBackup::initDump($post['type_arch'], $post['filename']);
         $FDBBackup::$dump->setBasePath($post['default_path']);
         if (isset($post['type_backup']) && $post['type_backup'] == "backup_db") {
-            $FDBBackup::createDumpDB($post['tables']);
+            $res = $FDBBackup::createDumpDB($post['tables']);
             switch ($post['action']) {
                 case 'download':
                     $FDBBackup::$dump->download($FDBBackup::$dump->filenameDumpDb);
@@ -579,13 +579,16 @@ trait FileDatabaseBackup
                     $response = $Mailer->send();
                     $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
                     return $response;
+                case 'save':
+                    return $res;
+                    break;
             }
         }
         if (isset($post['type_backup']) && $post['type_backup'] == "backup_file") {
             if ($post['type_arch'] == ".zip") {
-                $FDBBackup::createDumpFileBackupZip($post['path']);
+                $res = $FDBBackup::createDumpFileBackupZip($post['path']);
             } else {
-                $FDBBackup::createDumpFileBackupTar($post['path']);
+                $res = $FDBBackup::createDumpFileBackupTar($post['path']);
             }
 
             switch ($post['action']) {
@@ -597,6 +600,9 @@ trait FileDatabaseBackup
                     $Mailer = $FDBBackup->setMailer($FDBBackup::$dump->filenameDumpDb, $FDBBackup::$dump->dump_path,  $post['email_user']);
                     $Mailer->send();
                     $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
+                    break;
+                case 'save':
+                    return $res;
                     break;
             }
         }
