@@ -127,13 +127,13 @@ class Messor
             }
         }
 
-        if (filter_var(self::$remoteIp, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)) {
+        if (filter_var(self::$remoteIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             if (file_exists(Path::DB_TREE . Parser::ipv4File(self::$remoteIp))) {
                 self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv4File(self::$remoteIp)));
             }
         }
 
-        if (filter_var(self::$remoteIp, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)) {
+        if (filter_var(self::$remoteIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             if (file_exists(Path::DB_TREE . Parser::ipv6File(self::$remoteIp))) {
                 self::$ipBaseList = Parser::toArraySetting(File::read(Path::DB_TREE . Parser::ipv6File(self::$remoteIp)));
             }
@@ -340,10 +340,11 @@ class Messor
                     self::logger($string, Path::SYNC_LIST);
                     if (self::isWhite()) return false;
                     self::detectCount();
-                    return true;
+                    self::block();
                 }
             }
         }
+        return true;
     }
 
 
