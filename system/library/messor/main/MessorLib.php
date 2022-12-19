@@ -1079,7 +1079,7 @@ final class MessorLib
     public function searchIP($list, $ip, $type)
     {
         foreach ($list as $key => $value) {
-            if ($type = 'black') {
+            if ($type == 'black') {
                 if ($value['ip'] == $ip) {
                     $list = array($value['ip'] => $value['day']);
                     return $list;
