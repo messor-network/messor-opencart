@@ -169,6 +169,11 @@ trait Opencart
         return VERSION;
     }
 
+    public function getCMS() 
+    {
+        return "Opencart";
+    }
+
     public function getUserCMS()
     {
         $this->load->model('user/user');

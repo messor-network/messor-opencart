@@ -125,6 +125,8 @@ class ControllerExtensionModuleMessor extends Controller
                 $data = [];
                 break;
             case "register":
+                $post['cms'] = $this->getCMS();
+                $post['cms_version'] = $this->getVersion();
                 list($status, $data) = $this->adapter->MessorLib->register($post);
                 break;
             case "main_data":
