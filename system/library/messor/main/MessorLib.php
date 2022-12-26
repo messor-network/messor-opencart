@@ -1324,10 +1324,9 @@ final class MessorLib
     public function newVersion()
     {
         if (filesize(Path::UPDATE)) {
-            $file = File::read(Path::UPDATE);
-            $file = htmlspecialchars($file);
-            $file = str_replace("\n", "</br>", $file);
-            return $file;
+            return false;
+        } else {
+            return true;
         }
     }
 
