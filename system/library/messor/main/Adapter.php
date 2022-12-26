@@ -768,7 +768,7 @@ trait SecuritySettings
         $data['install_dir'] = $SecuritySettings->checkInstallDirectory($pathInstallDir);
         $data['prefix'] = $SecuritySettings->checkDBPrefix($prefix, $prefixForCMS);
         $data['show_error'] = $SecuritySettings->checkShowError($showError);
-        $data['new_version_messor'] = $this->MessorLib->newVersion();
+        $data['new_version_messor'] = $this->MessorLib->isNewVersionMessor();
 
         $count = array($data['last_version'], $data['admin_panel'], $data['admin_login'], $data['result'], $data['install_dir']);
         $data['count'] = 0;

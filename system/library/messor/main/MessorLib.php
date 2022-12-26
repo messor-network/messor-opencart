@@ -1317,20 +1317,6 @@ final class MessorLib
     }
 
     /**
-     * Validates and returns text on Messor update
-     *
-     * @return string
-     */
-    public function newVersion()
-    {
-        if (filesize(Path::UPDATE)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
      * User registration in the Messor network
      *
      * @param array $data
