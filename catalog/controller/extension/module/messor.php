@@ -103,7 +103,7 @@ class ControllerExtensionModuleMessor extends Controller
         $route = $this->getUrlLink('hashJs', null, false);
         $url = $this->getUrl();
 
-        if ($this->isImage()) return;
+        if ($this->isImage) return;
         
         static $flag = '';
         $resp = $this->getRoute();

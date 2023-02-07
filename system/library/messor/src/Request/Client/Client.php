@@ -51,12 +51,12 @@ class Client
         $date = date("d.m.y H:i", (int) microtime());
         $start = microtime(true);
         self::$res = self::$servers->checkServerFile($date);
-        if(!self::$res) return false;
+        if (!self::$res) return false;
         $responseList = self::$servers->checkServerStatus(self::$peer);
-        if(!$responseList) return false;
+        if (!$responseList) return false;
         self::$servers->displayServerStatus();
         $trustServer = self::$servers->checkTrustServer($responseList);
-        if(!$trustServer) return false;
+        if (!$trustServer) return false;
         self::getPeerInfo($trustServer, self::$peer);
         self::$log .= self::$servers->updateServerList($trustServer, self::$peer);
         self::upgradeClient($trustServer, self::$peer);
@@ -131,13 +131,11 @@ class Client
             $response = $peer->upgrade();
             if (!empty($response->getResponseData('message'))) {
                 self::$log .= $response->getResponseData('message');
-                try {
                     File::clear(PATH::UPDATE);
                     if (File::write(PATH::UPDATE, $response->getResponseData())) {
-                        self::$log .= " Write info on file " . PATH::UPDATE. "\n";
-                    }
-                } catch (FileException $e) {
-                    self::$log .= "Error write: " . PATH::UPDATE. "\n";
+                    self::$log .= " Write info on file " . PATH::UPDATE . "\n";
+                } else {
+                    self::$log .= "Error write: " . PATH::UPDATE . "\n";
                 }
             } 
         } else {
@@ -186,23 +184,17 @@ class Client
             try {
                 if ($syncSuccess) {
                     self::$log .= "Synchronization success full.\n";
-                    try {
                         if (File::write(Path::ARCHIVE, $data)) {
                             self::$log .= "File archive updated success.\n";
-                        }
-                    } catch (FileException $e) {
+                    } else {
                         self::$log .= "Error write archive file " . Path::ARCHIVE . " Check permission or clean this file manual!\n";
-                        $e->writeError("Error write to file " . Path::ARCHIVE);
                         return;
                     }
-                    try {
                         if (File::clear(Path::SYNC_LIST) !== false) {
                             self::$log .= "File sync clean success.\n";
-                        }
-                    } catch (FileException $e) {
+                    } else {
                         self::$log .= "Attention - fatal error!\n";
                         self::$log .= "Error clean sync file " . Path::SYNC_LIST . " Check permission or clean this file manual!\n";
-                        $e->writeError("Error write to file " . Path::SYNC_LIST);
                         return;
                     }
                 }

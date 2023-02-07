@@ -7,9 +7,9 @@ use src\Utils\File;
 use src\Config\Path;
 
 /**
- * File handling exception class
+ * Parser handling exception class
  */
-class FileException extends \Exception {
+class ParserException extends \Exception {
 
     private $additionalData;
 
@@ -25,24 +25,12 @@ class FileException extends \Exception {
     }
 
     /**
-     * Exception while reading file
+     * Error parsing
      *
      * @param string $string
      * @return void
      */
-    public function readError($string='') 
-    {
-        $string = Logger::addTime(). "\t" . trim($string). "\n";
-        $string = File::write(Path::ERROR ,$string);
-    }
-
-    /**
-     * Error writing to file
-     *
-     * @param string $string
-     * @return void
-     */
-    public function writeError() 
+    public function parsingError() 
     {
         $string = Logger::addTime(). "\t" . trim($this->additionalData). "\n";
         $string = File::write(Path::ERROR ,$string);
@@ -59,7 +47,7 @@ class FileException extends \Exception {
             $errString = "File: $errfile". "\t".
                          "line: $errline". "\t".
                          "text: $errstr";
-            throw new FileException($errstr, $errno, null, $errString);
+            throw new ParserException($errstr, $errno, null, $errString);
         });
     }
 

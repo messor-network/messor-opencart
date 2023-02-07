@@ -9,7 +9,6 @@ namespace messor\cms;
 trait Opencart
 {
     private $pathToPeer = "extension/module/messor/requestToPeer";
-
     public function index()
     {   
         $route = 'extension/module/messor/Messor&user_token='.$this->session->data['user_token'];
@@ -173,7 +172,6 @@ trait Opencart
     {
         return "Opencart";
     }
-
     public function getUserCMS()
     {
         $this->load->model('user/user');
@@ -246,7 +244,7 @@ trait Opencart
         if ($versionCurrent != $version) {
             return array(true, $version);
         } else {
-            return array(false, $version);;
+            return array(false, $version);
         }
     }
 
@@ -284,7 +282,7 @@ trait Opencart
 
     public function getLinkApi($path)
     {
-        return $this->url->link('extension/module/messor/' . $path, '', true);
+        return $this->url->link('extension/module/messor/'.$path, '', true);
     }
 
     public function getUrlLink($route, $data = null, $tokenFlag = true)
@@ -327,10 +325,10 @@ trait Opencart
     {
         if (is_array($name)) {
             foreach ($name as $item) {
-                $this->document->addStyle('view/stylesheet/messor/' . $item);
+                $this->document->addStyle('view/stylesheet/messor/'.$item);
             }
         } else {
-            $this->document->addStyle('view/stylesheet/messor/' . $name);
+            $this->document->addStyle('view/stylesheet/messor/'.$name);
         }
     }
 
@@ -343,10 +341,10 @@ trait Opencart
     {
         if (is_array($name)) {
             foreach ($name as $item) {
-                $this->document->addScript('view/javascript/messor/' . $item, 'footer');
+                $this->document->addScript('view/javascript/messor/'.$item, 'footer');
             }
         } else {
-            $this->document->addScript('view/javascript/messor/' . $name, 'footer');
+            $this->document->addScript('view/javascript/messor/'.$name, 'footer');
         }
     }
 
@@ -366,7 +364,7 @@ trait Opencart
     }
 
     public function getRequestGet($item)
-    {
+    {   
         if (isset($this->request->get[$item])) {
             return $this->request->get[$item];
         } else {
@@ -381,7 +379,7 @@ trait Opencart
 
 
     public function getRequestPost($item)
-    {
+    {   
         if (isset($this->request->post[$item])) {
             return $this->request->post[$item];
         } else {
@@ -450,7 +448,7 @@ trait Opencart
 
     public function getOutput()
     {
-        return $this->response->getOutput();
+       return $this->response->getOutput();
     }
 
     public function getView($path, $data)
@@ -461,5 +459,10 @@ trait Opencart
     public function notFound()
     {
         return "index.php?route=error/not_found&status=redirect";
+    } 
+
+    public function getDirUpload()
+    {
+        return DIR_UPLOAD;
     }
 }

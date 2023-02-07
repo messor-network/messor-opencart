@@ -2,7 +2,7 @@
 
 namespace src\Utils;
 
-use src\Exception\FileException;
+use src\Exception\ParserException;
 use src\Config\Path;
 use src\Utils\File;
 
@@ -19,11 +19,18 @@ class Parser
      */
     static function toStringURL($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $string = '';
         foreach ($data as $key => $value) {
             $key = trim($key);
             $value = isset($value) ? urlencode(trim($value)) : null;
             $string .= $key . '=' . $value . "\n";
+        }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
         }
         return $string;
     }
@@ -36,10 +43,17 @@ class Parser
      */
     static function toArrayTab($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $dataArray = array();
         foreach ($data as $line) {
             $line = trim($line);
             $dataArray[] = explode("\t", trim($line));
+        }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
         }
         return $dataArray;
     }
@@ -52,9 +66,16 @@ class Parser
      */
     static function toStringTab($data)
     {
+        try {
+            ParserException::setErrorHandler();
         foreach ($data as &$line) {
             array_map('trim', $line);
             $line = implode("\t", $line);
+        }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
         }
         return $data;
     }
@@ -67,7 +88,14 @@ class Parser
      */
     static function toArray($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $dataArray = explode("\n", trim($data));
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
+        }
         return $dataArray;
     }
 
@@ -79,11 +107,18 @@ class Parser
      */
     static function toString($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $string = '';
         foreach ($data as $item) {
             $string .= $item . "\n";
         }
         $string = trim($string);
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
+        }
         return $string;
     }
 
@@ -95,6 +130,8 @@ class Parser
      */
     static function toArraySetting($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $data = explode("\n", $data);
         foreach ($data as $line) {
             $line = explode("=", $line);
@@ -102,6 +139,11 @@ class Parser
                 $line[1] = isset($line[1]) ? urldecode(trim($line[1])) : null;
                 $request[trim($line[0])] = $line[1];
             }
+        }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
         }
         if (isset($request)) {
             return $request;
@@ -116,15 +158,25 @@ class Parser
      */
     static function toSettingArray($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $request = '';
         foreach ($data as $key => $value) {
+                $value = $value ? $value : '';
             $request .= trim($key) . ' = ' . trim(urlencode($value)) . "\n";
+        }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
         }
         return $request;
     }
 
     static function toArraySettingTab($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $data = explode("\n", $data);
         foreach ($data as $keyData => $lineTab) {
             $line = explode("\t", $lineTab);
@@ -137,6 +189,11 @@ class Parser
                 }
             }
         }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
+        }
         if (isset($request)) {
             return $request;
         }
@@ -144,18 +201,25 @@ class Parser
 
     static function toSettingArrayTab($data)
     {
+        try {
+            ParserException::setErrorHandler();
         $request = '';
         foreach ($data as $item) {
-            $size = count($item);
-            $i = 0;
+                $size = count($item);
+                $i = 0;
             foreach ($item as $key => $value) {
-                $i++;
-                if ($i != $size) {
-                    $request .= trim($key) .' = '. trim(urlencode($value)) . "\t";
+                    $i++;
+                    if ($i != $size) {
+                        $request .= trim($key) . ' = ' . trim(urlencode($value)) . "\t";
                 } else {
-                    $request .= trim($key) .' = '. trim(urlencode($value)) . "\n";
+                        $request .= trim($key) . ' = ' . trim(urlencode($value)) . "\n";
                 }
             }
+        }
+            ParserException::restoreErrorHandler();
+        } catch (ParserException $e) {
+            $e->parsingError();
+            ParserException::restoreErrorHandler();
         }
         return $request;
     }
@@ -187,9 +251,7 @@ class Parser
      */
     static function toArrayDatabase($database)
     {
-        try {
-            if (file_exists($database)) {
-                $file = file($database);
+        $file = Parser::toArray(File::read($database));
                 /*
                 0 database version and info
                 1 regularExp for block UserAgent (base64)
@@ -234,12 +296,6 @@ class Parser
                     }
                 }
                 return $ip;
-            } else {
-                throw new FileException();
-            }
-        } catch (FileException $e) {
-            $e->readError("File not found");
-        }
     }
 
     /**

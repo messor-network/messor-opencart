@@ -22,6 +22,8 @@ class toServer
     private $http;
     /** @var \src\Crypt\iCrypt */
     private $cryptEncrypt;
+    private $cryptPlain;
+    private $response;
 
     /** @param string $server */
     public function __construct($server)
@@ -216,21 +218,6 @@ class toServer
     {
         $header = array(
             'action'           => 'peer_info',
-            'client_version'   => Path::VERSION,
-            'network_id'       => USER::$networkID,
-            'network_password' => USER::$networkPassword,
-        );
-        $this->request->setHeader($header);
-        $this->request->setCrypt($this->cryptEncrypt);
-        $this->request->formatForSend();
-        $this->response = $this->request->send();
-        return new Response($this->response, $this->request->getCrypt());
-    }
-
-    public function peerOptions()
-    {
-        $header = array(
-            'action'           => 'peer_options',
             'client_version'   => Path::VERSION,
             'network_id'       => USER::$networkID,
             'network_password' => USER::$networkPassword,
@@ -464,6 +451,26 @@ class toServer
             'type'             => $type,
             'level'            => $level,
             $type              => $dataNotify,
+        );
+        $this->request->setHeader($header);
+        $this->request->setData($data);
+        $this->request->setCrypt($this->cryptEncrypt);
+        $this->request->formatForSend();
+        $this->response = $this->request->send();
+        return new Response($this->response, $this->request->getCrypt());
+    }
+
+    public function peerUploadBackup($type, $url)
+    {
+        $header = array(
+            'action'           => 'upload_backup',
+            'client_version'   => Path::VERSION,
+            'network_id'       => USER::$networkID,
+            'network_password' => USER::$networkPassword,
+        );
+        $data = array(
+            'type'             => $type,
+            'url'              => $url
         );
         $this->request->setHeader($header);
         $this->request->setData($data);

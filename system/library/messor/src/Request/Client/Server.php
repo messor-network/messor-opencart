@@ -19,6 +19,7 @@ class Server
     private $statusOff = 0;
     private $statusError = 0;
     private $statusCount = 0;
+    private $log;
 
     /**
      * Initialization

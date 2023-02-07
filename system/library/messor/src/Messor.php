@@ -508,13 +508,8 @@ class Messor
         } else {
             self::$detectList[] = array('ip' => self::$remoteIp, 'day' => 0, 'count' => 1);
         }
-        try {
-            if (!File::clear(Path::DETECT_LIST) && !File::write(Path::DETECT_LIST, Parser::toSettingArrayTab(self::$detectList))) {
-                throw new FileException();
-            }
-        } catch (FileException $e) {
-            $e->writeError("Error write to file " . Path::DETECT_LIST . " please check your configuration file.");
-        }
+        File::clear(Path::DETECT_LIST);
+        File::write(Path::DETECT_LIST, Parser::toSettingArrayTab(self::$detectList));
         if ($day > 0) {
             self::block();
         }
@@ -548,13 +543,7 @@ class Messor
             Logger::addUserAgent() . "\t" .
             $type . "\t" .
             $data . "\t";
-        try {
-            if (!File::write($file, trim($log) . "\n")) {
-                throw new FileException();
-            }
-        } catch (FileException $e) {
-            $e->writeError("Error write to file " . $file . " please check your configuration file.");
-        }
+            File::write($file, trim($log) . "\n");
     }
 }
 Messor::init();

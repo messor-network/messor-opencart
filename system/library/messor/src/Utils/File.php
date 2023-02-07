@@ -2,6 +2,8 @@
 
 namespace src\Utils;
 
+use src\Exception\FileException;
+
 /**
  * Class for file operations
  */
@@ -16,7 +18,16 @@ class File
      */
     static function write($name, $string)
     {
-        return file_put_contents($name, $string, FILE_APPEND | LOCK_EX);
+        try {
+            FileException::setErrorHandler();
+            $file = file_put_contents($name, $string, FILE_APPEND | LOCK_EX);
+            FileException::restoreErrorHandler();
+            return $file;
+        } catch (FileException $e) {
+            $e->writeError();
+            FileException::restoreErrorHandler();
+        }
+
     }
 
     /**
@@ -27,7 +38,14 @@ class File
      */
     static function create($name)
     {
-        return file_put_contents($name, $string = null);
+        try {
+            FileException::setErrorHandler();
+            file_put_contents($name, $string = null);
+            FileException::restoreErrorHandler();
+        } catch (FileException $e) {
+            $e->writeError();
+            FileException::restoreErrorHandler();
+        }
     }
 
     /**
@@ -38,7 +56,14 @@ class File
      */
     static function clear($name)
     {
-        return file_put_contents($name, '');
+        try {
+            FileException::setErrorHandler();
+            file_put_contents($name, '');
+            FileException::restoreErrorHandler();
+        } catch (FileException $e) {
+            $e->writeError();
+            FileException::restoreErrorHandler();
+        }
     }
 
     /**
@@ -49,11 +74,19 @@ class File
      */
     static function read($name)
     {
-        if (file_exists($name)) {
-            return file_get_contents($name);
-        } else {
-            self::create($name);
-            return '';
+        try {
+            FileException::setErrorHandler();
+            if (file_exists($name)) {
+                $file = file_get_contents($name);
+            } else {
+                self::create($name);
+                $file = '';
+            }    
+            FileException::restoreErrorHandler();
+            return $file;
+        } catch (FileException $e) {
+            $e->writeError();
+            FileException::restoreErrorHandler();
         }
     }
 
@@ -65,12 +98,19 @@ class File
      */
     static function deleteFilesInDir($dir)
     {
-        $openDir = opendir($dir);
-        while ($file = readdir($openDir)) {
-            if ($file != "." && $file != "..") {
-                unlink($dir . $file);
+        try {
+            FileException::setErrorHandler();
+            $openDir = opendir($dir);
+            while ($file = readdir($openDir)) {
+                if ($file != "." && $file != "..") {
+                    unlink($dir . $file);
+                }
             }
+            closedir($openDir);    
+            FileException::restoreErrorHandler();
+        } catch (FileException $e) {
+            $e->writeError();
+            FileException::restoreErrorHandler();
         }
-        closedir($openDir);
     }
 }

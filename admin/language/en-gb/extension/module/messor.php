@@ -118,6 +118,7 @@ $_['i_button_traffic_analyzer']  = 'This option enables a traffic filtering syst
 
 $_['i_button_ddos']  = 'When this option is enabled, all automatic actions, robots and other suspicious activity will be blocked.
                                     Every visitor will be checked before accessing the site';
+$_['i_button_lock_settings_block_ddos']  = 'Additional blocking settings are available only when the DDoS blocking option is disabled';
 
 
 // Statistic
@@ -191,10 +192,10 @@ $_['mcl_setting_yes']                  = 'Yes';
 $_['mcl_setting_my_signatures']        = 'My signatures';
 $_['mcl_setting_cgi_settings']         = 'CGI settings';
 $_['mcl_scanning']                     = 'Scanning';
-$_['mcl_i_max_detect']                 = "The maximum number of detections after which a file is considered malicious" ;
-$_['mcl_i_max_file_size']              = "The maximum file size for which the check will be performed" ;
-$_['mcl_i_exclude_file_scan']          = "Exclude file from scanning" ;
-$_['mcl_i_list_extensions_file']       = "List of file extensions to scan" ;
+$_['mcl_i_max_detect']                 = "The maximum number of detections after which a file is considered malicious";
+$_['mcl_i_max_file_size']              = "The maximum file size for which the check will be performed";
+$_['mcl_i_exclude_file_scan']          = "Exclude file from scanning";
+$_['mcl_i_list_extensions_file']       = "List of file extensions to scan";
 $_['mcl_i_check_file_size']            = "Skips files that are larger than the maximum file size from the general settings";
 $_['mcl_i_add_signatures']             = "Add your signatures that you think are potentially dangerous";
 
@@ -283,6 +284,7 @@ $_['backup_path']                      = 'Path';
 $_['backup_descript']                  = 'Creating a backup of the file system or database';
 $_['backup_file']                      = 'Backup FS';
 $_['backup_database']                  = 'Backup database';
+$_['backup_file_database']             = 'Backup FS+database';
 $_['backup_button_database']           = 'Backup';
 $_['backup_setting_professional']      = 'Professional settings';
 $_['backup_archiving_setting']         = 'Archiving settings';
@@ -308,7 +310,7 @@ $_['fscheck_descript']                     = 'file permissions check';
 $_['fscheck_setting_professional']         = 'Professional settings';
 $_['fscheck_setting_global_text']          = 'Global settings';
 $_['fscheck_setting_exclude_scan_file']    = 'Exclude scan file';
-$_['fscheck_i_exclude_file_scan']          = "Exclude file from scanning" ;
+$_['fscheck_i_exclude_file_scan']          = "Exclude file from scanning";
 $_['fscheck_scan']                         = 'Scan';
 
 // result
@@ -337,7 +339,7 @@ $_['ss_change_login_edit']            = 'Edit';
 $_['ss_check_perm']                   = 'Check permissions of files and folders';
 $_['ss_check_permissions']            = 'Permissions';
 $_['ss_i_check_perm']                 = 'incorrectly set rights to files and directories, allows an attacker to gain access to the site';
-$_['ss_path']                         = "Path" ;
+$_['ss_path']                         = "Path";
 $_['ss_update']                       = 'Update';
 $_['ss_update_version']               = 'Update OpenCart version';
 $_['ss_update_aval_version']          = 'Avalible new version';
@@ -421,3 +423,7 @@ Your site will not be indexed by search engines.';
 $_['block_main_setting_useragent_firewall_block_social'] = 'Block social network and messenger bots';
 $_['block_attempts'] = 'attempts';
 $_['block_days'] = 'days';
+
+// cron
+
+$_['cron_instruction_tooltip'] = 'Add this task to cron';

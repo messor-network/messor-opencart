@@ -3,6 +3,7 @@
 use messor\Autoloader;
 use main\Adapter;
 use messor\cms\Opencart;
+use main\CronSettings;
 
 class ControllerExtensionModuleMessor extends Controller
 {
@@ -33,8 +34,8 @@ class ControllerExtensionModuleMessor extends Controller
             $this->registerPage();
             return;
         }
-        $this->addStyle(array('chunk-common.88938699f773e471.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'main.6c9ca00d319b0c48.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css', 'main.c421f48b2b02a2e8.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'main.c421f48b2b02a2e8.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -52,8 +53,8 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function registerPage()
     {
-        $this->addStyle(array('chunk-common.88938699f773e471.css', 'register.59c24477154e81f7.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'register.59c24477154e81f7.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css', 'register.db6c7a28e8c7f5b9.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'register.db6c7a28e8c7f5b9.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -263,8 +264,8 @@ trait FileSystemCheck
         }
 
         $this->setTitle("Messor File System Check");
-        $this->addStyle(array('chunk-common.88938699f773e471.css', 'filesystem-check.175928007b1363ad.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'filesystem-check.175928007b1363ad.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css', 'filesystem-check.3e26bb3284af356f.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'filesystem-check.3e26bb3284af356f.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -334,8 +335,8 @@ trait FileSystemControl
 
         $FSControll = $this->adapter->MessorLib->FSControll($this);
 
-        $this->addStyle(array('chunk-common.88938699f773e471.css', 'filesystem-control.be5459712378be5a.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'filesystem-control.be5459712378be5a.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css', 'filesystem-control.3c94958c36ad3945.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'filesystem-control.3c94958c36ad3945.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -437,6 +438,21 @@ trait FileSystemControl
                 $text = $status == 'Ok' ? true : false;
                 $data = array('accepted' => $text);
                 break;
+            case "cron_data":
+                $cronSettings = new CronSettings();
+                $cronSettings->setFileControlPath($this->getDefaultPath());
+                $data['cron_config'] = $cronSettings->getFileControlConfigOfFile();
+                $status = 'Ok';
+                $text = $status == 'Ok' ? true : false;
+                break;
+            case "cron_data_save":
+                $cronSettings = new CronSettings();
+                $response = $cronSettings
+                    ->setFileControlPath($post['cron_path'])
+                    ->setFileControlExclude($post['cron_exclude'])
+                    ->saveFileControlConfig();
+                $status = $response == true ? 'Ok' : 'Error';
+                $data['cron_text_path'] = $cronSettings->getFileControlTextCronPath();
         }
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(array('status' => $status, 'data' => $data));
@@ -454,8 +470,8 @@ trait FileDatabaseBackup
 
         $FDBBackup = $this->adapter->MessorLib->FDBBackup($this);
 
-        $this->addStyle(array('chunk-common.88938699f773e471.css', 'file-database-backup.ac67678665a67f9f.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'file-database-backup.ac67678665a67f9f.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css', 'file-database-backup.4baf0384c441a8d1.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'file-database-backup.4baf0384c441a8d1.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -494,18 +510,15 @@ trait FileDatabaseBackup
                 $data['action'] = $this->getUrlLink('FDBBWeb');
                 break;
             case "email":
-                $post['email'] = $this->getEmail();
                 $database = $this->getDatabaseData();
-                $post['default_path'] = $this->getDefaultPath();
                 $FDBBackup = $this->adapter->MessorLib->FDBBackup(null);
                 list($level, $result) = $FDBBackup->dataForNotify();
                 $response = $this->adapter->MessorLib->notifyOnServer('fdbackup', $level, $result);
-                $status = $this->adapter->FDBBApiResult($post, $database) ? 'Ok' : 'Error';
-                $text = $status == 'Ok' ? 'Send' : 'No send';
-                $data = array('text' => $text);
+                $status = $this->adapter->FDBBApiResult($post, $database);
+                $status = $status ? "Ok" : "Error";
+                $data = $status ? "Send" : "Error send";
                 break;
             case "download":
-                $post['default_path'] = $this->getDefaultPath();
                 $database = $this->getDatabaseData();
                 $FDBBackup = $this->adapter->MessorLib->FDBBackup(null);
                 list($level, $result) = $FDBBackup->dataForNotify();
@@ -513,14 +526,13 @@ trait FileDatabaseBackup
                 $status = $this->adapter->FDBBApiResult($post, $database);
                 break;
             case "save":
-                $post['default_path'] = $this->getDefaultPath();
                 $database = $this->getDatabaseData();
                 $FDBBackup = $this->adapter->MessorLib->FDBBackup(null);
                 list($level, $result) = $FDBBackup->dataForNotify();
                 $response = $this->adapter->MessorLib->notifyOnServer('fdbackup', $level, $result);
-                $status = $this->adapter->FDBBApiResult($post, $database) ? 'Ok' : 'Error';
-                $text = $status == 'Ok' ? 'Save' : 'No save';
-                $data = array('text' => $text);
+                $status = $this->adapter->FDBBApiResult($post, $database);
+                $status = $status ? "Ok" : "Error";
+                $data = $status ? "Save" : "Error save";
                 break;
             case "exclude":
                 $status = $this->adapter->FDBBApiExcludeFile($post) ? 'Ok' : 'Error';
@@ -537,6 +549,51 @@ trait FileDatabaseBackup
                 $text = $status == 'Ok' ? true : false;
                 $data = array('accepted' => $text);
                 break;
+            case "cron_data":
+                $cronSettings = new CronSettings();
+                $cronSettings->setDatabasePath($this->getDefaultPath());
+                $data['cron_config'] = $cronSettings->getDatabaseConfigOfFile();
+                $data['cron_exclude'] = $cronSettings->getDatabaseExcludeOfFile();
+                $data['cron_database'] = $cronSettings->getDatabaseData();
+                if ($data['cron_database'] == null) {
+                    $database = $this->getDatabaseData();
+                    $cronSettings->saveDatabaseData(
+                        $database['host'],
+                        $database['user'],
+                        $database['password'],
+                        $database['dbname']
+                    );
+                    $data['cron_database'] = $cronSettings->getDatabaseData();
+                }
+                $data['cron_tables'] = $cronSettings->getDatabaseTables();
+                $status = 'Ok';
+                $text = $status == 'Ok' ? true : false;
+                break;
+            case "cron_data_save":
+                $cronSettings = new CronSettings();
+                $cronSettings->saveDatabaseData(
+                    $post['cron_database']['cron_host'],
+                    $post['cron_database']['cron_user'],
+                    $post['cron_database']['cron_password'],
+                    $post['cron_database']['cron_dbname'],
+                );
+                $cronSettings->saveDatabaseTables($post['cron_tables']);
+                $cronSettings->saveDatabaseExclude($post['cron_exclude']);
+                $response = $cronSettings
+                    ->setDatabaseAction($post['cron_config']['cron_action'])
+                    ->setDatabasePath($post['cron_config']['cron_path'])
+                    ->setDatabaseArchivation($post['cron_config']['cron_type_arch'])
+                    ->setDatabaseTypeBackup($post['cron_config']['cron_type_backup'])
+                    ->setDatabaseEmail($post['cron_config']['cron_email_user'])
+                    ->setDatabaseSMTP(
+                        $post['cron_config']['cron_smtp_url'],
+                        $post['cron_config']['cron_smtp_port'],
+                        $post['cron_config']['cron_smtp_login'],
+                        $post['cron_config']['cron_smtp_password'],
+                    )
+                    ->saveDatabaseConfig();
+                $status = $response == true ? 'Ok' : 'Error';
+                $data['cron_text_path'] = $cronSettings->getDatabaseTextCronPath();
         }
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(array('status' => $status, 'data' => $data));
@@ -561,8 +618,8 @@ trait MalwareClean
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
 
-        $this->addStyle(array('chunk-common.88938699f773e471.css', 'malware-cleaner.0c114b948d1a8f8d.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'malware-cleaner.0c114b948d1a8f8d.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css', 'malware-cleaner.e29b544222fd401a.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'malware-cleaner.e29b544222fd401a.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -635,6 +692,31 @@ trait MalwareClean
                 $text = $status == 'Ok' ? true : false;
                 $data = array('accepted' => $text);
                 break;
+            case "cron_data":
+                $cronSettings = new CronSettings();
+                $cronSettings->setCleanerPath($this->getDefaultPath());
+                $data['cron_config'] = $cronSettings->getCleanerConfigOfFile();
+                $status = 'Ok';
+                $text = $status == 'Ok' ? true : false;
+                break;
+            case "cron_data_save":
+                $cronSettings = new CronSettings();
+                $response = $cronSettings
+                    ->setCleanerPath($post['Cron_PATH'])
+                    ->setCleanerExtensionsPHP($post['Cron_EXTENSIONS_PHP'])
+                    ->setCleanerExtensionsCGI($post['Cron_EXTENSIONS_CGI'])
+                    ->setCleanerSignatureFile($post['Cron_SIGNATURE_FILE'])
+                    ->setCleanerMaxNeedDetects($post['Cron_MAX_NEED_DETECTS'])
+                    ->setCleanerMaxFilesizePHPEnable($post['Cron_MAX_FILESIZE_PHP_ENABLE'])
+                    ->setCleanerMaxFilesizeCGIEnable($post['Cron_MAX_FILESIZE_CGI_ENABLE'])
+                    ->setCleanerMaxFilesizeMB($post['Cron_MAX_FILESIZE_MB'])
+                    ->setCleanerSignatureVersion($post['Cron_signature_version'])
+                    ->setCleanerSignaturePHP($post['Cron_SIGNATURE_PHP'])
+                    ->setCleanerSignatureCGI($post['Cron_SIGNATURE_CGI'])
+                    ->setCleanerExcludeFiles($post['Cron_EXCLUDE_FILES'])
+                    ->saveCleanerConfig();
+                $status = $response == true ? 'Ok' : 'Error';
+                $data['cron_text_path'] = $cronSettings->getCleanerTextCronPath();
         }
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(array('status' => $status, 'data' => $data));
@@ -651,8 +733,8 @@ trait SecuritySettings
             return;
         }
 
-        $this->addStyle(array('chunk-common.88938699f773e471.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.88938699f773e471.js', 'security-settings.6e5242e295365783.js'));
+        $this->addStyle(array('chunk-common.8497da0169f0242a.css'));
+        $this->addScript(array('chunk-vendors.fa4eabe2b5dbcc60.js', 'chunk-common.8497da0169f0242a.js', 'security-settings.125d3fbbd6f8361a.js'));
 
 
         $data['scripts'] = $this->getScript();
@@ -688,8 +770,11 @@ trait SecuritySettings
                     'showError' => $this->getSettingsShowError(),
                     'adminPanelName' => $this->getAdminPanelName()
                 );
+                list($post['last_version'], $new_version) = $this->checkLastVersionCMS();
                 $storage = $this->moveDirectoryStorage();
                 $data = $this->adapter->SecuritySettingsApiMain($post, $storage);
+                $data['last_version'] = $post['last_version'];
+                $data['new_version'] = $new_version;
                 $data['storage'] = $storage;
                 break;
             case "exclude":

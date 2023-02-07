@@ -3,7 +3,6 @@
 namespace main;
 
 use main\MessorLib;
-use messor\cms\Opencart;
 
 /**
  * Adapter for interaction of the kernel with the web version of Messor
@@ -16,7 +15,6 @@ class Adapter
     use FileSystemCheck;
     use Registration;
     use SecuritySettings;
-    use Opencart;
 
     public $MessorLib;
     private $error = array();
@@ -546,6 +544,7 @@ trait FileDatabaseBackup
         $data['filename'] = $FDBBackup->setDumpName();
         $data['avaliable_arch'] = $FDBBackup::avaliableArch();
         $data['tables'] = $FDBBackup::$dbquery->getTables();
+        $data['setting'] = $FDBBackup->getSetting();
         $data['type_backup'] = ["backup_file", "backup_db"];
         return $data;
     }
@@ -566,7 +565,7 @@ trait FileDatabaseBackup
         }
         $FDBBackup::initDataBase($database['host'], $database['user'], $database['password'], $database['dbname']);
         $FDBBackup::initDump($post['type_arch'], $post['filename']);
-        $FDBBackup::$dump->setBasePath($post['default_path']);
+        $FDBBackup::$dump->setBasePath($post['path']);
         if (isset($post['type_backup']) && $post['type_backup'] == "backup_db") {
             $res = $FDBBackup::createDumpDB($post['tables']);
             switch ($post['action']) {
@@ -574,14 +573,15 @@ trait FileDatabaseBackup
                     $FDBBackup::$dump->download($FDBBackup::$dump->filenameDumpDb);
                     $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
                     break;
-                case 'email':
-                    $Mailer = $FDBBackup->setMailer($FDBBackup::$dump->filenameDumpDb, $FDBBackup::$dump->dump_path, $post['email_user']);
-                    $response = $Mailer->send();
-                    $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
-                    return $response;
-                case 'save':
-                    return $res;
-                    break;
+                    case 'email':
+                        $FDBBackup->addSetting($post['smtp_url'], $post['smtp_port'], $post['smtp_login'], $post['smtp_password']);
+                        $Mailer = $FDBBackup->setMailer($FDBBackup::$dump->filenameDumpDb, $FDBBackup::$dump->dump_path, $post);
+                        $response = $Mailer->send();
+                        $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
+                        return $response;
+                    case 'save':
+                        return $res;
+                        break;
             }
         }
         if (isset($post['type_backup']) && $post['type_backup'] == "backup_file") {
@@ -590,20 +590,20 @@ trait FileDatabaseBackup
             } else {
                 $res = $FDBBackup::createDumpFileBackupTar($post['path']);
             }
-
             switch ($post['action']) {
                 case 'download':
                     $FDBBackup::$dump->download($FDBBackup::$dump->filenameDumpFile);
                     $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
                     break;
-                case 'email':
-                    $Mailer = $FDBBackup->setMailer($FDBBackup::$dump->filenameDumpDb, $FDBBackup::$dump->dump_path,  $post['email_user']);
-                    $Mailer->send();
-                    $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
-                    break;
-                case 'save':
-                    return $res;
-                    break;
+                    case 'email':
+                        $FDBBackup->addSetting($post['smtp_url'], $post['smtp_port'], $post['smtp_login'], $post['smtp_password']);
+                        $Mailer = $FDBBackup->setMailer($FDBBackup::$dump->filenameDumpDb, $FDBBackup::$dump->dump_path,  $post);
+                        $Mailer->send();
+                        $FDBBackup::$dump->remove($FDBBackup::$dump->filenameDumpDb);
+                        break;
+                    case 'save':
+                        return $res;
+                        break;
             }
         }
     }
@@ -672,7 +672,6 @@ trait MalwareClean
         if (!empty($post['EXCLUDE_FILES'])) {
             $MCleaner->SetConfig("EXCLUDE_FILES", array_map('trim', explode("\n", $post['EXCLUDE_FILES'])));
         }
-
         if (!empty($post['EXCLUDE_FILES'])) {
             $MCleaner->SetConfig("EXCLUDE_FILES", array_map('trim', explode("\n", $post['EXCLUDE_FILES'])));
         }
@@ -763,21 +762,20 @@ trait SecuritySettings
         $data['admin_panel'] = $SecuritySettings->checkAdminPanel($fullPath, $adminPanelName);
         $data['admin_login'] = $SecuritySettings->checkAdminLogin($user);
         $data['user'] = $user;
-        list($data['last_version'], $data['new_version']) = $this->checkLastVersionCMS();
         list($data['perms'], $data['result']) = $SecuritySettings->checkConfigPerms($configFileName);
         $data['install_dir'] = $SecuritySettings->checkInstallDirectory($pathInstallDir);
         $data['prefix'] = $SecuritySettings->checkDBPrefix($prefix, $prefixForCMS);
         $data['show_error'] = $SecuritySettings->checkShowError($showError);
         $data['new_version_messor'] = $this->MessorLib->isNewVersionMessor();
-
-        $count = array($data['last_version'], $data['admin_panel'], $data['admin_login'], $data['result'], $data['install_dir']);
+        
+        $count = array($post['last_version'], $data['admin_panel'], $data['admin_login'], $data['result'], $data['install_dir']);
         $data['count'] = 0;
         foreach ($count as $item) {
             if (!$item) {
                 $data['count']++;
             }
         }
-        if ($data['prefix'] && $data['show_error'] && $data['new_version_messor'] && $storage) {
+        if (!$data['prefix'] && !$data['show_error'] && !$data['new_version_messor'] && !$storage) {
             $data['count']++;
         }
 

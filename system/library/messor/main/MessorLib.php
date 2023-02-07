@@ -28,6 +28,9 @@ use modules\securitysettings\SecuritySettings;
  */
 final class MessorLib
 {
+    private $http;
+    private $toServer;
+
     public function __construct()
     {
         $this->http = new HttpRequest();
@@ -82,6 +85,14 @@ final class MessorLib
         return Parser::toArray(File::read(PATH::PEER_LOG));
     }
 
+    public function notifyOnServer($type, $level, $result)
+    {
+        $servers = $this->getServers();
+        $this->toServer->request->setServer($servers[0][0]);
+        $response = $this->toServer->peerNotify($type, $level, $result);
+        return $response->getResponseData();
+    }
+
     /**
      * Returns information about a peer from a file
      *
@@ -104,22 +115,6 @@ final class MessorLib
         $response = $this->toServer->info();
         File::clear(PATH::INFO);
         File::write(PATH::INFO, Parser::toSettingArray($response->getResponseData()));
-        return $response->getResponseData();
-    }
-
-    public function getAboutPeerOptionsOfServer()
-    {
-        $servers = $this->getServers();
-        $server = new toServer($servers[0][0]);
-        $response = $server->peerOptions();
-        return $response->getResponseData();
-    }
-
-    public function notifyOnServer($type, $level, $result)
-    {
-        $servers = $this->getServers();
-        $this->toServer->request->setServer($servers[0][0]);
-        $response = $this->toServer->peerNotify($type, $level, $result);
         return $response->getResponseData();
     }
 
@@ -233,9 +228,9 @@ final class MessorLib
     public function getListSynchronization($tab = false)
     {
         if (!$tab) {
-            return $this->listSync = Parser::toArray(File::read(Path::SYNC_LIST));
+            return Parser::toArray(File::read(Path::SYNC_LIST));
         } else {
-            return $this->listSync = Parser::toArrayTab(Parser::toArray(File::read(Path::SYNC_LIST)));
+            return Parser::toArrayTab(Parser::toArray(File::read(Path::SYNC_LIST)));
         }
     }
 
@@ -249,9 +244,9 @@ final class MessorLib
     public function getListArchive($tab = false)
     {
         if (!$tab) {
-            return $this->listArchive = Parser::toArray(File::read(Path::ARCHIVE));
+            return Parser::toArray(File::read(Path::ARCHIVE));
         } else {
-            return $this->listArchive = Parser::toArrayTab(Parser::toArray(File::read(Path::ARCHIVE)));
+            return Parser::toArrayTab(Parser::toArray(File::read(Path::ARCHIVE)));
         }
     }
 
@@ -1403,7 +1398,7 @@ final class MessorLib
     }
 
     /** @return FSControll */
-    public function FSControll($currentThis)
+    public function FSControll($currentThis = null)
     {
         try {
             $FSControll = new FSControll($currentThis);
@@ -1414,7 +1409,7 @@ final class MessorLib
     }
 
     /** @return FDBBackup */
-    public function FDBBackup($currentThis)
+    public function FDBBackup($currentThis = null)
     {
         try {
             $FDBBackup = new FDBBackup($currentThis);
@@ -1425,7 +1420,7 @@ final class MessorLib
     }
 
     /** @return MCleaner */
-    public function MCleaner($path, $currentThis)
+    public function MCleaner($path = null, $currentThis = null)
     {
         try {
             $MCleaner = new MCleaner($path, $currentThis);

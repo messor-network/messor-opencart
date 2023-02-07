@@ -116,6 +116,7 @@ $_['i_button_traffic_analyzer']  = 'Cette option permet au système de filtrage 
 
 $_['i_button_ddos']  = 'Lorsque cette option est activée, toutes les actions automatisées, robots et autres activités suspectes seront bloquées.
                                     Chaque visiteur sera contrôlé avant d\'accéder au site';
+$_['i_button_lock_settings_block_ddos']  = 'Des paramètres de blocage supplémentaires sont disponibles uniquement lorsque l\'option de blocage DDoS est désactivée';
 
 
 // Statistic
@@ -281,6 +282,7 @@ $_['backup_path']                      = 'Chemin';
 $_['backup_descript']                  = 'Création de la sauvegarde des fichiers système ou de la base de données';
 $_['backup_file']                      = 'Sauvegarde FS';
 $_['backup_database']                  = 'Sauvegardes de la base de donnée';
+$_['backup_file_database']             = 'Sauvegarde FS+base de données';
 $_['backup_button_database']           = 'Sauvegardes';
 $_['backup_setting_professional']      = 'Réglages professionnels';
 $_['backup_archiving_setting']         = 'Réglages d\'archivage';
@@ -419,3 +421,7 @@ Votre site ne sera pas indexé par les moteurs de recherche.';
 $_['block_main_setting_useragent_firewall_block_social'] = 'Bloquer les réseaux sociaux et les robots de messagerie';
 $_['block_attempts'] = 'tentatives';
 $_['block_days'] = 'journées';
+
+// cron
+
+$_['cron_instruction_tooltip'] = 'Ajouter cette tâche à cron';
