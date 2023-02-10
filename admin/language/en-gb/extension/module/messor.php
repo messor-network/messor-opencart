@@ -302,6 +302,21 @@ $_['backup_send_of_messor']            = 'Send of Messor server';
 $_['backup_save_on_server']            = 'Save on server';
 $_['backup_exclude_directory']         = 'Exclude directories from backup';
 
+// smtp
+
+$_['backup_smtp_settings_host']        = 'Host';
+$_['backup_smtp_settings_port']        = 'Port';
+$_['backup_smtp_settings_login']       = 'Login';
+$_['backup_smtp_settings_password']    = 'Password';
+
+//setting
+
+$_['backup_settings_db_setting']       = 'Database settings';
+$_['backup_settings_name']             = 'Name';
+$_['backup_settings_host']             = 'Host';
+$_['backup_settings_user']             = 'User';
+$_['backup_settings_password']         = 'Password';
+
 /* File system check */
 
 // main
@@ -427,3 +442,15 @@ $_['block_days'] = 'days';
 // cron
 
 $_['cron_instruction_tooltip'] = 'Add this task to cron';
+
+//universal
+
+$_['login_forgot_your_password'] = 'Forgot your password';
+$_['login_login_placeholder'] = 'Login';
+$_['login_password_placeholder'] = 'Password';
+$_['login_sign_in'] = 'Sign in';
+$_['login_for_messor'] = 'for Messor';
+$_['login_banner_title'] = 'Fast and secure network join now';
+$_['login_banner_subtitle'] = 'Messor is a set of scripts to detect and block various network attacks';
+
+$_['side_menu_educational_videos'] = 'Educational videos';
