@@ -298,6 +298,20 @@ $_['backup_send_of_messor']            = 'Отправить на Messor Server'
 $_['backup_save_on_server']            = 'Сохранить на сервере';
 $_['backup_exclude_directory']         = 'Исключить директории из резервной копии';
 
+// smtp
+
+$_['backup_smtp_settings_host']        = 'Хост';
+$_['backup_smtp_settings_port']        = 'Порт';
+$_['backup_smtp_settings_login']       = 'Логин';
+$_['backup_smtp_settings_password']    = 'Пароль';
+
+//setting
+
+$_['backup_settings_db_setting']       = 'Настройки базы данных';
+$_['backup_settings_name']             = 'Имя';
+$_['backup_settings_host']             = 'Хост';
+$_['backup_settings_user']             = 'Юзер';
+$_['backup_settings_password']         = 'Пароль';
 
 /* File system check */
 
@@ -423,3 +437,15 @@ $_['block_days'] = 'дни';
 // cron
 
 $_['cron_instruction_tooltip'] = 'Добавьте эту задачу в cron';
+
+//universal
+
+$_['login_forgot_your_password'] = 'Забыли пароль';
+$_['login_login_placeholder'] = 'Логин';
+$_['login_password_placeholder'] = 'Пароль';
+$_['login_sign_in'] = 'Вход';
+$_['login_for_messor'] = 'в Messor';
+$_['login_banner_title'] = 'Быстрое и безопасное подключение к сети';
+$_['login_banner_subtitle'] = 'Messor — набор скриптов для обнаружения и блокировки различных сетевых атак.';
+
+$_['side_menu_educational_videos'] = 'Обучающие видео';

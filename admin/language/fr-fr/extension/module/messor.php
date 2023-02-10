@@ -300,6 +300,21 @@ $_['backup_send_of_messor']            = 'Envoyé sur le serveur de Messor';
 $_['backup_save_on_server']            = 'Sauvegardé sur le serveur';
 $_['backup_exclude_directory']         = 'Exclure les répertoires de la sauvegarde';
 
+// smtp
+
+$_['backup_smtp_settings_host']        = 'Hôte';
+$_['backup_smtp_settings_port']        = 'Port';
+$_['backup_smtp_settings_login']       = 'le login';
+$_['backup_smtp_settings_password']    = 'Mot de passe';
+
+//setting
+
+$_['backup_settings_db_setting']       = 'Paramétrage de la base de données';
+$_['backup_settings_name']             = 'Nom';
+$_['backup_settings_host']             = 'Hôte';
+$_['backup_settings_user']             = 'Utilisateur';
+$_['backup_settings_password']         = 'Mot de passe';
+
 /* File system check */
 
 // main
@@ -425,3 +440,15 @@ $_['block_days'] = 'journées';
 // cron
 
 $_['cron_instruction_tooltip'] = 'Ajouter cette tâche à cron';
+
+//universal
+
+$_['login_forgot_your_password'] = 'Mot de passe oublié';
+$_['login_login_placeholder'] = 'Connexion';
+$_['login_password_placeholder'] = 'Mot de passe';
+$_['login_sign_in'] = 's\'identifier';
+$_['login_for_messor'] = 'pour Messor';
+$_['login_banner_title'] = 'Rejoindre un réseau rapide et sécurisé maintenant';
+$_['login_banner_subtitle'] = 'Messor est un ensemble de scripts pour détecter et bloquer diverses attaques réseau';
+
+$_['side_menu_educational_videos'] = 'Vidéos éducatives';
