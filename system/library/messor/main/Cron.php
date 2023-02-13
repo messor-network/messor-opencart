@@ -95,7 +95,7 @@ class Cron
         $FSControll = $adapter->MessorLib->FSControll();
         $data = $adapter->FSControlApiResult($cronSettingsFileControl);
         list($level, $result) = $FSControll->dataForNotify($data);
-        $adapter->MessorLib->notifyOnServer('fscontroll', $level, $result);
+        $adapter->MessorLib->notifyOnServer('fsc', $level, $result);
     }
 }
 (new Cron)->init($argv);

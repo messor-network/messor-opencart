@@ -415,7 +415,7 @@ trait FileSystemCheck
         }
 
         if (isset($post['exclude'])) {
-            $exclude = explode('\n', $post['exclude']);
+            $exclude = array_map('trim', explode("\n", $post['exclude']));
             $FSCheck->setExclude($exclude);
         }
 
@@ -590,6 +590,7 @@ trait FileDatabaseBackup
             } else {
                 $res = $FDBBackup::createDumpFileBackupTar($post['path']);
             }
+            
             switch ($post['action']) {
                 case 'download':
                     $FDBBackup::$dump->download($FDBBackup::$dump->filenameDumpFile);

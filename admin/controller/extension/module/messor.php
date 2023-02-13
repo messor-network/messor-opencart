@@ -37,9 +37,6 @@ class ControllerExtensionModuleMessor extends Controller
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'main.f237f0c93dcd2c4b.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'main.f237f0c93dcd2c4b.js'));
 
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $this->setTitle("Messor security dashboard");
@@ -58,9 +55,6 @@ class ControllerExtensionModuleMessor extends Controller
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'register.2a6d958d6f385584.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'register.2a6d958d6f385584.js'));
 
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('Api');
@@ -73,6 +67,26 @@ class ControllerExtensionModuleMessor extends Controller
         $this->responseOutput("install/register", $data);
     }
 
+    public function Login()
+    {
+        if (!$this->adapter->MessorLib->isConfig()) {
+            $this->registerPage();
+            return;
+        }
+        $this->addStyle(array('chunk-common.29b78882d79f4499.css', 'register.66cb715e8ad6114a.css'));
+        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.29b78882d79f4499.js', 'register.66cb715e8ad6114a.js'));
+
+        $data['scripts'] = $this->getScript();
+        $data['style'] = $this->getStyle();
+        $data['path_api'] = $this->getLinkApi('Api');
+        $data['language'] = $this->getLanguage();
+        $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
+        $data['header'] = $this->getHeader();
+        $data['column_left'] = $this->getColumnLeft();
+        $data['footer'] = $this->getFooter();
+        $data['user_token'] = $this->getUserToken();
+        $this->responseOutput("login/index", $data);
+    }
     public function archiveTable()
     {
         $this->addStyle('main.app.css');
@@ -271,9 +285,6 @@ trait FileSystemCheck
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'filesystem-check.3200427302c61ae1.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'filesystem-check.3200427302c61ae1.js'));
 
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('FSCheckApi');
@@ -344,9 +355,6 @@ trait FileSystemControl
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'filesystem-control.387c561971f19fcc.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'filesystem-control.387c561971f19fcc.js'));
 
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['header'] = $this->getHeader();
@@ -415,7 +423,7 @@ trait FileSystemControl
             case "main":
                 $status = 'Ok';
                 $FSControll = $this->adapter->MessorLib->FSControll(null);
-                $data['path'] = $FSControll->getDefaultPath();
+                $data['path'] = $this->getDefaultPath();
                 $data['result'] = $this->getUrlLink('FSControllResult');
                 $data['one_time'] = $this->getUrlLink('FSControlOneTime');
                 break;
@@ -480,10 +488,6 @@ trait FileDatabaseBackup
 
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'file-database-backup.22f1a13b73066842.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'file-database-backup.22f1a13b73066842.js'));
-
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $this->setTitle('Messor BackUp');
@@ -630,10 +634,6 @@ trait MalwareClean
 
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'malware-cleaner.9a504dfdaccf5b48.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'malware-cleaner.9a504dfdaccf5b48.js'));
-
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
 
@@ -747,10 +747,6 @@ trait SecuritySettings
 
         $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css'));
         $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'security-settings.be2fe29912988e41.js'));
-
-
-
-
         $data['scripts'] = $this->getScript();
         $data['style'] = $this->getStyle();
         $data['user_token'] = $this->getUserToken();
