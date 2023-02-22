@@ -777,7 +777,9 @@ final class MessorLib
         $files = scandir(PATH::IPHASH);
         foreach ($files as $file) {
             if (!is_dir($file)) {
-                unlink(PATH::IPHASH . $file);
+                if (file_exists(PATH::IPHASH . $file) && $file != "index.php") {
+                    unlink(PATH::IPHASH . $file);
+                }
             }
         }
     }

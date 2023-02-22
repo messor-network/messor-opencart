@@ -34,11 +34,7 @@ class ControllerExtensionModuleMessor extends Controller
             $this->registerPage();
             return;
         }
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'main.f237f0c93dcd2c4b.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'main.f237f0c93dcd2c4b.js'));
 
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $this->setTitle("Messor security dashboard");
         $data['path_api'] = $this->getLinkApi('Api');
         $data['language'] = $this->getLanguage();
@@ -52,11 +48,6 @@ class ControllerExtensionModuleMessor extends Controller
 
     public function registerPage()
     {
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'register.2a6d958d6f385584.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'register.2a6d958d6f385584.js'));
-
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('Api');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
@@ -65,58 +56,6 @@ class ControllerExtensionModuleMessor extends Controller
         $data['footer'] = $this->getFooter();
         $data['user_token'] = $this->getUserToken();
         $this->responseOutput("install/register", $data);
-    }
-
-    public function Login()
-    {
-        if (!$this->adapter->MessorLib->isConfig()) {
-            $this->registerPage();
-            return;
-        }
-        $this->addStyle(array('chunk-common.29b78882d79f4499.css', 'register.66cb715e8ad6114a.css'));
-        $this->addScript(array('chunk-vendors.d94906ca074f70f5.js', 'chunk-common.29b78882d79f4499.js', 'register.66cb715e8ad6114a.js'));
-
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
-        $data['path_api'] = $this->getLinkApi('Api');
-        $data['language'] = $this->getLanguage();
-        $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-        $data['header'] = $this->getHeader();
-        $data['column_left'] = $this->getColumnLeft();
-        $data['footer'] = $this->getFooter();
-        $data['user_token'] = $this->getUserToken();
-        $this->responseOutput("login/index", $data);
-    }
-    public function archiveTable()
-    {
-        $this->addStyle('main.app.css');
-        $this->addScript(array('main.app.js', 'main.chunk-vendors.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
-        $data['path_api'] = $this->getLinkApi('Api');
-        $data['language'] = $this->getLanguage();
-        $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-        $data['header'] = $this->getHeader();
-        $data['column_left'] = $this->getColumnLeft();
-        $data['footer'] = $this->getFooter();
-        $data['user_token'] = $this->getUserToken();
-        $this->responseOutput("archive", $data);
-    }
-
-    public function ipBlackWhiteList()
-    {
-        $this->addStyle('main.app.css');
-        $this->addScript(array('main.app.js', 'main.chunk-vendors.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
-        $data['path_api'] = $this->getLinkApi('Api');
-        $data['language'] = $this->getLanguage();
-        $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-        $data['header'] = $this->getHeader();
-        $data['column_left'] = $this->getColumnLeft();
-        $data['footer'] = $this->getFooter();
-        $data['user_token'] = $this->getUserToken();
-        $this->responseOutput("table_blackwhite_list", $data);
     }
 
     public function fileDownload()
@@ -282,11 +221,6 @@ trait FileSystemCheck
         }
 
         $this->setTitle("Messor File System Check");
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'filesystem-check.3200427302c61ae1.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'filesystem-check.3200427302c61ae1.js'));
-
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('FSCheckApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
@@ -301,15 +235,10 @@ trait FileSystemCheck
 
     public function FSCheckResult()
     {
-        $this->addStyle(array('main.app.css', 'file-system-check.app.css'));
-        $this->addScript(array('file-system-check.app.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $this->setTitle("Messor File System Check");
         $data['path_api'] = $this->getLinkApi('FSCheckApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-
         $data['header'] = $this->getHeader();
         $data['column_left'] = $this->getColumnLeft();
         $data['footer'] = $this->getFooter();
@@ -351,19 +280,12 @@ trait FileSystemControl
         }
 
         $FSControll = $this->adapter->MessorLib->FSControll($this);
-
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'filesystem-control.387c561971f19fcc.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'filesystem-control.387c561971f19fcc.js'));
-
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $data['header'] = $this->getHeader();
         $data['column_left'] = $this->getColumnLeft();
         $data['footer'] = $this->getFooter();
         $data['path_api'] = $this->getLinkApi('FSControlApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-
         $data['user_token'] = $this->getUserToken();
 
         if (!$FSControll) {
@@ -379,14 +301,9 @@ trait FileSystemControl
     public function FSControlOneTime()
     {
         $this->setTitle("Messor File System Controll");
-        $this->addStyle(array('main.app.css', 'file-system-control.app.css'));
-        $this->addScript(array('file-system-control.app.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $data['path_api'] = $this->getLinkApi('FSControlApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-
         $data['header'] = $this->getHeader();
         $data['column_left'] = $this->getColumnLeft();
         $data['footer'] = $this->getFooter();
@@ -397,15 +314,10 @@ trait FileSystemControl
 
     public function FSControlResult()
     {
-        $this->addStyle('main.app.css', 'file-system-control.app.css');
-        $this->addScript(array('file-system-control.app.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $this->setTitle("Messor File System Controll");
         $data['path_api'] = $this->getLinkApi('FSControlApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-
         $data['header'] = $this->getHeader();
         $data['column_left'] = $this->getColumnLeft();
         $data['footer'] = $this->getFooter();
@@ -423,7 +335,7 @@ trait FileSystemControl
             case "main":
                 $status = 'Ok';
                 $FSControll = $this->adapter->MessorLib->FSControll(null);
-                $data['path'] = $this->getDefaultPath();
+                $data['path'] = $FSControll->getDefaultPath();
                 $data['result'] = $this->getUrlLink('FSControllResult');
                 $data['one_time'] = $this->getUrlLink('FSControlOneTime');
                 break;
@@ -486,15 +398,10 @@ trait FileDatabaseBackup
 
         $FDBBackup = $this->adapter->MessorLib->FDBBackup($this);
 
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'file-database-backup.22f1a13b73066842.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'file-database-backup.22f1a13b73066842.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $this->setTitle('Messor BackUp');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
         $data['path_api'] = $this->getLinkApi('FDBBApi');
-
         $data['header'] = $this->getHeader();
         $data['column_left'] = $this->getColumnLeft();
         $data['footer'] = $this->getFooter();
@@ -631,12 +538,6 @@ trait MalwareClean
         $data['path_api'] = $this->getLinkApi('MCLApi');
         $data['language'] = $this->getLanguage();
         $data['language'] = strip_tags(json_encode($data['language'], JSON_UNESCAPED_UNICODE));
-
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css', 'malware-cleaner.9a504dfdaccf5b48.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'malware-cleaner.9a504dfdaccf5b48.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
-
         $data['header'] = $this->getHeader();
         $data['column_left'] = $this->getColumnLeft();
         $data['footer'] = $this->getFooter();
@@ -744,11 +645,6 @@ trait SecuritySettings
             $this->registerPage();
             return;
         }
-
-        $this->addStyle(array('chunk-common.cf2ce3f1cf6882b2.css'));
-        $this->addScript(array('chunk-vendors.ee4f6e34da3e61fe.js', 'chunk-common.cf2ce3f1cf6882b2.js', 'security-settings.be2fe29912988e41.js'));
-        $data['scripts'] = $this->getScript();
-        $data['style'] = $this->getStyle();
         $data['user_token'] = $this->getUserToken();
         $data['path_api'] = $this->getLinkApi('SecuritySettingsApi');
         $data['language'] = $this->getLanguage();
