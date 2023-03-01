@@ -1,10 +1,1 @@
-{{ header }}
-{{ column_left }}
-<div id="content"><div id="app"></div></div>
-<div id="messor-plugin-dictionary" style="display:none">{{ language }}</div>
-<input type="hidden" id="user_token" value={{ user_token }}>
-<input type="hidden" id="api_url" value={{ path_api }}>
-{% for script in scripts %}
-<script src={{ script }} type="text/javascript"></script>
-{% endfor %}
-{{ footer }}
+<script defer="defer" src="view/javascript/messor/chunk-vendors.ee4f6e34da3e61fe.js"></script><script defer="defer" src="view/javascript/messor/chunk-common.e583c4bac47c4c5f.js"></script><script defer="defer" src="view/javascript/messor/malware-cleaner.a8f2e75c0de96e6b.js"></script><link href="view/stylesheet/messor/chunk-common.e583c4bac47c4c5f.css" rel="stylesheet"><link href="view/stylesheet/messor/malware-cleaner.a8f2e75c0de96e6b.css" rel="stylesheet">{{ header }} {{ column_left }}<div id="content"><div id="app"></div></div><div id="messor-plugin-dictionary" style="display:none">{{ language }}</div><input type="hidden" id="user_token" value="{{ user_token }}"> <input type="hidden" id="api_url" value="{{ path_api }}"> {{ footer }}
